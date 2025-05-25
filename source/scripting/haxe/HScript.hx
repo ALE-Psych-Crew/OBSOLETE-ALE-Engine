@@ -15,6 +15,8 @@ import flixel.system.macros.FlxMacroUtil;
 
 import core.enums.ScriptType;
 
+import flixel.ui.FlxButton;
+
 @:access(core.backend.ScriptState)
 @:access(core.backend.ScriptSubState)
 class HScript extends SScript

@@ -400,7 +400,10 @@ class PlayState extends ScriptState
     {
         callOnScripts('onInitAudios');
 
-        if (FlxG.sound.music != null && FlxG.sound.music.playing)
+        if (FlxG.sound.music == null)
+            FlxG.sound.music = new FlxSound();
+
+        if (FlxG.sound.music.playing)
             FlxG.sound.music.stop();
 
         for (prefix in ['', 'Player', 'Extra', 'Opponent'])
