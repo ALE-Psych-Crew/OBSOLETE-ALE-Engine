@@ -44,9 +44,12 @@ class ALEParserHelper
 
 		for (section in psychSections)
 		{
-			var newSection = {
+			var newSection:ALESection = {
 				notes: [],
-				focus: section.mustHitSection ? 2 : 1
+				focus: section.mustHitSection ? 2 : 1,
+
+                bpm: section.bpm == null ? formattedJson.bpm : section.bpm,
+                changeBPM: section.changeBPM == null ? false : section.changeBPM
 			};
 
 			for (note in section.sectionNotes)

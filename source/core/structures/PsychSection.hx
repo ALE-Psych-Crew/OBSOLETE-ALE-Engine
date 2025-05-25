@@ -5,7 +5,7 @@ typedef PsychSection = {
 	var sectionBeats:Float;
 	var mustHitSection:Bool;
 	var gfSection:Bool;
-	var bpm:Float;
-	var changeBPM:Bool;
+	var bpm:Null<Float>;
+	var changeBPM:Null<Bool>;
 	var altAnim:Bool;
 }

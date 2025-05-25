@@ -9,6 +9,7 @@ import core.enums.PlayStateMode;
 
 import core.structures.ALESong;
 import core.structures.ALEStage;
+import core.structures.ALESection;
 
 import scripting.haxe.HScript;
 import scripting.lua.LuaScript;
@@ -197,6 +198,9 @@ class PlayState extends ScriptState
         scrollSpeed = SONG.speed;
 
         initHUD();
+
+        if (SONG.sections[0] != null)
+            Conductor.bpm = SONG.sections[0].bpm;
         
         initCountdown();
 
@@ -294,6 +298,11 @@ class PlayState extends ScriptState
         callOnScripts('onSectionHit', [curSection]);
 
         moveCamera(curSection);
+
+        var curSection:ALESection = SONG.sections[curSection];
+
+        if (curSection != null && curSection.changeBPM)
+            Conductor.bpm = curSection.bpm;
 
         callOnScripts('postSectionHit', [curSection]);
     }
@@ -816,16 +825,14 @@ class PlayState extends ScriptState
             () -> {
                 if (mode == FREEPLAY)
                 {
-                    goToMenu(mode);
+                    goToMenu();
                 } else {
                     if (playlistIndex >= playlist.length - 1)
                     {
                         playlistIndex = 0;
                         playlist = [];
 
-                        goToMenu(mode);
-
-                        mode = FREEPLAY;
+                        goToMenu();
                     } else {
                         playlistIndex++;
 
@@ -840,12 +847,9 @@ class PlayState extends ScriptState
         );
     }
 
-    public function goToMenu(mode:PlayStateMode)
+    public function goToMenu()
     {
-        if (mode == FREEPLAY)
-            CoolUtil.switchState(new CustomState(CoolVars.data.freeplayState));
-        else
-            CoolUtil.switchState(new CustomState(CoolVars.data.storyMenuState));
+        CoolUtil.switchState(new CustomState(mode == STORY ? CoolVars.data.storyMenuState : CoolVars.data.freeplayState));
 
         FlxG.sound.playMusic(Paths.music('freakyMenu'));
     }
