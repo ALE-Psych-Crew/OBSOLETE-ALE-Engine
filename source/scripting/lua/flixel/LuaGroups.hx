@@ -35,10 +35,10 @@ class LuaGroups extends LuaPresetBase
             }
         );
 
-        set('removeFromGroup', function(groupTag:String, objectTag:String)
+        set('removeFromGroup', function(groupTag:String, objectTag:String, ?splice:Bool)
             {
                 if ((tagIs(groupTag, FlxGroup) || tagIs(groupTag, FlxSpriteGroup)) && tagIs(objectTag, FlxBasic))
-                    getTag(groupTag).remove(getTag(objectTag));
+                    getTag(groupTag).remove(getTag(objectTag), splice);
             }
         );
     }

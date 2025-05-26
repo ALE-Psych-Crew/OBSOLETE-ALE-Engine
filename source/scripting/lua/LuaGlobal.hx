@@ -7,6 +7,8 @@ import scripting.lua.flixel.LuaCamera;
 
 import core.enums.PrintType;
 
+import flixel.util.FlxDestroyUtil.IFlxDestroyable;
+
 @:access(core.backend.ScriptState)
 @:access(core.backend.ScriptSubState)
 class LuaGlobal extends LuaPresetBase
@@ -28,20 +30,27 @@ class LuaGlobal extends LuaPresetBase
             }
         });
 
-        set('remove', function(tag:String)
+        set('remove', function(tag:String, ?splice:Bool)
             {
                 if (type == STATE)
                 {
                     if (FlxG.state.members.indexOf(getTag(tag)) != -1)
-                        FlxG.state.remove(getTag(tag));
+                        FlxG.state.remove(getTag(tag), splice);
                     else
                         errorPrint('Object ' + tag + ' Has Not Been Added Yet');
                 } else {
                     if (FlxG.state.subState.members.indexOf(getTag(tag)) != -1)
-                        FlxG.state.subState.remove(getTag(tag));
+                        FlxG.state.subState.remove(getTag(tag), splice);
                     else
                         errorPrint('Object ' + tag + ' Has Not Been Added Yet');
                 }
+            }
+        );
+
+        set('destroy', function(tag:String)
+            {
+                if (tagIs(tag, IFlxDestroyable))
+                    getTag(tag).destroy();
             }
         );
 
