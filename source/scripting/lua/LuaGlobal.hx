@@ -8,6 +8,7 @@ import scripting.lua.flixel.LuaCamera;
 import core.enums.PrintType;
 
 import flixel.util.FlxDestroyUtil.IFlxDestroyable;
+import flixel.util.FlxAxes;
 
 @:access(core.backend.ScriptState)
 @:access(core.backend.ScriptSubState)
@@ -118,5 +119,22 @@ class LuaGlobal extends LuaPresetBase
         {
             set('close', FlxG.state.subState.close);
         }
+
+        set('screenCenter', function(tag:String, axes:String)
+            {
+                if (tagIs(tag, FlxObject))
+                    getTag(tag).screenCenter(
+                        switch (axes.toLowerCase())
+                        {
+                            case 'x':
+                                FlxAxes.X;
+                            case 'y':
+                                FlxAxes.Y;
+                            default:
+                                FlxAxes.XY;
+                        }
+                    );
+            }
+        );
     }
 }
