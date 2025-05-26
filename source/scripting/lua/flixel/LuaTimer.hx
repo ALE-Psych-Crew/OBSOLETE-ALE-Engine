@@ -22,10 +22,10 @@ class LuaTimer extends LuaPresetBase
                             if (type == STATE)
                             {
                                 if (ScriptState.instance != null)
-                                    ScriptState.instance.callOnLuaScripts('onTimerCompleted', [tag]);
+                                    ScriptState.instance.callOnLuaScripts('onTimerComplete', [tag]);
                             } else {
                                 if (ScriptSubState.instance != null)
-                                    ScriptSubState.instance.callOnLuaScripts('onTimerCompleted', [tag]);
+                                    ScriptSubState.instance.callOnLuaScripts('onTimerComplete', [tag]);
                             }
                         },
                     loops);
@@ -53,10 +53,10 @@ class LuaTimer extends LuaPresetBase
                         if (type == STATE)
                         {
                             if (ScriptState.instance != null)
-                                ScriptState.instance.callOnLuaScripts('onTimerCompleted', [tag]);
+                                ScriptState.instance.callOnLuaScripts('onTimerComplete', [tag]);
                         } else {
                             if (ScriptSubState.instance != null)
-                                ScriptSubState.instance.callOnLuaScripts('onTimerCompleted', [tag]);
+                                ScriptSubState.instance.callOnLuaScripts('onTimerComplete', [tag]);
                         }
 
                         removeTag(tag);

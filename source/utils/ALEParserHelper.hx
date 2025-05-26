@@ -15,6 +15,8 @@ class ALEParserHelper
 			json = json.song;
 
 		var formattedJson:ALESong = {
+            events: [],
+
             characters: [
                 [json.player3 == null ? (json.gfVersion == null ? 'gf' : json.gfVersion) : json.player3, 'extra'],
                 [json.player2 == null ? 'dad' : json.player2, 'opponent'],
@@ -22,8 +24,6 @@ class ALEParserHelper
             ],
 
 			sections: [],
-
-            events: [],
 
 			song: json.song,
 			stage: json.stage == null ? (songJson.stage == null ? 'stage' : songJson.stage) : json.stage,
@@ -67,6 +67,30 @@ class ALEParserHelper
 
 			formattedJson.sections.push(newSection);
 		}
+
+        if (json.events != null)
+        {
+            var psychEvents:Array<Array<Dynamic>> = cast json.events;
+
+            for (event in psychEvents)
+            {
+                var formattedEvent:ALEEventArray = {
+                    time: event[0],
+                    events: []
+                };
+
+                for (theEvent in cast(event[1], Array<Dynamic>))
+                    formattedEvent.events.push(
+                        {
+                            name: theEvent[0],
+                            first: theEvent[1],
+                            second: theEvent[2]
+                        }
+                    );
+
+                formattedJson.events.push(formattedEvent);
+            }
+        }
 		
 		return cast formattedJson;
 	}

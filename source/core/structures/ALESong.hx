@@ -2,6 +2,8 @@ package core.structures;
 
 typedef ALESong =
 {
+    var events:Array<ALEEventArray>;
+
     var song:String;
     var needsVoices:Bool;
     
@@ -12,8 +14,6 @@ typedef ALESong =
     var characters:Array<Array<String>>;
 
     var sections:Array<ALESection>;
-
-    var events:Array<Dynamic>;
     
     var speed:Float;
 
