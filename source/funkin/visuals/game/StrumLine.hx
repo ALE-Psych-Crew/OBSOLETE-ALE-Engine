@@ -74,7 +74,6 @@ class StrumLine extends FlxGroup
 
             var note:Note = new Note(chartNote[0], chartNote[1], chartNote[2], chartNote[3], character.type, NORMAL);
 
-            /*
             var length:Float = chartNote[2];
 
             if (length > 0)
@@ -90,7 +89,7 @@ class StrumLine extends FlxGroup
 
                 for (i in 0...susLoop + 1)
                 {
-                    var sustain:Note = new Note(chartNote[0], chartNote[1], chartNote[2], character.type, i == susLoop ? SUSTAIN_END : SUSTAIN);
+                    var sustain:Note = new Note(chartNote[0] + Conductor.stepCrochet * i, chartNote[1], chartNote[2], chartNote[3], character.type, i == susLoop ? SUSTAIN_END : SUSTAIN);
 
                     unspawnNotes.push(sustain);
 
@@ -99,7 +98,6 @@ class StrumLine extends FlxGroup
                     parent = sustain;
                 }
             }
-            */
 
             unspawnNotes.push(note);
         }
@@ -142,11 +140,8 @@ class StrumLine extends FlxGroup
 
         for (note in allNotes)
         {
-            if (Conductor.songPosition >= note.strumTime + note.noteLenght + Conductor.stepCrochet + despawnTime / scrollSpeed)
+            if (Conductor.songPosition >= note.strumTime + Conductor.stepCrochet + despawnTime / scrollSpeed)
             {
-                if (note.state == NEUTRAL)
-                    onNoteMiss(note);
-                
                 note.clipRect = null;
 
                 removeNote(note);
@@ -162,26 +157,34 @@ class StrumLine extends FlxGroup
             var strum:Strum = strums.members[note.data];
 
             Note.setNotePosition(note, strum, strum.direction, 0, (note.strumTime - Conductor.songPosition) * scrollSpeed * 0.45 * (ClientPrefs.data.downScroll ? -1 : 1));
-
-            for (sustain in note.children)
-                Note.setNotePosition(sustain, note, strum.direction, 0, Conductor.stepCrochet * scrollSpeed * 0.45 * note.children.indexOf(sustain) * (ClientPrefs.data.downScroll ? -1 : 1));
         
             if (botplay)
             {
                 if (Conductor.songPosition >= note.strumTime && note.state == NEUTRAL)
                     onNoteHit(note);
-            } else {
-                if (Conductor.songPosition - note.strumTime > 175 && note.state == NEUTRAL)
-                    onNoteMiss(note);
             }
+        }
+
+        for (note in allNotes)
+        {
+            if (Conductor.songPosition - note.strumTime > 175 && note.state == NEUTRAL)
+                onNoteMiss(note);
         }
 
         if (!botplay)
             useKeys();
 
-        /*
         for (sustain in sustains)
         {
+            if (sustain.state == HELD)
+                if (Conductor.songPosition >= sustain.strumTime)
+                    onNoteHit(sustain);
+
+            var strum:Strum = strums.members[sustain.data];
+
+            Note.setNotePosition(sustain, strum, strum.direction, 0, strum.height / 2 + (sustain.strumTime - Conductor.songPosition) * scrollSpeed * 0.45 * (ClientPrefs.data.downScroll ? -1 : 1));
+
+            /*
             var parent = sustain.parentNote;
 
             if (parent != null)
@@ -208,28 +211,10 @@ class StrumLine extends FlxGroup
                     sustain.clipRect = rect;
 
                     var holdPercent:Float = (sustain.sustainHitLenght / parent.noteLenght);
-
-                    if (sustain.state == NEUTRAL || holdPercent >= 1)
-                    {
-                        sustain.state = RELEASED;
-
-                        if (holdPercent > 0.3)
-                        {
-                            if (sustain.noteType == SUSTAIN_END)
-                                onNoteHit(sustain);
-
-                            sustain.state = HIT;
-                        }
-                    } else {
-                        onNoteMiss(sustain);
-                    }
                 }
-
-                if (parent.state == LOST && sustain.state != LOST)
-                    onNoteMiss(sustain);
             }
+                */
         }
-        */
     }
 
     function sortByTime(obj1:Note, obj2:Note):Int
@@ -275,6 +260,10 @@ class StrumLine extends FlxGroup
 
                 break;
             }
+
+        for (sustain in sustains)
+            if (keysJustReleased[sustain.data] && sustain.state == HELD /*&& Math.abs(sustain.strumTime - Conductor.songPosition) > 50*/)
+                onNoteMiss(sustain);
         
         for (strum in strums)
         {
@@ -318,6 +307,11 @@ class StrumLine extends FlxGroup
 
     public function onNoteHit(note:Note, ?rating:Rating)
     {
+        note.state = note.noteLenght > 0 ? HELD : HIT;
+
+        for (child in note.children)
+            child.state = HELD;
+
         if (noteHitCallback != null)
             noteHitCallback(note, rating);
 
@@ -330,21 +324,22 @@ class StrumLine extends FlxGroup
         
         character.idleTimer = 0;
         
-        character.animation.play('sing' + switch (note.data)
-            {
-                case 0:
-                    'LEFT';
-                case 1:
-                    'DOWN';
-                case 2:
-                    'UP';
-                case 3:
-                    'RIGHT';
-                default:
-                    '';
-            },
-            true
-        );
+        if (note.noteType == NORMAL)    
+            character.animation.play('sing' + switch (note.data)
+                {
+                    case 0:
+                        'LEFT';
+                    case 1:
+                        'DOWN';
+                    case 2:
+                        'UP';
+                    case 3:
+                        'RIGHT';
+                    default:
+                        '';
+                },
+                true
+            );
 
         for (sound in voices)
             if (sound.volume != 1)
@@ -358,7 +353,7 @@ class StrumLine extends FlxGroup
         if (note.noteType == NORMAL)
             notes.add(note);
         else
-            sustains.remove(note);
+            sustains.add(note);
     }
 
     public function removeNote(note:Note)

@@ -135,9 +135,26 @@ class Note extends FlxSprite
 	
 	public static function setNotePosition(note:FlxSprite, target:FlxSprite, angle:Float, offsetX:Float, offsetY:Float)
 	{
+		offsetX += target.width / 2 - note.width / 2;
+
 		var radians = FlxAngle.asRadians(angle - 90);
 
 		note.x = target.x + Math.cos(radians) * offsetX + Math.sin(radians) * offsetY;
 		note.y = target.y + Math.cos(radians) * offsetY + Math.sin(radians) * offsetX;
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		/*
+		if (strum != null)
+		{
+			alpha = strum.alpha * (noteType == NORMAL ? 1 : state == LOST ? 0.25 : 0.5);
+			angle = strum.angle;
+			scale.x = strum.scale.x;
+			scale.y = strum.scale.y;
+		}
+			*/
 	}
 }
