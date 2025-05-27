@@ -1036,19 +1036,25 @@ class PlayState extends ScriptState
             {
                 case OPPONENT:
                     camPosition.x = char.getMidpoint().x + 150;
-                    camPosition.x += char.cameraPosition[0] + STAGE.opponentsCamera[characters.opponents.members.indexOf(char)][0];
+                    camPosition.x += char.cameraPosition[0];
+                    camPosition.x += STAGE.opponentsCamera[characters.opponents.members.indexOf(char)][0];
                     camPosition.y = char.getMidpoint().y - 100;
-                    camPosition.y += char.cameraPosition[1] + STAGE.opponentsCamera[characters.opponents.members.indexOf(char)][1];
+                    camPosition.y += char.cameraPosition[1];
+                    camPosition.y += STAGE.opponentsCamera[characters.opponents.members.indexOf(char)][1];
                 case PLAYER:
                     camPosition.x = char.getMidpoint().x - 100;
-                    camPosition.x -= char.cameraPosition[0] + STAGE.playersCamera[characters.players.members.indexOf(char)][0];
+                    camPosition.x -= char.cameraPosition[0];
+                    camPosition.x += STAGE.playersCamera[characters.players.members.indexOf(char)][0];
                     camPosition.y = char.getMidpoint().y - 100;
-                    camPosition.y += char.cameraPosition[1] + STAGE.playersCamera[characters.players.members.indexOf(char)][1];
+                    camPosition.y += char.cameraPosition[1];
+                    camPosition.y += STAGE.playersCamera[characters.players.members.indexOf(char)][1];
                 case EXTRA:
                     camPosition.x = char.getMidpoint().x - 100;
-                    camPosition.x += char.cameraPosition[0] + STAGE.extrasCamera[characters.extras.members.indexOf(char)][0];
+                    camPosition.x += char.cameraPosition[0];
+                    camPosition.x += STAGE.extrasCamera[characters.extras.members.indexOf(char)][0];
                     camPosition.y = char.getMidpoint().y;
-                    camPosition.y += char.cameraPosition[1] + STAGE.extrasCamera[characters.extras.members.indexOf(char)][1];
+                    camPosition.y += char.cameraPosition[1];
+                    camPosition.y += STAGE.extrasCamera[characters.extras.members.indexOf(char)][1];
             }
         }
     }
