@@ -84,10 +84,10 @@ class ModsMenuSubState extends MusicBeatSubState
         modCamera.scroll.x = CoolUtil.fpsLerp(modCamera.scroll.x, camPos.x, 0.2);
         modCamera.scroll.y = CoolUtil.fpsLerp(modCamera.scroll.y, camPos.y, 0.2);
 
-        if (controls.BACK)
+        if (Controls.BACK)
             close();
 
-        if (controls.ACCEPT)
+        if (Controls.ACCEPT)
         { 
             var save:FlxSave = new FlxSave();
             save.bind('ALEEngineData', CoolUtil.getSavePath(false));
@@ -97,9 +97,9 @@ class ModsMenuSubState extends MusicBeatSubState
             CoolUtil.resetEngine();
         }
 
-        if (controls.UI_DOWN_P || controls.UI_UP_P || FlxG.mouse.wheel != 0)
+        if (Controls.UI_DOWN_P || Controls.UI_UP_P || FlxG.mouse.wheel != 0)
         {
-            if (controls.UI_DOWN_P || FlxG.mouse.wheel < 0)
+            if (Controls.UI_DOWN_P || FlxG.mouse.wheel < 0)
             {
                 if (selInt >= sprites.members.length - 1)
                     selInt = 0;
@@ -107,7 +107,7 @@ class ModsMenuSubState extends MusicBeatSubState
                     selInt++;
             }
         
-            if (controls.UI_UP_P || FlxG.mouse.wheel > 0)
+            if (Controls.UI_UP_P || FlxG.mouse.wheel > 0)
             {
                 if (selInt == 0)
                     selInt = sprites.members.length - 1;

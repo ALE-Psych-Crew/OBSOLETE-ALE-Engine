@@ -25,8 +25,6 @@ class MusicBeatState extends FlxState
 
     public static var instance:MusicBeatState;
 
-    public var controls:Controls;
-
     private var debugTexts:FlxTypedGroup<DebugText>;
     
     override public function create()
@@ -35,8 +33,6 @@ class MusicBeatState extends FlxState
         
 		debugTexts = new FlxTypedGroup<DebugText>();
 		add(debugTexts);
-
-        controls = new Controls();
 
         if (CoolVars.skipTransOut)
         {
@@ -97,8 +93,6 @@ class MusicBeatState extends FlxState
     override public function destroy()
     {
         instance = null;
-
-        controls = null;
 
         debugTexts = null;
 

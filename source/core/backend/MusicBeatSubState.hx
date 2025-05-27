@@ -17,16 +17,12 @@ class MusicBeatSubState extends flixel.FlxSubState
 
     private var debugTexts:FlxTypedGroup<DebugText>;
 
-    public var controls:Controls;
-
     override public function create()
     {
         instance = this;
         
 		debugTexts = new FlxTypedGroup<DebugText>();
 		add(debugTexts);
-
-        controls = new Controls();
 
         super.create();
     }
@@ -63,8 +59,6 @@ class MusicBeatSubState extends flixel.FlxSubState
     override public function destroy()
     {
         instance = null;
-
-        controls = null;
 
         debugTexts = null;
 

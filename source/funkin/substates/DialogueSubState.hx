@@ -173,8 +173,8 @@ class DialogueSubState extends MusicBeatSubState
     {
         super.update(elapsed);
         
-        if (canSelect && (controls.ACCEPT || controls.UI_LEFT_P || controls.UI_RIGHT_P))
-            changeDialogue(controls.UI_LEFT_P ? -1 : 1);
+        if (canSelect && (Controls.ACCEPT || Controls.UI_LEFT_P || Controls.UI_RIGHT_P))
+            changeDialogue(Controls.UI_LEFT_P ? -1 : 1);
     }
 
     var curCharacter:DialogueCharacter;

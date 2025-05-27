@@ -223,17 +223,17 @@ class StrumLine extends FlxGroup
     function useKeys():Void
     {
         var keysJustPressed:Array<Bool> = [
-            FlxG.keys.anyJustPressed(ClientPrefs.controls.notes.left),
-            FlxG.keys.anyJustPressed(ClientPrefs.controls.notes.down),
-            FlxG.keys.anyJustPressed(ClientPrefs.controls.notes.up),
-            FlxG.keys.anyJustPressed(ClientPrefs.controls.notes.right)
+            Controls.NOTE_LEFT_P,
+            Controls.NOTE_DOWN_P,
+            Controls.NOTE_UP_P,
+            Controls.NOTE_RIGHT_P
         ];
 
         var keysJustReleased:Array<Bool> = [
-            FlxG.keys.anyJustReleased(ClientPrefs.controls.notes.left),
-            FlxG.keys.anyJustReleased(ClientPrefs.controls.notes.down),
-            FlxG.keys.anyJustReleased(ClientPrefs.controls.notes.up),
-            FlxG.keys.anyJustReleased(ClientPrefs.controls.notes.right)
+            Controls.NOTE_LEFT_R,
+            Controls.NOTE_DOWN_R,
+            Controls.NOTE_UP_R,
+            Controls.NOTE_RIGHT_R
         ];
         
         var pressedData:Int = -1;

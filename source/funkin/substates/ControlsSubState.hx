@@ -164,8 +164,8 @@ class ControlsSubState extends MusicBeatSubState
         {
             if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN || FlxG.keys.justPressed.RIGHT || FlxG.keys.justPressed.LEFT)
                 changeOption(FlxG.keys.justPressed.RIGHT ? 1 : FlxG.keys.justPressed.LEFT ? -1 : null, FlxG.keys.justPressed.UP ? -1 : FlxG.keys.justPressed.DOWN ? 1 : null);
-            else if (controls.MOUSE_WHEEL)
-                changeOption(controls.MOUSE_WHEEL_UP ? -1 : 1, 0);
+            else if (Controls.MOUSE_WHEEL)
+                changeOption(Controls.MOUSE_WHEEL_UP ? -1 : 1, 0);
 
             if (FlxG.keys.justPressed.ENTER)
             {

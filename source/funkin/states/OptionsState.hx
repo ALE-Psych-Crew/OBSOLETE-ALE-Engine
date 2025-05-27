@@ -87,9 +87,9 @@ class OptionsState extends MusicBeatState
 
         if (canSelect.menus)
         {
-            if (controls.UI_DOWN_P || controls.UI_UP_P || controls.MOUSE_WHEEL)
+            if (Controls.UI_DOWN_P || Controls.UI_UP_P || Controls.MOUSE_WHEEL)
             {
-                if (controls.UI_DOWN_P || controls.MOUSE_WHEEL_DOWN)
+                if (Controls.UI_DOWN_P || Controls.MOUSE_WHEEL_DOWN)
                 {
                     if (selInt.menus >= catSprites.length - 1)
                         selInt.menus = 0;
@@ -97,7 +97,7 @@ class OptionsState extends MusicBeatState
                         selInt.menus++;
                 }
                 
-                if (controls.UI_UP_P || controls.MOUSE_WHEEL_UP)
+                if (Controls.UI_UP_P || Controls.MOUSE_WHEEL_UP)
                 {
                     if (selInt.menus <= 0)
                         selInt.menus = catSprites.length - 1;
@@ -110,7 +110,7 @@ class OptionsState extends MusicBeatState
                 FlxG.sound.play(Paths.sound('scrollMenu'));
             }
     
-            if (controls.ACCEPT || controls.MOUSE_P)
+            if (Controls.ACCEPT || Controls.MOUSE_P)
             {
                 var curMenu = categories[selInt.menus];
     
@@ -141,7 +141,7 @@ class OptionsState extends MusicBeatState
                 }
             }
 
-            if (controls.BACK)
+            if (Controls.BACK)
             {
                 if (inPlayState)
                 {
@@ -157,9 +157,9 @@ class OptionsState extends MusicBeatState
                 canSelect.menus = false;
             }
         } else if (canSelect.options) {
-            if ((controls.UI_DOWN_P || controls.UI_UP_P || controls.MOUSE_WHEEL) && !FlxG.keys.pressed.SHIFT)
+            if ((Controls.UI_DOWN_P || Controls.UI_UP_P || Controls.MOUSE_WHEEL) && !FlxG.keys.pressed.SHIFT)
             {
-                if (controls.UI_DOWN_P || controls.MOUSE_P)
+                if (Controls.UI_DOWN_P || Controls.MOUSE_P)
                 {
                     if (selInt.options >= optSprites.members.length - 1)
                         selInt.options = 0;
@@ -167,7 +167,7 @@ class OptionsState extends MusicBeatState
                         selInt.options++;
                 }
                 
-                if (controls.UI_UP_P || controls.MOUSE_WHEEL_DOWN)
+                if (Controls.UI_UP_P || Controls.MOUSE_WHEEL_DOWN)
                 {
                     if (selInt.options <= 0)
                         selInt.options = optSprites.members.length - 1;
@@ -180,33 +180,33 @@ class OptionsState extends MusicBeatState
                 FlxG.sound.play(Paths.sound('scrollMenu'));
             }
 
-            if (controls.UI_RIGHT || controls.UI_LEFT || (FlxG.keys.pressed.SHIFT && controls.MOUSE_WHEEL))
+            if (Controls.UI_RIGHT || Controls.UI_LEFT || (FlxG.keys.pressed.SHIFT && Controls.MOUSE_WHEEL))
             {
                 var option:OptionText = optSprites.members[selInt.options];
 
                 if (option.type != BOOL)
                 {
-                    if (controls.UI_RIGHT_P || pressTimer.right >= 0.75 || controls.MOUSE_WHEEL_DOWN)
+                    if (Controls.UI_RIGHT_P || pressTimer.right >= 0.75 || Controls.MOUSE_WHEEL_DOWN)
                         option.moveRight();
                     
-                    if (controls.UI_LEFT_P || pressTimer.left >= 0.75 || controls.MOUSE_WHEEL_UP)
+                    if (Controls.UI_LEFT_P || pressTimer.left >= 0.75 || Controls.MOUSE_WHEEL_UP)
                         option.moveLeft();
                 }
             }
 
-            if (controls.UI_LEFT)
+            if (Controls.UI_LEFT)
                 pressTimer.left += elapsed;
 
-            if (controls.UI_RIGHT)
+            if (Controls.UI_RIGHT)
                 pressTimer.right += elapsed;
 
-            if (controls.UI_RIGHT_R)
+            if (Controls.UI_RIGHT_R)
                 pressTimer.right = 0;
 
-            if (controls.UI_LEFT_R)
+            if (Controls.UI_LEFT_R)
                 pressTimer.left = 0;
     
-            if (controls.ACCEPT || controls.MOUSE_P)
+            if (Controls.ACCEPT || Controls.MOUSE_P)
             {
                 var option:OptionText = optSprites.members[selInt.options];
 
@@ -214,7 +214,7 @@ class OptionsState extends MusicBeatState
                     option.value = !option.value;
             }
     
-            if (controls.BACK)
+            if (Controls.BACK)
             {
                 CoolUtil.save.savePreferences();
                 

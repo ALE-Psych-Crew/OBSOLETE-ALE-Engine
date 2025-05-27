@@ -221,6 +221,13 @@ class PlayState extends ScriptState
         iconsZoomLerpFunction();
         iconsPositionFunction();
 
+        if (Controls.RESET)
+        {
+            this.shouldClearMemory = false;
+
+            restartSong();
+        }
+
         if (FlxG.keys.justPressed.ENTER && !dead && !finished)
         {
             pauseSong();

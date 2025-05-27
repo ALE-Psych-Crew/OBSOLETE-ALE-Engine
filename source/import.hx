@@ -25,6 +25,7 @@ import core.backend.ScriptState;
 import core.backend.ScriptSubState;
 import core.backend.Conductor;
 import core.backend.DiscordRPC;
+import core.backend.Controls;
 
 import core.config.ClientPrefs;
 

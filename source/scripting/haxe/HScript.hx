@@ -80,7 +80,8 @@ class HScript extends SScript
 			funkin.visuals.objects.Alphabet,
 			funkin.visuals.objects.TypedAlphabet,
 			funkin.visuals.objects.AttachedAlphabet,
-			funkin.states.OptionsState
+			funkin.states.OptionsState,
+			core.backend.Controls
         ];
 
         for (theClass in presetClasses)
@@ -94,7 +95,6 @@ class HScript extends SScript
 				'this' => FlxG.state,
 				'add' => FlxG.state.add,
 				'insert' => FlxG.state.insert,
-				'controls' => ScriptState.instance.controls,
 				'openSubState' => FlxG.state.openSubState,
 				'CancelSuperFunction' => ScriptState.instance.CancelSuperFunction,
 				'debugPrint' => ScriptState.instance.debugPrint
@@ -104,7 +104,6 @@ class HScript extends SScript
 				'this' => FlxG.state.subState,
 				'add' => FlxG.state.subState.add,
 				'insert' => FlxG.state.subState.insert,
-				'controls' => ScriptSubState.instance.controls,
 				'close' => FlxG.state.subState.close,
 				'CancelSuperFunction' => ScriptSubState.instance.CancelSuperFunction,
 				'debugPrint' => ScriptSubState.instance.debugPrint
