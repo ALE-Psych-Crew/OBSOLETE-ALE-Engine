@@ -23,21 +23,42 @@ class LuaGroups extends LuaPresetBase
 
         set('addToGroup', function(groupTag:String, objectTag:String)
             {
-                if ((tagIs(groupTag, FlxGroup) || tagIs(groupTag, FlxSpriteGroup)) && tagIs(objectTag, FlxBasic))
+                if (tagIs(groupTag, FlxGroup) && tagIs(objectTag, FlxBasic))
                     getTag(groupTag).add(getTag(objectTag));
             }
         );
 
         set('insertToGroup', function(groupTag:String, index:Int, objectTag:String)
             {
-                if ((tagIs(groupTag, FlxGroup) || tagIs(groupTag, FlxSpriteGroup)) && tagIs(objectTag, FlxBasic))
+                if (tagIs(groupTag, FlxGroup) && tagIs(objectTag, FlxBasic))
                     getTag(groupTag).insert(index, getTag(objectTag));
             }
         );
 
         set('removeFromGroup', function(groupTag:String, objectTag:String, ?splice:Bool)
             {
-                if ((tagIs(groupTag, FlxGroup) || tagIs(groupTag, FlxSpriteGroup)) && tagIs(objectTag, FlxBasic))
+                if (tagIs(groupTag, FlxGroup) && tagIs(objectTag, FlxBasic))
+                    getTag(groupTag).remove(getTag(objectTag), splice);
+            }
+        );
+
+        set('addToSpriteGroup', function(groupTag:String, objectTag:String)
+            {
+                if (tagIs(groupTag, FlxSpriteGroup) && tagIs(objectTag, FlxBasic))
+                    getTag(groupTag).add(getTag(objectTag));
+            }
+        );
+
+        set('insertToSpriteGroup', function(groupTag:String, index:Int, objectTag:String)
+            {
+                if (tagIs(groupTag, FlxSpriteGroup) && tagIs(objectTag, FlxBasic))
+                    getTag(groupTag).insert(index, getTag(objectTag));
+            }
+        );
+
+        set('removeFromSpriteGroup', function(groupTag:String, objectTag:String, ?splice:Bool)
+            {
+                if (tagIs(groupTag, FlxSpriteGroup) && tagIs(objectTag, FlxBasic))
                     getTag(groupTag).remove(getTag(objectTag), splice);
             }
         );
