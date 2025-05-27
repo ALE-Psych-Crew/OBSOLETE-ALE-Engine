@@ -233,7 +233,8 @@ class PlayState extends ScriptState
 
     override public function destroy()
     {
-        FlxG.sound.music.onComplete = () -> {};
+        if (FlxG.sound.music != null)
+            FlxG.sound.music.onComplete = () -> {};
 
         super.destroy();
 
