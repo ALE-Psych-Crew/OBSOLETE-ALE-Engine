@@ -39,6 +39,8 @@ class StrumLine extends FlxGroup
 
     public var voices:Array<FlxSound> = [];
 
+    public var chartNotes:Array<Array<Dynamic>> = [];
+
     public function new(character:Character, chartNotes:Array<Array<Dynamic>>, startPosition:Float)
     {
         super();
@@ -46,6 +48,8 @@ class StrumLine extends FlxGroup
         this.character = character;
 
         this.downScroll = ClientPrefs.data.downScroll;
+
+        this.chartNotes = chartNotes;
 
         botplay = this.character.type != PLAYER;
 
