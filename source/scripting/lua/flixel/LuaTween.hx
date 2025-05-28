@@ -39,6 +39,12 @@ class LuaTween extends LuaPresetBase
         );
 
         set('cancelTween', cancelTween);
+
+		set('cancelTweensOf', function(tag:String)
+			{
+				FlxTween.cancelTweensOf(getTag(tag));
+			}
+		);
     }
 
     function tweenFunction(tag:String, vars:String, tweenValue:Dynamic, duration:Float, options:Dynamic)
