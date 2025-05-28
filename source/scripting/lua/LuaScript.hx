@@ -41,35 +41,6 @@ class LuaScript
         if (resultString != null && result != 0)
             debugPrint('Error on Lua Script: ' + resultString, ERROR);
 
-        setFunction('import', function(path:String, ?alias:String)
-            {
-                var splitPath:Array<String> = [for (i in path.split('.')) i.trim()];
-
-                var realPath:String = splitPath.join('.');
-
-                var theClass = Type.resolveClass(realPath);
-
-                if (theClass == null)
-                {
-                    if (splitPath.length > 1)
-                    {
-                        splitPath.splice(-2, 1);
-
-                        realPath = splitPath.join('.');
-
-                        theClass = Type.resolveClass(realPath);
-                    }
-                }
-
-                if (theClass == null)
-                    return null;
-
-                set(alias ?? splitPath[splitPath.length - 1], theClass);
-
-                return null;
-            }
-        );
-
         new LuaPreset(this);
     }
 
