@@ -43,7 +43,7 @@ class Character extends FlxSprite
     {
         texture = value;
 
-        frames = Paths.getSparrowAtlas(texture);
+        frames = Paths.getAtlas(texture);
 
         offsetsMap = new StringMap<Dynamic>();
 
@@ -88,7 +88,11 @@ class Character extends FlxSprite
         else if (animation.exists('danceLeft'))
             animation.play('danceLeft', true);
 
+        scale.x = scale.y = data.scale;
+
         cameraPosition = [data.cameraPosition[0] - offset.x, data.cameraPosition[0] - offset.y];
+
+        antialiasing = ClientPrefs.data.antialiasing && data.antialiasing;
 
         return texture;
     }
@@ -102,8 +106,6 @@ class Character extends FlxSprite
         this.type = type;
 
         this.name = name;
-
-        this.antialiasing = ClientPrefs.data.antialiasing;
     }
 
     override public function update(elapsed:Float)

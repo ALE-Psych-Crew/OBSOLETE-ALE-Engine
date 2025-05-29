@@ -222,11 +222,7 @@ class PlayState extends ScriptState
         iconsPositionFunction();
 
         if (Controls.RESET)
-        {
-            this.shouldClearMemory = false;
-
             restartSong();
-        }
 
         if (FlxG.keys.justPressed.ENTER && !dead && !finished)
         {

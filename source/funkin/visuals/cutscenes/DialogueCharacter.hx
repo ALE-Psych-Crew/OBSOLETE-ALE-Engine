@@ -35,7 +35,7 @@ class DialogueCharacter extends FlxSprite
 
         offsetsMap = new StringMap<Dynamic>();
 
-        frames = Paths.getSparrowAtlas('dialogue/' + texture);
+        frames = Paths.getAtlas('dialogue/' + texture);
 
         for (anim in data.animations)
         {

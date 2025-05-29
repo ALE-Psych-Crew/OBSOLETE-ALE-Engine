@@ -27,6 +27,7 @@ class LuaPreset
         new LuaWindowsCPP(lua);
         
         new LuaCoolUtil(lua);
+        new LuaPaths(lua);
 
         new LuaDiscord(lua);
     }

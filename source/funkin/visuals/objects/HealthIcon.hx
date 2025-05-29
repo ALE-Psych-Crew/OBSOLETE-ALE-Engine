@@ -9,24 +9,15 @@ class HealthIcon extends FlxSprite
 {
     public var anims:Int = 2;
 
-    override public function new(name:String, ?anims:Int = 2)
+    public var texture(default, set):String;
+    public function set_texture(value:String):String
     {
-        super();
+        texture = value;
 
-        if (anims < 1) anims = 1;
-        this.anims = anims;
-
-        changeIcon(name);
-
-        antialiasing = ClientPrefs.data.antialiasing;
-    }
-
-    public function changeIcon(char:String)
-    {
-        var name:String = 'icons/' + char;
+        var name:String = 'icons/' + texture;
 
         if (!Paths.fileExists('images/' + name + '.png'))
-            name = 'icons/icon-' + char;
+            name = 'icons/icon-' + texture;
 
         if (!Paths.fileExists('images/' + name + '.png'))
             name = 'icons/face';
@@ -40,9 +31,25 @@ class HealthIcon extends FlxSprite
 
         loadGraphic(graphic, true, Math.floor(graphic.width / anims), Math.floor(graphic.height));
 
-        animation.add(char, animsArray, 0, false);
-        animation.play(char);
+        animation.add(texture, animsArray, 0, false);
+        animation.play(texture);
 
         updateHitbox();
+
+        antialiasing = ClientPrefs.data.antialiasing && !texture.endsWith('pixel');
+
+        return texture;
+    }
+
+    override public function new(name:String, ?anims:Int = 2)
+    {
+        super();
+
+        if (anims < 1)
+            anims = 1;
+        
+        this.anims = anims;
+
+        texture = name;
     }
 }

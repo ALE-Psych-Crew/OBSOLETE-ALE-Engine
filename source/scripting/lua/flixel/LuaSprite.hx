@@ -48,13 +48,6 @@ class LuaSprite extends LuaPresetBase
             }
         );
 
-        set('getSparrowAtlas', function(tag:String, sprite:String)
-            {
-                if (tagIs(tag, FlxSprite))
-                    getTag(tag).frames = Paths.getSparrowAtlas(sprite);
-            }
-        );
-
         set('makeGraphic', function(tag:String, width:Int, height:Int, ?color:FlxColor = FlxColor.WHITE)
             {
                 if (tagIs(tag, FlxSprite))

@@ -63,7 +63,7 @@ class Paths
 	 * @param file File Name
 	 * @param bitmap Bitmap Data
 	 */
-	static public function cacheBitmap(file:String, ?bitmap:BitmapData = null):FlxGraphic
+	public static function cacheBitmap(file:String, ?bitmap:BitmapData = null):FlxGraphic
 	{
 		if (bitmap == null)
 		{
@@ -164,19 +164,34 @@ class Paths
         return File.getContent(getPath(path));
     }
 
-    public static function model(file:String):String
+    public static function imageTxt(file:String):String
     {
-        var path = 'models/' + file + '.obj';
+        var path = 'images/' + file + '.txt';
 
         if (!fileExists(path))
         {
             debugTrace(path, MISSING_FILE);
-
             return null;
         }
 
-        return getPath(path);
+        return File.getContent(getPath(path));
     }
+    
+    public static function imageJson(file:String):String
+    {
+        var path = 'images/' + file + '.json';
+
+        if (!fileExists(file))
+        {
+            debugTrace(path, MISSING_FILE);
+            return null;
+        }
+
+        return File.getContent(getPath(path));
+    }
+
+    public static function getAtlas(file:String):FlxAtlasFrames
+        return getSparrowAtlas(file) ?? getPackerAtlas(file) ?? getAsepriteAtlas(file) ?? null;
 
     /**
      * Used to load image animations from XML
@@ -192,6 +207,28 @@ class Paths
             return null;
 
         return FlxAtlasFrames.fromSparrow(graphic, xmlContent);
+    }
+    
+    public static function getPackerAtlas(file:String):FlxAtlasFrames
+    {
+        var graphic = image(file);
+        var txtContent = imageTxt(file);
+
+        if (graphic == null || txtContent == null)
+            return null;
+
+        return FlxAtlasFrames.fromSpriteSheetPacker(graphic, txtContent);
+    }
+
+    public static function getAsepriteAtlas(file:String):FlxAtlasFrames
+    {
+        var graphic = image(file);
+        var jsonContent = imageJson(file);
+
+        if (graphic == null || jsonContent == null)
+            return null;
+
+        return FlxAtlasFrames.fromTexturePackerJson(graphic, jsonContent);
     }
 
     /**
