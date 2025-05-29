@@ -2,6 +2,7 @@
 	"stage": "tank",
 	"song": {
 		"player1": "bf",
+		"player3": "gf-tankmen",
 		"notes": [
 			{
 				"sectionNotes": [],
