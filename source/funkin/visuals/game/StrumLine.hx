@@ -175,9 +175,6 @@ class StrumLine extends FlxGroup
                 onNoteMiss(note);
         }
 
-        if (!botplay)
-            useKeys();
-
         for (sustain in sustains)
         {
             if (sustain.state == HELD)
@@ -224,26 +221,15 @@ class StrumLine extends FlxGroup
     function sortByTime(obj1:Note, obj2:Note):Int
         return FlxSort.byValues(FlxSort.ASCENDING, obj1.strumTime, obj2.strumTime);
 
-    function useKeys():Void
+    public function justPressKey(data:Int)
     {
-        var keysJustPressed:Array<Bool> = [
-            Controls.NOTE_LEFT_P,
-            Controls.NOTE_DOWN_P,
-            Controls.NOTE_UP_P,
-            Controls.NOTE_RIGHT_P
-        ];
+        if (botplay)
+            return;
 
-        var keysJustReleased:Array<Bool> = [
-            Controls.NOTE_LEFT_R,
-            Controls.NOTE_DOWN_R,
-            Controls.NOTE_UP_R,
-            Controls.NOTE_RIGHT_R
-        ];
-        
         var pressedData:Int = -1;
 
         for (note in notes)
-            if (keysJustPressed[note.data] && note.state == NEUTRAL && note.ableToHit)
+            if (data == note.data && note.state == NEUTRAL && note.ableToHit)
             {
                 pressedData = note.data;
 
@@ -264,19 +250,24 @@ class StrumLine extends FlxGroup
 
                 break;
             }
+        
+        for (strum in strums)
+            if (data == strum.data && strum.data != pressedData)
+                strum.animation.play('pressed', true);
+    }
+
+    public function releaseKey(data:Int)
+    {
+        if (botplay)
+            return;
 
         for (sustain in sustains)
-            if (keysJustReleased[sustain.data] && sustain.state == HELD /*&& Math.abs(sustain.strumTime - Conductor.songPosition) > 50*/)
+            if (data == sustain.data && sustain.state == HELD /*&& Math.abs(sustain.strumTime - Conductor.songPosition) > 50*/)
                 onNoteMiss(sustain);
         
         for (strum in strums)
-        {
-            if (keysJustPressed[strum.data] && strum.data != pressedData)
-                strum.animation.play('pressed', true);
-
-            if (keysJustReleased[strum.data])
+            if (data == strum.data)
                 strum.animation.play('idle', true);
-        }
     }
 
     public function onNoteMiss(note:Note)
