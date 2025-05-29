@@ -209,11 +209,24 @@ class PlayState extends ScriptState
         callOnScripts('postCreate');
     }
 
+    @:unreflective private var events = SONG.events.copy();
+
     override public function update(elapsed:Float)
     {
         super.update(elapsed);
 
         callOnScripts('onUpdate', [elapsed]);
+            
+        var firsEvent = events[0];
+
+        if (firsEvent != null)
+            if (Conductor.songPosition > firsEvent.time)
+            {
+                for (event in firsEvent.events)
+                    onEvent(event.name, event.first, event.second, firsEvent.time);
+
+                events.shift();
+            }
 
         camGame.zoom = CoolUtil.fpsLerp(camGame.zoom, cameraZoom, 0.05);
         camHUD.zoom = CoolUtil.fpsLerp(camHUD.zoom, hudZoom, 0.05);
@@ -232,6 +245,11 @@ class PlayState extends ScriptState
         }
 
         callOnScripts('postUpdate', [elapsed]);
+    }
+
+    public function onEvent(name:String, first:String, second:String, time:Float)
+    {
+        callOnScripts('onEvent', [name, first, second, time]);
     }
 
     override public function destroy()
@@ -371,7 +389,7 @@ class PlayState extends ScriptState
 
     public function restartSong(skipIn:Bool = true, skipOut:Bool = true)
     {
-        shouldClearMemory = false;
+        this.shouldClearMemory = false;
 
         pauseSong();
         
@@ -394,6 +412,16 @@ class PlayState extends ScriptState
                 for (file in FileSystem.readDirectory(Paths.getPath(folder)))
                     if (file.endsWith('.hx') || file.endsWith('.lua'))
                         loadScript(folder + '/' + file);
+
+        var theEvents:Array<String> = [];
+
+        for (eventArray in PlayState.SONG.events)
+            for (event in eventArray.events)
+                if (!theEvents.contains(event.name))
+                    theEvents.push(event.name);
+        
+        for (event in theEvents)
+            loadScript('events/' + event);
     }
 
     private function cacheAssets()
