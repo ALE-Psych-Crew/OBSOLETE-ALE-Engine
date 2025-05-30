@@ -66,6 +66,11 @@ class Note extends FlxSprite
                 animation.addByPrefix('idle', noteAnim + ' hold end', 24, false);
         }
         
+		animation.onFrameChange.add((name:String, frameNumber:Int, frameIndex:Int) -> {
+            centerOffsets();
+            centerOrigin();
+		});
+
         scale.set(0.7, 0.7);
 
 		animation.play('idle', true);

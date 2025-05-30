@@ -185,6 +185,9 @@ class StrumLine extends FlxGroup
 
             Note.setNotePosition(sustain, strum, strum.direction, 0, strum.height / 2 + (sustain.strumTime - Conductor.songPosition) * scrollSpeed * 0.45 * (ClientPrefs.data.downScroll ? -1 : 1));
 
+            if (sustain.state == HIT)
+                sustain.clipRect = new FlxRect(0, Math.abs(strum.y - sustain.y) / sustain.scale.y + strum.height / 2, sustain.frameWidth, sustain.height);
+
             /*
             var parent = sustain.parentNote;
 
@@ -302,7 +305,7 @@ class StrumLine extends FlxGroup
 
     public function onNoteHit(note:Note, ?rating:Rating)
     {
-        note.state = note.noteLenght > 0 ? HELD : HIT;
+        note.state = HIT;
 
         for (child in note.children)
             child.state = HELD;
@@ -310,7 +313,8 @@ class StrumLine extends FlxGroup
         if (noteHitCallback != null)
             noteHitCallback(note, rating);
 
-        removeNote(note);
+        if (note.noteType == NORMAL)
+            removeNote(note);
         
         strums.members[note.data].animation.play('hit', true);
         

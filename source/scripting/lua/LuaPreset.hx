@@ -21,6 +21,8 @@ class LuaPreset
         new LuaTimer(lua);
         new LuaGroups(lua);
 
+        new LuaControls(lua);
+
         new LuaReflect(lua);
         new LuaFileSystem(lua);
 

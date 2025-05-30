@@ -123,6 +123,10 @@ class Controls
     static function get_RESET():Bool
         return FlxG.keys.anyJustPressed(ClientPrefs.controls.ui.reset);
 
+    public static var MOUSE_WHEEL(get, never):Bool;
+    static function get_MOUSE_WHEEL():Bool
+        return FlxG.mouse.wheel != 0;
+    
     public static var MOUSE_WHEEL_DOWN(get, never):Bool;
     static function get_MOUSE_WHEEL_DOWN():Bool
         return FlxG.mouse.wheel < 0;
@@ -130,10 +134,6 @@ class Controls
     public static var MOUSE_WHEEL_UP(get, never):Bool;
     static function get_MOUSE_WHEEL_UP():Bool
         return FlxG.mouse.wheel > 0;
-
-    public static var MOUSE_WHEEL(get, never):Bool;
-    static function get_MOUSE_WHEEL():Bool
-        return FlxG.mouse.wheel != 0;
 
     public static var MOUSE(get, never):Bool;
     static function get_MOUSE():Bool
