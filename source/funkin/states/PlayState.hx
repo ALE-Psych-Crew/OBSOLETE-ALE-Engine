@@ -1080,7 +1080,7 @@ class PlayState extends ScriptState
                     camPosition.y += char.cameraPosition[1];
                     camPosition.y += STAGE.playersCamera[characters.players.members.indexOf(char)][1];
                 case EXTRA:
-                    camPosition.x = char.getMidpoint().x - 100;
+                    camPosition.x = char.getMidpoint().x;
                     camPosition.x += char.cameraPosition[0];
                     camPosition.x += STAGE.extrasCamera[characters.extras.members.indexOf(char)][0];
                     camPosition.y = char.getMidpoint().y;

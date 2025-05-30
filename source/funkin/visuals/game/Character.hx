@@ -45,6 +45,10 @@ class Character extends FlxSprite
 
         frames = Paths.getAtlas(texture);
 
+        scale.x = scale.y = data.scale;
+
+        updateHitbox();
+
         offsetsMap = new StringMap<Dynamic>();
 
         for (animation in data.animations)
@@ -88,9 +92,7 @@ class Character extends FlxSprite
         else if (animation.exists('danceLeft'))
             animation.play('danceLeft', true);
 
-        scale.x = scale.y = data.scale;
-
-        cameraPosition = [data.cameraPosition[0] - offset.x, data.cameraPosition[0] - offset.y];
+        cameraPosition = [data.cameraPosition[0] - offset.x, data.cameraPosition[1] - offset.y];
 
         antialiasing = ClientPrefs.data.antialiasing && data.antialiasing;
 

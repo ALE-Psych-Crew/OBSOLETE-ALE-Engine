@@ -15,7 +15,7 @@ typedef ALECharacter = {
 
     var barColor:Array<Int>;
 
-    var cameraPosition:Array<Int>;
+    var cameraPosition:Array<Float>;
 
     var scale:Float;
 
