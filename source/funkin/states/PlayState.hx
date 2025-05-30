@@ -424,15 +424,17 @@ class PlayState extends ScriptState
             loadScript('events/' + event);
     }
 
+    public var countdownDirectory:String = 'default';
+
     private function cacheAssets()
     {
         callOnScripts('onCacheAssets');
 
-        for (image in ['ui/alphabet', 'countdown/default'])
+        for (image in ['ui/alphabet', 'countdown/' + countdownDirectory])
             Paths.image(image);
 
         for (name in ['three', 'two', 'one', 'go'])
-            Paths.sound('countdown/default/' + name);
+            Paths.sound('countdown/' + countdownDirectory + '/' + name);
         
         callOnScripts('postCacheAssets');
     }
@@ -666,6 +668,9 @@ class PlayState extends ScriptState
         }
     }
 
+    public var ratingsDirectory:String = 'default';
+    public var ratingsScale:Float = 1;
+
     private function initHUD()
     {
         callOnScripts('onInitHUD');
@@ -674,11 +679,11 @@ class PlayState extends ScriptState
         add(comboGroup);
         
         var popup:FlxSprite = new FlxSprite();
-        popup.frames = Paths.getSparrowAtlas('ratings/default/ratings');
+        popup.frames = Paths.getSparrowAtlas('ratings/' + ratingsDirectory + '/ratings');
         for (anim in ['sick', 'good', 'bad', 'shit'])
             popup.animation.addByPrefix(anim, anim, 1, false);
         popup.alpha = 0;
-        popup.scale.set(0.75, 0.75);
+        popup.scale.x = popup.scale.y = 0.75 * ratingsScale;
         popup.updateHitbox();
         popup.animation.onFrameChange.add(
             function(name:String, frameNumber:Int, frameIndex:Int)
@@ -693,11 +698,11 @@ class PlayState extends ScriptState
         for (i in 0...3)
         {
             var number:FlxSprite = new FlxSprite();
-            number.frames = Paths.getSparrowAtlas('ratings/default/numbers');
+            number.frames = Paths.getSparrowAtlas('ratings/' + ratingsDirectory + '/numbers');
             for (i in 0...10)
                 number.animation.addByPrefix(Std.string(i), Std.string(i), 1, false);
             number.alpha = 0;
-            number.scale.set(0.45, 0.45);
+            number.scale.x = number.scale.y = 0.45 * ratingsScale;
             number.updateHitbox();
             number.animation.onFrameChange.add(
                 function(name:String, frameNumber:Int, frameIndex:Int)
@@ -743,7 +748,8 @@ class PlayState extends ScriptState
         callOnScripts('postInitHUD');
     }
 
-    var countdownSprite:FlxSprite;
+    public var countdownSprite:FlxSprite;
+    public var countdownScale:Float = 1;
 
     function initCountdown()
     {
@@ -762,11 +768,12 @@ class PlayState extends ScriptState
 
                 iconsZoomingFunction();
 
-                FlxG.sound.play(Paths.sound('countdown/default/three'));
+                FlxG.sound.play(Paths.sound('countdown/' + countdownDirectory + '/three'));
 
                 countdownSprite = new FlxSprite();
-                countdownSprite.frames = Paths.getSparrowAtlas('countdown/default');
+                countdownSprite.frames = Paths.getSparrowAtlas('countdown/' + countdownDirectory);
                 countdownSprite.cameras = [camHUD];
+                countdownSprite.antialiasing = ClientPrefs.data.antialiasing;
 
                 for (i in 1...4)
                     countdownSprite.animation.addByPrefix(names[i], names[i]);
@@ -781,7 +788,7 @@ class PlayState extends ScriptState
                     countdownSprite.centerOrigin();
                 });
 
-                countdownSprite.scale.set(0.75, 0.75);
+                countdownSprite.scale.x = countdownSprite.scale.y = 0.75 * countdownScale;
                 
                 countdownSprite.alpha = 0;
 
@@ -799,7 +806,7 @@ class PlayState extends ScriptState
 
                             iconsZoomingFunction();
                             
-                            FlxG.sound.play(Paths.sound('countdown/default/' + names[loop]));
+                            FlxG.sound.play(Paths.sound('countdown/' + countdownDirectory + '/' + names[loop]));
 
                             countdownSprite.animation.play(names[loop]);
 
@@ -808,10 +815,10 @@ class PlayState extends ScriptState
 
                             countdownSprite.alpha = 1;
 
-                            countdownSprite.scale.set(0.75, 0.75);
+                            countdownSprite.scale.x = countdownSprite.scale.y = 0.75 * countdownScale;
 
                             FlxTween.tween(countdownSprite, {alpha: 0}, 45 / Conductor.bpm);
-                            FlxTween.tween(countdownSprite.scale, {x: 0.65, y: 0.65}, 60 / Conductor.bpm, {ease: FlxEase.cubeOut});
+                            FlxTween.tween(countdownSprite.scale, {x: 0.65 * countdownScale, y: 0.65 * countdownScale}, 60 / Conductor.bpm, {ease: FlxEase.cubeOut});
 
                             callOnScripts('postCountdownTick', [loop]);
                         }
@@ -819,7 +826,7 @@ class PlayState extends ScriptState
                     4
                 );
                 
-                callOnScripts('postnitCountdown');
+                callOnScripts('postInitCountdown');
             }
         );
     }

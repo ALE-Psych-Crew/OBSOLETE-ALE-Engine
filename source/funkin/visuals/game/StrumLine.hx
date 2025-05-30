@@ -86,14 +86,14 @@ class StrumLine extends FlxGroup
 
                 var rawLoop:Float = length / Conductor.stepCrochet;
 
-                var susLoop:Int = rawLoop - Math.floor(rawLoop) <= 0.8 ? Math.floor(rawLoop) : Math.round(rawLoop);
+                var susLoop:Int = rawLoop - Math.floor(rawLoop) <= 0.5 ? Math.floor(rawLoop) : Math.round(rawLoop);
 
                 if (susLoop <= 0)
                     susLoop = 1;
 
-                for (i in 0...susLoop + 1)
+                for (i in 0...susLoop)
                 {
-                    var sustain:Note = new Note(chartNote[0] + Conductor.stepCrochet * i, chartNote[1], chartNote[2], chartNote[3], character.type, i == susLoop ? SUSTAIN_END : SUSTAIN);
+                    var sustain:Note = new Note(chartNote[0] + Conductor.stepCrochet * i, chartNote[1], chartNote[2], chartNote[3], character.type, i == susLoop - 1 ? SUSTAIN_END : SUSTAIN);
 
                     unspawnNotes.push(sustain);
 

@@ -16,3 +16,62 @@ function onCreate()
     bg.scale.set(6, 6);
     add(bg);
 }
+
+function onInitHUD()
+{
+    this.ratingsDirectory = 'pixel';
+    this.ratingsScale = 7;
+}
+
+function postInitHUD()
+{
+    for (obj in this.comboGroup)
+        obj.antialiasing = false;
+}
+
+function onInitCountdown()
+{
+    this.countdownDirectory = 'pixel';
+    this.countdownScale = 10;
+}
+
+function postInitCountdown()
+{
+    this.countdownSprite.antialiasing = false;
+}
+
+function postCreate()
+{
+    for (group in this.strumLines.getGroups())
+    {
+        for (strl in group)
+        {
+            for (splash in strl.splashes)
+                splash.alpha = 0;
+
+            for (note in strl.unspawnNotes)
+            {
+                note.texture = 'pixelNote';
+                note.scale.set(6, 6);
+                note.antialiasing = false;
+            }
+
+            for (strum in strl.strums)
+            {
+                strum.texture = 'pixelNote';
+                strum.scale.set(6, 6);
+                strum.updateHitbox();
+                strum.antialiasing = false;
+            }
+        }
+    }
+    
+    this.camGame.pixelPerfectRender = true;
+    this.camHUD.pixelPerfectRender = true;
+}
+
+function onDestroy()
+{
+    this.camGame.pixelPerfectRender = false;
+    this.camHUD.pixelPerfectRender = false;
+}

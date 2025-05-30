@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="numbers.png">
+<SubTexture name="00000" x="0" y="0" width="9" height="12" frameX="0" frameY="0" frameWidth="9" frameHeight="12" />
+<SubTexture name="10000" x="9" y="0" width="9" height="12" frameX="0" frameY="0" frameWidth="9" frameHeight="12" />
+<SubTexture name="20000" x="18" y="0" width="10" height="12" frameX="0" frameY="0" frameWidth="10" frameHeight="12" />
+<SubTexture name="30000" x="0" y="12" width="10" height="12" frameX="0" frameY="0" frameWidth="10" frameHeight="12" />
+<SubTexture name="40000" x="10" y="12" width="10" height="12" frameX="0" frameY="0" frameWidth="10" frameHeight="12" />
+<SubTexture name="50000" x="28" y="0" width="10" height="12" frameX="0" frameY="0" frameWidth="10" frameHeight="12" />
+<SubTexture name="60000" x="28" y="12" width="10" height="12" frameX="0" frameY="0" frameWidth="10" frameHeight="12" />
+<SubTexture name="70000" x="0" y="24" width="9" height="12" frameX="0" frameY="0" frameWidth="9" frameHeight="12" />
+<SubTexture name="80000" x="9" y="24" width="9" height="12" frameX="0" frameY="0" frameWidth="9" frameHeight="12" />
+<SubTexture name="90000" x="18" y="24" width="9" height="12" frameX="0" frameY="0" frameWidth="9" frameHeight="12" />
+</TextureAtlas>
