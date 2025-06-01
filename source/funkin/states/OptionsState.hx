@@ -472,7 +472,15 @@ class OptionsState extends MusicBeatState
 
             if (jsonData.categories is Array)
                 for (cat in cast(jsonData.categories, Array<Dynamic>))
+                {
+                    for (option in cast(cat.options, Array<Dynamic>))
+                    {
+                        if (Reflect.fields(ClientPrefs.custom).contains(option.variable))
+                            Reflect.setField(option, 'initialValue', Reflect.field(ClientPrefs.custom, option.variable));
+                    }
+
                     categories.push(cast cat);
+                }
         }
 
         createPost();

@@ -33,6 +33,13 @@ import sys.thread.Thread;
  */
 class CoolUtil
 {
+	public static var instance:CoolUtil;
+
+	public function new()
+	{
+		instance = this;
+	}
+
 	public static var save:ALESave;
 
 	/**
@@ -40,7 +47,7 @@ class CoolUtil
 	 * @param text Text to capitalize
 	 * @return String
 	 */
-	inline public static function capitalize(text:String):String
+	public static function capitalize(text:String):String
 		return text.charAt(0).toUpperCase() + text.substring(1).toLowerCase();
 
 	/**
@@ -48,7 +55,7 @@ class CoolUtil
 	 * @param color Text to convert
 	 * @return FlxColor
 	 */
-	inline public static function colorFromString(color:String):FlxColor
+	public static function colorFromString(color:String):FlxColor
 	{
 		var hideChars = ~/[\t\n\r]/;
 		var color:String = hideChars.split(color).join('').trim();
@@ -73,7 +80,7 @@ class CoolUtil
 	 * @param sprite Self-explanatory
 	 * @return Int
 	 */
-	inline public static function dominantColor(sprite:FlxSprite):Int
+	public static function dominantColor(sprite:FlxSprite):Int
 	{
 		var countByColor:Map<Int, Int> = new Map<Int, Int>();
 		
@@ -106,7 +113,7 @@ class CoolUtil
 	 * Used to open a page with a URL
 	 * @param site URL
 	 */
-	inline public static function browserLoad(site:String)
+	public static function browserLoad(site:String)
 	{
 		#if linux
 		Sys.command('/usr/bin/xdg-open', [site]);
@@ -120,7 +127,7 @@ class CoolUtil
 	 * @return String
 	 */
 	@:access(flixel.util.FlxSave.validate)
-	inline public static function getSavePath(modSupport:Bool = true):String
+	public static function getSavePath(modSupport:Bool = true):String
 	{
 		final company:String = FlxG.stage.application.meta.get('company');
 		
@@ -406,7 +413,7 @@ class CoolUtil
         FlxG.stage.window.title = CoolVars.data.title;
 	}
 
-    public static inline function switchState(state:NextState, skipTransIn:Bool = null, skipTransOut:Bool = null)
+    public static function switchState(state:NextState, skipTransIn:Bool = null, skipTransOut:Bool = null)
     {
         if (state is CustomState)
         {

@@ -2,6 +2,9 @@ package utils;
 
 import flixel.util.FlxSave;
 
+import core.structures.OptionsCategory;
+import core.structures.OptionsOption;
+
 class ALESave
 {
     public var preferences:FlxSave;
@@ -32,9 +35,25 @@ class ALESave
 		}
 
         if (custom.data.settings != null)
+        {
             ClientPrefs.custom = custom.data.settings;
-        else
+                    
+            if (Paths.fileExists('options.json'))
+            {
+                var jsonData:Dynamic = Json.parse(File.getContent(Paths.getPath('options.json')));
+
+                if (jsonData.categories is Array)
+                    for (cat in cast(jsonData.categories, Array<Dynamic>))
+                        if (cat.options != null)
+                            for (option in cast(cat.options, Array<Dynamic>))
+                                if (Reflect.fields(CoolUtil.save.custom.data.settings).contains(option.variable))
+                                    Reflect.setField(ClientPrefs.custom, option.variable, Reflect.field(CoolUtil.save.custom.data.settings, option.variable));
+                                else
+                                    Reflect.setField(ClientPrefs.custom, option.variable, option.initialValue);
+            }
+        } else {
             ClientPrefs.custom = {};
+        }
 
 		if (ClientPrefs.data.framerate > FlxG.drawFramerate)
 		{
