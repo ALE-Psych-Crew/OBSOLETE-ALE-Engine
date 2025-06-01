@@ -26,7 +26,7 @@ class LuaReflect extends LuaPresetBase
 
         set('setProperty', (tag:String, properties:Dynamic) ->
         {
-            var obj = LuaReflect.parseVariable(lua, tag);
+            var obj = parseVariable(lua, tag);
 
             if (obj != null)
                 applyProps(obj, properties);
@@ -230,7 +230,7 @@ class LuaReflect extends LuaPresetBase
         );
     }
 
-    function applyProps(obj:Dynamic, props:Dynamic)
+    public static function applyProps(obj:Dynamic, props:Dynamic)
     {
         for (key in Reflect.fields(props))
         {
