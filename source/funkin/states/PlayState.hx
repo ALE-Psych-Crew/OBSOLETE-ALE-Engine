@@ -565,6 +565,7 @@ class PlayState extends ScriptState
                         notes.push(note);
 
             var strl:StrumLine = new StrumLine(character, notes, startPosition);
+
             strl.noteHitCallback = function(note:Note, rating:Rating)
             {
                 showRatings(rating);
@@ -589,6 +590,13 @@ class PlayState extends ScriptState
                 callOnHScripts('onNoteHit', [note, rating]);
                 callOnLuaScripts('onNoteHit', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType), Std.string(rating)]);
             }
+
+            strl.postNoteHitCallback = function(note:Note, rating:Rating)
+            {
+                callOnHScripts('postNoteHit', [note, rating]);
+                callOnLuaScripts('postNoteHit', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType), Std.string(rating)]);
+            }
+
             strl.noteMissCallback = function(note:Note)
             {
                 noteCombo = 0;
@@ -606,10 +614,23 @@ class PlayState extends ScriptState
                 callOnHScripts('onNoteMiss', [note]);
                 callOnLuaScripts('onNoteMiss', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType)]);
             }
+
+            strl.postNoteMissCallback = function(note:Note)
+            {
+                callOnHScripts('postNoteMiss', [note]);
+                callOnLuaScripts('postNoteMiss', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType)]);
+            }
+
             strl.noteSpawnCallback = function(note:Note)
             {
                 callOnHScripts('onNoteSpawn', [note]);
                 callOnLuaScripts('onNoteSpawn', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType)]);
+            }
+
+            strl.postNoteSpawnCallback = function(note:Note)
+            {
+                callOnHScripts('postNoteSpawn', [note]);
+                callOnLuaScripts('postNoteSpawn', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType)]);
             }
 
             switch (character.type)

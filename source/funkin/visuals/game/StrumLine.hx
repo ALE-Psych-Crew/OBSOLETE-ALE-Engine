@@ -34,8 +34,13 @@ class StrumLine extends FlxGroup
     public var character:Character;
 
     public var noteHitCallback:(Note, Rating) -> Void;
+    public var postNoteHitCallback:(Note, Rating) -> Void;
+    
     public var noteMissCallback:Note -> Void;
+    public var postNoteMissCallback:Note -> Void;
+
     public var noteSpawnCallback:Note -> Void;
+    public var postNoteSpawnCallback:Note -> Void;
 
     public var voices:Array<FlxSound> = [];
 

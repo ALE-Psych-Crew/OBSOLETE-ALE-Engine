@@ -23,6 +23,15 @@ class LuaPlayState extends LuaPresetBase
             }
         );
 
+        set('playCharacterAnimation', function(type:ALECharacterType, index:Int, name:String, ?force:Bool, ?reversed:Bool, ?frame:Int)
+            {
+                var object:Character = getCharacter(type, index);
+
+                if (object != null)
+                    object.animation.play(name, force, reversed, frame);
+            }
+        );
+
         set('setStrumLineProperty', function(type:ALECharacterType, index:Int, props:Dynamic)
             {
                 var object:StrumLine = getStrumLine(type, index);
