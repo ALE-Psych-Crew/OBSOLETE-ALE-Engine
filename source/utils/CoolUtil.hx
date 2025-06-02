@@ -268,7 +268,7 @@ class CoolUtil
 	 * @param name Song Name
 	 * @param difficulty Song Difficulty
 	 */
-	public static function loadSong(name:String, diff:String, mode:PlayStateMode = FREEPLAY, goToPlayState:Bool = false):Void
+	public static function loadSong(name:String, diff:String, mode:PlayStateMode = FREEPLAY, goToPlayState:Bool = true):Void
 	{
 		var jsonData:Dynamic = {};
 
