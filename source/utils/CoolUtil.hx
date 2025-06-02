@@ -268,7 +268,7 @@ class CoolUtil
 	 * @param name Song Name
 	 * @param difficulty Song Difficulty
 	 */
-	public static function loadSong(name:String, diff:String, mode:PlayStateMode = FREEPLAY):Void
+	public static function loadSong(name:String, diff:String, mode:PlayStateMode = FREEPLAY, goToPlayState:Bool = false):Void
 	{
 		var jsonData:Dynamic = {};
 
@@ -308,7 +308,8 @@ class CoolUtil
 		PlayState.difficulty = diff;
 		PlayState.mode = mode;
 
-		switchState(() -> new PlayState());
+		if (goToPlayState)
+			switchState(() -> new PlayState());
 	}
 
 	public static function loadWeek(names:Array<String>, difficulty:String)
@@ -574,4 +575,26 @@ class CoolUtil
 			}
 		});
 	}
+	
+    public static function getAllDirectoryFiles(path:String):Array<String>
+    {
+        var result:Array<String> = [];
+
+        if (!FileSystem.exists(path))
+            return result;
+
+        var entries = FileSystem.readDirectory(path);
+
+        for (entry in entries)
+        {
+            var fullPath = path + '/' + entry;
+
+            result.push(fullPath);
+
+            if (FileSystem.isDirectory(fullPath))
+                result = result.concat(getAllDirectoryFiles(fullPath));
+        }
+
+        return result;
+    }
 }
