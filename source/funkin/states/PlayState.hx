@@ -1064,7 +1064,7 @@ class PlayState extends ScriptState
 
     private function loadVoice(?prefix:String = ''):FlxSound
     {
-        if (Paths.voices(songRoute, prefix) == null || !SONG.needsVoices)
+        if (Paths.voices(songRoute, prefix, SONG.needsVoices && prefix == '') == null || !SONG.needsVoices)
             return null;
         
         var sound:FlxSound = new FlxSound();

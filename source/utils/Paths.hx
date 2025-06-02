@@ -33,7 +33,7 @@ class Paths
      * @param file File Name
      * @return FlxGraphic
      */
-    public static function image(file:String):FlxGraphic
+    public static function image(file:String, missingPrint:Bool = true):FlxGraphic
     {
         var path = 'images/' + file + '.' + IMAGE_EXT;
 
@@ -52,7 +52,8 @@ class Paths
                 return returnValue;
         }
 
-        debugTrace(path, MISSING_FILE);
+        if (missingPrint)
+            debugTrace(path, MISSING_FILE);
 
         return null;
     }
@@ -94,19 +95,19 @@ class Paths
 		return newGraphic;
 	}
 
-    public static function inst(songRoute:String):Sound
-        return returnSound(songRoute + '/song/Inst');
+    public static function inst(songRoute:String, missingPrint:Bool = true):Sound
+        return returnSound(songRoute + '/song/Inst', missingPrint);
 
-    public static function voices(songRoute:String, ?prefix:String = ''):Sound
-        return returnSound(songRoute + '/song/' + prefix + 'Voices');
+    public static function voices(songRoute:String, ?prefix:String = '', missingPrint:Bool = true):Sound
+        return returnSound(songRoute + '/song/' + prefix + 'Voices', missingPrint);
 
-    public static function music(file:String):Sound
-        return returnSound('music/' + file);
+    public static function music(file:String, missingPrint:Bool = true):Sound
+        return returnSound('music/' + file, missingPrint);
 
-    public static function sound(file:String):Sound
-        return returnSound('sounds/' + file);
+    public static function sound(file:String, missingPrint:Bool = true):Sound
+        return returnSound('sounds/' + file, missingPrint);
 
-    private static function returnSound(file:String):Sound
+    private static function returnSound(file:String, missingPrint:Bool = true):Sound
     {
         var path = file + '.' + SOUND_EXT;
 
@@ -125,7 +126,8 @@ class Paths
                 return returnValue;
         }
 
-        debugTrace(path, MISSING_FILE);
+        if (missingPrint)
+            debugTrace(path, MISSING_FILE);
 
         return null;
     }
@@ -151,57 +153,63 @@ class Paths
      * @param file File Name
      * @return String
      */
-    public static function xml(file:String):String
+    public static function xml(file:String, missingPrint:Bool = true):String
     {
         var path = 'images/' + file + '.xml';
 
         if (!fileExists(path))
         {
-            debugTrace(path, MISSING_FILE);
+            if (missingPrint)
+                debugTrace(path, MISSING_FILE);
+
             return null;
         }
 
         return File.getContent(getPath(path));
     }
 
-    public static function imageTxt(file:String):String
+    public static function imageTxt(file:String, missingPrint:Bool = true):String
     {
         var path = 'images/' + file + '.txt';
 
         if (!fileExists(path))
         {
-            debugTrace(path, MISSING_FILE);
+            if (missingPrint)
+                debugTrace(path, MISSING_FILE);
+
             return null;
         }
 
         return File.getContent(getPath(path));
     }
     
-    public static function imageJson(file:String):String
+    public static function imageJson(file:String, missingPrint:Bool = true):String
     {
         var path = 'images/' + file + '.json';
 
         if (!fileExists(file))
         {
-            debugTrace(path, MISSING_FILE);
+            if (missingPrint)
+                debugTrace(path, MISSING_FILE);
+            
             return null;
         }
 
         return File.getContent(getPath(path));
     }
 
-    public static function getAtlas(file:String):FlxAtlasFrames
-        return getSparrowAtlas(file) ?? getPackerAtlas(file) ?? getAsepriteAtlas(file) ?? null;
+    public static function getAtlas(file:String, missingPrint:Bool = true):FlxAtlasFrames
+        return getSparrowAtlas(file, missingPrint) ?? getPackerAtlas(file, missingPrint) ?? getAsepriteAtlas(file, missingPrint) ?? null;
 
     /**
      * Used to load image animations from XML
      * @param file File Name
      * @return FlxAtlasFrames
      */
-    public static function getSparrowAtlas(file:String):FlxAtlasFrames
+    public static function getSparrowAtlas(file:String, missingPrint:Bool = true):FlxAtlasFrames
     {
-        var graphic = image(file);
-        var xmlContent = xml(file);
+        var graphic = image(file, missingPrint);
+        var xmlContent = xml(file, missingPrint);
 
         if (graphic == null || xmlContent == null)
             return null;
@@ -209,10 +217,10 @@ class Paths
         return FlxAtlasFrames.fromSparrow(graphic, xmlContent);
     }
     
-    public static function getPackerAtlas(file:String):FlxAtlasFrames
+    public static function getPackerAtlas(file:String, missingPrint:Bool = true):FlxAtlasFrames
     {
-        var graphic = image(file);
-        var txtContent = imageTxt(file);
+        var graphic = image(file, missingPrint);
+        var txtContent = imageTxt(file, missingPrint);
 
         if (graphic == null || txtContent == null)
             return null;
@@ -220,10 +228,10 @@ class Paths
         return FlxAtlasFrames.fromSpriteSheetPacker(graphic, txtContent);
     }
 
-    public static function getAsepriteAtlas(file:String):FlxAtlasFrames
+    public static function getAsepriteAtlas(file:String, missingPrint:Bool = true):FlxAtlasFrames
     {
-        var graphic = image(file);
-        var jsonContent = imageJson(file);
+        var graphic = image(file, missingPrint);
+        var jsonContent = imageJson(file, missingPrint);
 
         if (graphic == null || jsonContent == null)
             return null;
@@ -236,13 +244,15 @@ class Paths
      * @param file File Name
      * @return String
      */
-    public static function font(file:String):String
+    public static function font(file:String, missingPrint:Bool = true):String
     {
         var path = 'fonts/' + file;
 
         if (!fileExists(path))
         {
-            debugTrace(path, MISSING_FILE);
+            if (missingPrint)
+                debugTrace(path, MISSING_FILE);
+
             return null;
         }
 
@@ -254,7 +264,7 @@ class Paths
      * @param file File Path
      * @return String
      */
-    public static inline function getPath(file:String):String
+    public static inline function getPath(file:String, missingPrint:Bool = true):String
     {
         #if MODS_ALLOWED
         if (fileExists(file, MODS))
@@ -264,7 +274,8 @@ class Paths
         if (fileExists(file, ASSETS))
             return 'assets/' + file;
 
-        debugTrace(file, MISSING_FILE);
+        if (missingPrint)
+            debugTrace(file, MISSING_FILE);
 
         return null;
     }
