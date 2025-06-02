@@ -280,6 +280,9 @@ class StrumLine extends FlxGroup
 
     public function onNoteMiss(note:Note)
     {
+        if (note.ignorable)
+            return;
+
         note.state = LOST;
 
         if (noteMissCallback != null)
@@ -328,7 +331,7 @@ class StrumLine extends FlxGroup
         
         character.idleTimer = 0;
         
-        if (note.noteType == NORMAL)    
+        if (true)    
             character.animation.play('sing' + switch (note.data)
                 {
                     case 0:

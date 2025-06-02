@@ -32,5 +32,7 @@ class LuaPreset
         new LuaPaths(lua);
 
         new LuaDiscord(lua);
+
+        lua.set('this', FlxG.state);
     }
 }

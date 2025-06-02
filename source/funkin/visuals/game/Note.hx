@@ -34,6 +34,8 @@ class Note extends FlxSprite
 
 	public var characterIndex:Int;
 	public var selected:Bool = false;
+	
+	public var ignorable:Bool = false;
 
 	public var ableToHit(get, never):Bool;
 	function get_ableToHit():Bool

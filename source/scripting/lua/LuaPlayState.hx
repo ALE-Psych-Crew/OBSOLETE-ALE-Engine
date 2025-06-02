@@ -23,6 +23,8 @@ class LuaPlayState extends LuaPresetBase
             }
         );
 
+        //set('setNoteProperty')
+
         set('playCharacterAnimation', function(type:ALECharacterType, index:Int, name:String, ?force:Bool, ?reversed:Bool, ?frame:Int)
             {
                 var object:Character = getCharacter(type, index);
