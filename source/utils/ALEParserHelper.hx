@@ -46,7 +46,7 @@ class ALEParserHelper
 		{
 			var newSection:ALESection = {
 				notes: [],
-				focus: section.mustHitSection ? 2 : 1,
+				focus: section.gfSection ? 0 : section.mustHitSection ? 2 : 1,
 
                 bpm: section.bpm == null ? formattedJson.bpm : section.bpm,
                 changeBPM: section.changeBPM == null ? false : section.changeBPM
@@ -59,8 +59,8 @@ class ALEParserHelper
 						note[0],
 						note[1] % 4,
 						note[2],
-						note[3],
-						(section.mustHitSection && note[1] <= 3) || (!section.mustHitSection && note[1] >= 4) ? 2 : 1
+						note[3] == 'GF Sing' ? null : note[3],
+						(note[3] == 'GF Sing' || (section.gfSection && note[1] <= 3)) ? 0 : (section.mustHitSection && note[1] <= 3) || (!section.mustHitSection && note[1] >= 4) ? 2 : 1
 					]
 				);
 			}
