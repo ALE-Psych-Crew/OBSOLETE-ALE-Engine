@@ -6,6 +6,8 @@ import core.enums.ALECharacterType;
 
 import funkin.visuals.game.*;
 
+import flixel.FlxObject;
+
 class LuaPlayState extends LuaPresetBase
 {
     var game:PlayState = PlayState.instance;
@@ -22,8 +24,6 @@ class LuaPlayState extends LuaPresetBase
                     LuaReflect.applyProps(object, props);
             }
         );
-
-        //set('setNoteProperty')
 
         set('playCharacterAnimation', function(type:ALECharacterType, index:Int, name:String, ?force:Bool, ?reversed:Bool, ?frame:Int)
             {
@@ -51,6 +51,18 @@ class LuaPlayState extends LuaPresetBase
                     LuaReflect.applyProps(object, props);
             }
         );
+
+        /*
+        set('addBehindExtras', function(tag:String)
+            {
+                if (tagIs(tag, FlxObject))
+                {
+                    if (type == STATE)
+                        ScriptState.instance.insert(ScriptState.instance.members.indexOf(), getTag(tag));
+                }
+            }
+        );
+        */
     }
 
     function getCharacter(type:ALECharacterType, index:Int):Character

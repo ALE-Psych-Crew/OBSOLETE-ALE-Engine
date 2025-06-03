@@ -490,8 +490,6 @@ class PlayState extends ScriptState
     {
         callOnScripts('onInitCharacters');
 
-        add(characters);
-
         for (character in SONG.characters)
         {
             var type:ALECharacterType = cast character[1];
@@ -543,6 +541,8 @@ class PlayState extends ScriptState
                 case EXTRA:
                     characters.extras.add(object);
             }
+
+            add(object);
         }
 
         callOnScripts('postInitCharacters');
@@ -551,9 +551,6 @@ class PlayState extends ScriptState
     private function initStrums()
     {
         callOnScripts('onInitStrums');
-        
-        add(strumLines);
-        strumLines.cameras = [camHUD];
         
         for (index => character in charactersArray)
         {
@@ -565,7 +562,8 @@ class PlayState extends ScriptState
                         notes.push(note);
 
             var strl:StrumLine = new StrumLine(character, notes, startPosition);
-
+            strl.cameras = [camHUD];
+        
             strl.noteHitCallback = function(note:Note, rating:Rating)
             {
                 showRatings(rating);
@@ -642,6 +640,8 @@ class PlayState extends ScriptState
                 case EXTRA:
                     strumLines.extras.add(strl);
             }
+
+            add(strl);
         }
         
         callOnScripts('postInitStrums');
@@ -1080,6 +1080,8 @@ class PlayState extends ScriptState
 
     private function moveCamera(section:Int)
     {
+        callOnScripts('onCameraMove', [SONG.sections[section].focus]);
+
         if (SONG.sections[section] != null)
         {
             var char:Character = charactersArray[SONG.sections[section].focus];
@@ -1109,6 +1111,8 @@ class PlayState extends ScriptState
                     camPosition.y += STAGE.extrasCamera[characters.extras.members.indexOf(char)][1];
             }
         }
+        
+        callOnScripts('postCameraMove', [SONG.sections[section].focus]);
     }
     
     override public function loadHScript(path:String)
