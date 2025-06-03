@@ -29,8 +29,6 @@ class LuaCallbackHandler
                 {
                     for (script in ScriptState.instance.luaScripts)
                     {
-                        trace(script);
-
                         if (script != LuaScript.lastCalledScript && script != null && script.lua == lua)
                         {
                             callFunc = script.callbacks.get(functionName);

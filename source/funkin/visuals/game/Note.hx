@@ -37,6 +37,8 @@ class Note extends FlxSprite
 	
 	public var ignorable:Bool = false;
 
+	public var character:Character;
+
 	public var ableToHit(get, never):Bool;
 	function get_ableToHit():Bool
 		return state == NEUTRAL && Math.abs(strumTime - Conductor.songPosition) < 175;

@@ -16,6 +16,7 @@ import flixel.system.macros.FlxMacroUtil;
 import core.enums.ScriptType;
 
 import flixel.ui.FlxButton;
+import flixel.FlxObject;
 
 @:access(core.backend.ScriptState)
 @:access(core.backend.ScriptSubState)
@@ -97,7 +98,27 @@ class HScript extends SScript
 				'insert' => FlxG.state.insert,
 				'openSubState' => FlxG.state.openSubState,
 				'CancelSuperFunction' => ScriptState.instance.CancelSuperFunction,
-				'debugPrint' => ScriptState.instance.debugPrint
+				'debugPrint' => ScriptState.instance.debugPrint,
+				'getObjectOrder' => function(obj:FlxObject)
+				{
+					if (type == STATE)
+						ScriptState.instance.members.indexOf(obj);
+					else
+						ScriptSubState.instance.members.indexOf(obj);
+
+					return null;
+				},
+				'setObjectOrder' => function(obj:FlxObject, index:Int)
+				{
+					if (type == STATE)
+					{
+						ScriptState.instance.remove(obj);
+						ScriptState.instance.insert(index, obj);
+					} else {
+						ScriptSubState.instance.remove(obj);
+						ScriptSubState.instance.insert(index, obj);
+					}
+				}
 			];
 		} else if (type == SUBSTATE) {
 			instanceVariables = [

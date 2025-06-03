@@ -82,6 +82,7 @@ class StrumLine extends FlxGroup
                 continue;
 
             var note:Note = new Note(chartNote[0], chartNote[1], chartNote[2], chartNote[3], character.type, NORMAL);
+            note.character = character;
 
             var length:Float = chartNote[2];
 
@@ -99,6 +100,7 @@ class StrumLine extends FlxGroup
                 for (i in 0...susLoop)
                 {
                     var sustain:Note = new Note(chartNote[0] + Conductor.stepCrochet * i, chartNote[1], chartNote[2], chartNote[3], character.type, i == susLoop - 1 ? SUSTAIN_END : SUSTAIN);
+                    sustain.character = character;
 
                     unspawnNotes.push(sustain);
 
@@ -277,6 +279,9 @@ class StrumLine extends FlxGroup
 
     public function onNoteMiss(note:Note)
     {
+        if (noteMissCallback != null)
+            noteMissCallback(note);
+
         for (sound in voices)
             if (sound.volume != 0)
                 sound.volume = 0;
@@ -284,10 +289,12 @@ class StrumLine extends FlxGroup
         note.state = LOST;
 
         if (note.ignorable || note.noteType != NORMAL)
-            return;
+        {
+            if (postNoteMissCallback != null)
+                postNoteMissCallback(note);
 
-        if (noteMissCallback != null)
-            noteMissCallback(note);
+            return;
+        }
 
         character.idleTimer = 0;
 
@@ -306,17 +313,20 @@ class StrumLine extends FlxGroup
             }) + 'miss',
             true
         );
+
+        if (postNoteMissCallback != null)
+            postNoteMissCallback(note);
     }
 
     public function onNoteHit(note:Note, ?rating:Rating)
     {
+        if (noteHitCallback != null)
+            noteHitCallback(note, rating);
+        
         note.state = HIT;
 
         for (child in note.children)
             child.state = HELD;
-
-        if (noteHitCallback != null)
-            noteHitCallback(note, rating);
 
         removeNote(note);
         
@@ -347,6 +357,9 @@ class StrumLine extends FlxGroup
         for (sound in voices)
             if (sound.volume != 1)
                 sound.volume = 1;
+
+        if (postNoteHitCallback != null)
+            postNoteHitCallback(note, rating);
     }
 
     public function addNote(note:Note)

@@ -7,8 +7,6 @@ class LuaPreset
 {
     public function new(lua:LuaScript)
     {
-        new LuaGlobal(lua);
-
         new LuaCamera(lua);
         new LuaColor(lua);
         new LuaSprite(lua);
@@ -20,6 +18,9 @@ class LuaPreset
         new LuaMouse(lua);
         new LuaTimer(lua);
         new LuaGroups(lua);
+        new LuaState(lua);
+        new LuaObject(lua);
+        new LuaShader(lua);
 
         new LuaControls(lua);
 

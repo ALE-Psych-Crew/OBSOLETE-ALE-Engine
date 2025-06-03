@@ -5,6 +5,8 @@ import flixel.util.FlxGradient;
 import funkin.visuals.objects.Alphabet;
 import funkin.visuals.objects.TypedAlphabet;
 
+import scripting.lua.flixel.LuaCamera;
+
 class LuaSprite extends LuaPresetBase
 {
     public function new(lua:LuaScript)
