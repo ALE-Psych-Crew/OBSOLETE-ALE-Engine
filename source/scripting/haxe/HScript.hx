@@ -18,6 +18,11 @@ import core.enums.ScriptType;
 import flixel.ui.FlxButton;
 import flixel.FlxObject;
 
+import ale.ui.ALEButton;
+import ale.ui.ALETaskBar;
+import ale.ui.ALEUIUtils;
+import ale.ui.ALEWindow;
+
 @:access(core.backend.ScriptState)
 @:access(core.backend.ScriptSubState)
 class HScript extends SScript
