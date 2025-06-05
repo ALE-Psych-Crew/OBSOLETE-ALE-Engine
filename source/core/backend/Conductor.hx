@@ -12,15 +12,15 @@ class Conductor
 
     public static var crochet(get, never):Float;
     static function get_crochet()
-        return (60 / bpm) * 1000;
+        return 60 / bpm * 1000;
 
     public static var stepCrochet(get, never):Float;
     static function get_stepCrochet():Float
-        return crochet / 4;
+        return crochet / stepsPerBeat;
 
     public static var sectionCrochet(get, never):Float;
     static function get_sectionCrochet():Float
-        return crochet * 4;
+        return crochet * beatsPerSection;
 
     public static var songLength(get, never):Float;
     private static function get_songLength():Float
@@ -36,9 +36,9 @@ class Conductor
 
     public static var curBeat(get, never):Int;
     private static function get_curBeat():Int
-        return Math.floor(curStep / 4);
+        return Math.floor(curStep / stepsPerBeat);
 
     public static var curSection(get, never):Int;
     private static function get_curSection():Int
-        return Math.floor(curBeat / 4);
+        return Math.floor(curBeat / beatsPerSection);
 }

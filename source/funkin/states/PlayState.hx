@@ -586,13 +586,13 @@ class PlayState extends ScriptState
                 }
                 
                 callOnHScripts('onNoteHit', [note, rating]);
-                callOnLuaScripts('onNoteHit', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType), Std.string(rating)]);
+                callOnLuaScripts('onNoteHit', [note.noteVariant, note.data, note.strumTime, note.noteLength, Std.string(note.type), Std.string(note.noteType), Std.string(rating)]);
             }
 
             strl.postNoteHitCallback = function(note:Note, rating:Rating)
             {
                 callOnHScripts('postNoteHit', [note, rating]);
-                callOnLuaScripts('postNoteHit', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType), Std.string(rating)]);
+                callOnLuaScripts('postNoteHit', [note.noteVariant, note.data, note.strumTime, note.noteLength, Std.string(note.type), Std.string(note.noteType), Std.string(rating)]);
             }
 
             strl.noteMissCallback = function(note:Note)
@@ -610,25 +610,25 @@ class PlayState extends ScriptState
                 }
                 
                 callOnHScripts('onNoteMiss', [note]);
-                callOnLuaScripts('onNoteMiss', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType)]);
+                callOnLuaScripts('onNoteMiss', [note.noteVariant, note.data, note.strumTime, note.noteLength, Std.string(note.type), Std.string(note.noteType)]);
             }
 
             strl.postNoteMissCallback = function(note:Note)
             {
                 callOnHScripts('postNoteMiss', [note]);
-                callOnLuaScripts('postNoteMiss', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType)]);
+                callOnLuaScripts('postNoteMiss', [note.noteVariant, note.data, note.strumTime, note.noteLength, Std.string(note.type), Std.string(note.noteType)]);
             }
 
             strl.noteSpawnCallback = function(note:Note)
             {
                 callOnHScripts('onNoteSpawn', [note]);
-                callOnLuaScripts('onNoteSpawn', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType)]);
+                callOnLuaScripts('onNoteSpawn', [note.noteVariant, note.data, note.strumTime, note.noteLength, Std.string(note.type), Std.string(note.noteType)]);
             }
 
             strl.postNoteSpawnCallback = function(note:Note)
             {
                 callOnHScripts('postNoteSpawn', [note]);
-                callOnLuaScripts('postNoteSpawn', [note.noteVariant, note.data, note.strumTime, note.noteLenght, Std.string(note.type), Std.string(note.noteType)]);
+                callOnLuaScripts('postNoteSpawn', [note.noteVariant, note.data, note.strumTime, note.noteLength, Std.string(note.type), Std.string(note.noteType)]);
             }
 
             switch (character.type)

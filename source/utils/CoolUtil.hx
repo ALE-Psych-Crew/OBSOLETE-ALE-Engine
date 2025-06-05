@@ -343,7 +343,7 @@ class CoolUtil
 
 	public static function adjustColorBrightness(color:FlxColor, factor:Float):FlxColor
 	{
-		factor = factor / 100;
+		factor /= 100;
 	
 		var r = (color >> 16) & 0xFF;
 		var g = (color >> 8) & 0xFF;
@@ -597,4 +597,13 @@ class CoolUtil
 
         return result;
     }
+
+	public static function snapNumber(og:Float, mod:Int):Float
+		return Math.floor(og / mod) * mod;
+	
+	public static function colorFromArray(arr:Array<Int>):Int
+    	return FlxColor.fromRGB(arr[0], arr[1], arr[2]);
+
+	public static function objectOverlaps(obj1:FlxSprite, obj2:FlxSprite)
+		return obj1.x + obj1.width >= obj2.x && obj1.y + obj1.height >= obj2.y && obj1.x <= obj2.x + obj2.width && obj1.y <= obj2.y + obj2.height;
 }
