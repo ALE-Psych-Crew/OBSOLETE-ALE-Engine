@@ -148,7 +148,7 @@ var spawnTimes:Array<Array<Float>> = [];
 
 function createRunningTankmans()
 {
-	for (note in this.strumLines.extras.members[0].chartNotes)
+	for (note in this.strumLines.extras[0].chartNotes)
 		if (FlxG.random.bool(16) && note[0] > 1000)
 			spawnTimes.push([note[0], note[1] % 2 == 0]);
 }

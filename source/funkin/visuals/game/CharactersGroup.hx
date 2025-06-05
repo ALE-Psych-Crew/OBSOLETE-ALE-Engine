@@ -1,25 +1,13 @@
 package funkin.visuals.game;
 
-class CharactersGroup extends FlxTypedGroup<FlxTypedGroup<Character>>
+class CharactersGroup
 {
-    public var extras:FlxTypedGroup<Character>;
-    public var opponents:FlxTypedGroup<Character>;
-    public var players:FlxTypedGroup<Character>;
+    public var extras:Array<Character> = [];
+    public var opponents:Array<Character> = [];
+    public var players:Array<Character> = [];
 
-    override public function new()
-    {
-        super();
+    public function new() {}
 
-        extras = new FlxTypedGroup<Character>();
-        add(extras);
-
-        opponents = new FlxTypedGroup<Character>();
-        add(opponents);
-
-        players = new FlxTypedGroup<Character>();
-        add(players);
-    }
-
-    public function getGroups():Array<FlxTypedGroup<Character>>
+    public function getGroups():Array<Array<Character>>
         return [extras, opponents, players];
 }

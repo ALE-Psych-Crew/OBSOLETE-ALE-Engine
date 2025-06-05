@@ -58,7 +58,7 @@ class LuaPlayState extends LuaPresetBase
                 if (tagIs(tag, FlxObject))
                 {
                     if (type == STATE)
-                        ScriptState.instance.insert(ScriptState.instance.members.indexOf(), getTag(tag));
+                        ScriptState.instance.insert(ScriptState.instance.indexOf(), getTag(tag));
                 }
             }
         );
@@ -70,11 +70,11 @@ class LuaPlayState extends LuaPresetBase
         return switch(type)
             {
                 case PLAYER:
-                    game.characters.players.members[index];
+                    game.characters.players[index];
                 case OPPONENT:
-                    game.characters.opponents.members[index];
+                    game.characters.opponents[index];
                 case EXTRA:
-                    game.characters.extras.members[index];
+                    game.characters.extras[index];
             }
     }
 
@@ -83,11 +83,11 @@ class LuaPlayState extends LuaPresetBase
         return switch(type)
             {
                 case PLAYER:
-                    game.strumLines.players.members[index];
+                    game.strumLines.players[index];
                 case OPPONENT:
-                    game.strumLines.opponents.members[index];
+                    game.strumLines.opponents[index];
                 case EXTRA:
-                    game.strumLines.extras.members[index];
+                    game.strumLines.extras[index];
             }
     }
 
@@ -96,11 +96,11 @@ class LuaPlayState extends LuaPresetBase
         return switch(type)
             {
                 case PLAYER:
-                    game.strumLines.players.members[groupIndex].strums.members[index];
+                    game.strumLines.players[groupIndex].strums.members[index];
                 case OPPONENT:
-                    game.strumLines.opponents.members[groupIndex].strums.members[index];
+                    game.strumLines.opponents[groupIndex].strums.members[index];
                 case EXTRA:
-                    game.strumLines.extras.members[groupIndex].strums.members[index];
+                    game.strumLines.extras[groupIndex].strums.members[index];
             }
     }
 }

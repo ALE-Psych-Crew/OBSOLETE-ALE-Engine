@@ -44,7 +44,7 @@ class ChartNote extends FlxSprite
 
         if (sustain != null)
         {
-            sustain.scale.y = msToPixels(length, CELL_SIZE * Conductor.stepsPerBeat * Conductor.beatsPerSection);
+            sustain.scale.y = length / Conductor.sectionCrochet * CELL_SIZE * Conductor.stepsPerBeat * Conductor.beatsPerSection;
             sustain.updateHitbox();
 
             updateSustain();
@@ -52,9 +52,6 @@ class ChartNote extends FlxSprite
 
         return length;
     }
-
-    function msToPixels(ms:Float, theHeight:Float):Float
-        return ms / Conductor.sectionCrochet * theHeight;
 
     public var data(default, set):Int;
     function set_data(value:Int):Int
@@ -115,10 +112,13 @@ class ChartNote extends FlxSprite
 		shaderRef = new RGBShaderReference(this, rgbPalette);
 
         sustain = new FlxSprite().makeGraphic(Math.floor(CELL_SIZE / 6), 1);
+        updateSustain();
         
         this.length = length;
 
         this.selected = false;
+
+        antialiasing = ClientPrefs.data.antialiasing;
     }
 
     override function update(elapsed:Float)
@@ -139,6 +139,9 @@ class ChartNote extends FlxSprite
 
     public function updateSustain()
     {
+        if (sustain == null)
+            return;
+
         sustain.x = x + width / 2 - sustain.width / 2;
         sustain.y = y + height / 2;
         sustain.alpha = alpha * 0.5;

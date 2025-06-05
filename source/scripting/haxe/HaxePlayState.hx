@@ -13,11 +13,11 @@ class HaxePlayState
                 return switch(type)
                 {
                     case PLAYER:
-                        PlayState.instance.characters.players.members[index];
+                        PlayState.instance.characters.players[index];
                     case OPPONENT:
-                        PlayState.instance.characters.opponents.members[index];
+                        PlayState.instance.characters.opponents[index];
                     case EXTRA:
-                        PlayState.instance.characters.extras.members[index];
+                        PlayState.instance.characters.extras[index];
                 }
             }
         );
@@ -27,11 +27,11 @@ class HaxePlayState
                 return switch(type)
                 {
                     case PLAYER:
-                        PlayState.instance.strumLines.players.members[groupIndex].strums.members[strumIndex];
+                        PlayState.instance.strumLines.players[groupIndex].strums.members[strumIndex];
                     case OPPONENT:
-                        PlayState.instance.strumLines.opponents.members[groupIndex].strums.members[strumIndex];
+                        PlayState.instance.strumLines.opponents[groupIndex].strums.members[strumIndex];
                     case EXTRA:
-                        PlayState.instance.strumLines.extras.members[groupIndex].strums.members[strumIndex];
+                        PlayState.instance.strumLines.extras[groupIndex].strums.members[strumIndex];
                 }
             } 
         );

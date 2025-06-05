@@ -215,6 +215,8 @@ class PlayState extends ScriptState
     {
         super.update(elapsed);
 
+        strumLines.update();
+
         callOnScripts('onUpdate', [elapsed]);
             
         var firsEvent = events[0];
@@ -498,20 +500,20 @@ class PlayState extends ScriptState
                 switch (type)
                 {
                     case OPPONENT:
-                        STAGE.opponentsPosition[characters.opponents.members.length][0];
+                        STAGE.opponentsPosition[characters.opponents.length][0];
                     case PLAYER:
-                        STAGE.playersPosition[characters.players.members.length][0];
+                        STAGE.playersPosition[characters.players.length][0];
                     case EXTRA:
-                        STAGE.extrasPosition[characters.extras.members.length][0];
+                        STAGE.extrasPosition[characters.extras.length][0];
                 },
                 switch (type)
                 {
                     case OPPONENT:
-                        STAGE.opponentsPosition[characters.opponents.members.length][1];
+                        STAGE.opponentsPosition[characters.opponents.length][1];
                     case PLAYER:
-                        STAGE.playersPosition[characters.players.members.length][1];
+                        STAGE.playersPosition[characters.players.length][1];
                     case EXTRA:
-                        STAGE.extrasPosition[characters.extras.members.length][1];
+                        STAGE.extrasPosition[characters.extras.length][1];
                 },
                 character[0], cast character[1]
             );
@@ -523,23 +525,23 @@ class PlayState extends ScriptState
             switch (type)
             {
                 case PLAYER:
-                    if (characters.players.members.length <= 0)
+                    if (characters.players.length <= 0)
                     {
                         playerIconName = object.data.icon;
                         playerColor = FlxColor.fromRGB(objectColor[0], objectColor[1], objectColor[2]);
                     }
 
-                    characters.players.add(object);
+                    characters.players.push(object);
                 case OPPONENT:
-                    if (characters.opponents.members.length <= 0)
+                    if (characters.opponents.length <= 0)
                     {
                         opponentIconName = object.data.icon;
                         opponentColor = FlxColor.fromRGB(objectColor[0], objectColor[1], objectColor[2]);
                     }
 
-                    characters.opponents.add(object);
+                    characters.opponents.push(object);
                 case EXTRA:
-                    characters.extras.add(object);
+                    characters.extras.push(object);
             }
 
             add(object);
@@ -634,11 +636,11 @@ class PlayState extends ScriptState
             switch (character.type)
             {
                 case PLAYER:
-                    strumLines.players.add(strl);
+                    strumLines.players.push(strl);
                 case OPPONENT:
-                    strumLines.opponents.add(strl);
+                    strumLines.opponents.push(strl);
                 case EXTRA:
-                    strumLines.extras.add(strl);
+                    strumLines.extras.push(strl);
             }
 
             add(strl);
@@ -1086,29 +1088,32 @@ class PlayState extends ScriptState
         {
             var char:Character = charactersArray[SONG.sections[section].focus];
     
-            switch (char.type)
+            if (char != null)
             {
-                case OPPONENT:
-                    camPosition.x = char.getMidpoint().x + 150;
-                    camPosition.x += char.cameraPosition[0];
-                    camPosition.x += STAGE.opponentsCamera[characters.opponents.members.indexOf(char)][0];
-                    camPosition.y = char.getMidpoint().y - 100;
-                    camPosition.y += char.cameraPosition[1];
-                    camPosition.y += STAGE.opponentsCamera[characters.opponents.members.indexOf(char)][1];
-                case PLAYER:
-                    camPosition.x = char.getMidpoint().x - 100;
-                    camPosition.x -= char.cameraPosition[0];
-                    camPosition.x += STAGE.playersCamera[characters.players.members.indexOf(char)][0];
-                    camPosition.y = char.getMidpoint().y - 100;
-                    camPosition.y += char.cameraPosition[1];
-                    camPosition.y += STAGE.playersCamera[characters.players.members.indexOf(char)][1];
-                case EXTRA:
-                    camPosition.x = char.getMidpoint().x;
-                    camPosition.x += char.cameraPosition[0];
-                    camPosition.x += STAGE.extrasCamera[characters.extras.members.indexOf(char)][0];
-                    camPosition.y = char.getMidpoint().y;
-                    camPosition.y += char.cameraPosition[1];
-                    camPosition.y += STAGE.extrasCamera[characters.extras.members.indexOf(char)][1];
+                switch (char.type)
+                {
+                    case OPPONENT:
+                        camPosition.x = char.getMidpoint().x + 150;
+                        camPosition.x += char.cameraPosition[0];
+                        camPosition.x += STAGE.opponentsCamera[characters.opponents.indexOf(char)][0];
+                        camPosition.y = char.getMidpoint().y - 100;
+                        camPosition.y += char.cameraPosition[1];
+                        camPosition.y += STAGE.opponentsCamera[characters.opponents.indexOf(char)][1];
+                    case PLAYER:
+                        camPosition.x = char.getMidpoint().x - 100;
+                        camPosition.x -= char.cameraPosition[0];
+                        camPosition.x += STAGE.playersCamera[characters.players.indexOf(char)][0];
+                        camPosition.y = char.getMidpoint().y - 100;
+                        camPosition.y += char.cameraPosition[1];
+                        camPosition.y += STAGE.playersCamera[characters.players.indexOf(char)][1];
+                    case EXTRA:
+                        camPosition.x = char.getMidpoint().x;
+                        camPosition.x += char.cameraPosition[0];
+                        camPosition.x += STAGE.extrasCamera[characters.extras.indexOf(char)][0];
+                        camPosition.y = char.getMidpoint().y;
+                        camPosition.y += char.cameraPosition[1];
+                        camPosition.y += STAGE.extrasCamera[characters.extras.indexOf(char)][1];
+                }
             }
         }
         

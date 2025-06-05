@@ -1,32 +1,18 @@
 package funkin.visuals.game;
 
-class StrumLinesGroup extends FlxTypedGroup<FlxTypedGroup<StrumLine>>
+class StrumLinesGroup
 {
-    public var extras:FlxTypedGroup<StrumLine>;
-    public var opponents:FlxTypedGroup<StrumLine>;
-    public var players:FlxTypedGroup<StrumLine>;
+    public var extras:Array<StrumLine> = [];
+    public var opponents:Array<StrumLine> = [];
+    public var players:Array<StrumLine> = [];
 
-    override public function new()
-    {
-        super();
-
-        extras = new FlxTypedGroup<StrumLine>();
-        add(extras);
-
-        opponents = new FlxTypedGroup<StrumLine>();
-        add(opponents);
-
-        players = new FlxTypedGroup<StrumLine>();
-        add(players);
-    }
+    public function new() {};
 
     public function getGroups()
         return [extras, players, opponents];
 
-    override function update(elapsed:Float)
+    public function update()
     {
-        super.update(elapsed);
-        
         if (Controls.NOTE_LEFT_P)
             forEachStrumLine((strum:StrumLine) -> { strum.justPressKey(0); });
 
