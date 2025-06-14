@@ -1,5 +1,6 @@
 package core.backend;
 
+#if cpp
 import hxdiscord_rpc.Discord;
 import hxdiscord_rpc.Types;
 
@@ -119,3 +120,27 @@ class DiscordRPC
 		debugTrace(data, CUSTOM, 'DISCORD', 0xFF5865F2);
 	}
 }
+#else
+class DiscordRPC
+{
+    public static var initialized:Bool = false;
+
+    private static var presence:Dynamic = null;
+
+    public static function initialize(id:String) {}
+
+    public static function shutdown() {}
+
+    public static function changePresence(details:String, ?state:String, ?largeImage:String, ?smallImage:String, ?usesTime:Bool = false, ?endTime:Float = 0) {}
+
+    public static function updatePresence() {}
+
+    private static function onReady(request:Dynamic):Void {}
+
+	private static function onDisconnected(errorCode:Int, message:Dynamic):Void {}
+
+	private static function onError(errorCode:Int, message:Dynamic):Void {}
+
+	private static function dcTrace(data:Dynamic) {}
+}
+#end

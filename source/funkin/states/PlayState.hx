@@ -199,7 +199,7 @@ class PlayState extends ScriptState
 
         initHUD();
 
-        if (SONG.sections[0] != null)
+        if (SONG.sections[0] != null && SONG.sections[0].changeBPM)
             Conductor.bpm = SONG.sections[0].bpm;
         
         initCountdown();
@@ -1082,7 +1082,7 @@ class PlayState extends ScriptState
 
     private function moveCamera(section:Int)
     {
-        callOnScripts('onCameraMove', [SONG.sections[section].focus]);
+        callOnScripts('onCameraMove', [SONG.sections[section].focus ?? -1]);
 
         if (SONG.sections[section] != null)
         {

@@ -16,7 +16,7 @@
 
 	<haxedef name="MODS_ALLOWED" if="cpp"/>
 
-	<haxedef name="HSCRIPT_ALLOWED" if="cpp"/>
+	<haxedef name="HSCRIPT_ALLOWED"/>
 	<haxedef name="LUA_ALLOWED" if="cpp"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->

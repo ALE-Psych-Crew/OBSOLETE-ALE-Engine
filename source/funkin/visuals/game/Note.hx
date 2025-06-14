@@ -43,16 +43,6 @@ class Note extends FlxSprite
 	function get_ableToHit():Bool
 		return state == NEUTRAL && Math.abs(strumTime - Conductor.songPosition) < 175;
 
-	var noteAnim(get, never):String;
-	function get_noteAnim():String
-		return switch (data) {
-			case 0: 'purple';
-			case 1: 'blue';
-			case 2: 'green';
-			case 3: 'red';
-			default: '';
-		};
-
     public var texture(default, set):String;
     public function set_texture(value:String):String
     {
@@ -60,15 +50,9 @@ class Note extends FlxSprite
 
 		frames = Paths.getSparrowAtlas('notes/' + texture);
 
-        switch (noteType)
-        {
-            case NORMAL:
-                animation.addByPrefix('idle', noteAnim + '0', 24, false);
-            case SUSTAIN:
-                animation.addByPrefix('idle', noteAnim + ' hold piece', 24, false);
-            case SUSTAIN_END:
-                animation.addByPrefix('idle', noteAnim + ' hold end', 24, false);
-        }
+		for (anim in [['0', 'note'], [' hold piece', 'piece'], [' hold end', 'end']])
+			for (col in ['purple', 'blue', 'green', 'red'])
+				animation.addByPrefix(anim[1] + CoolUtil.capitalize(col), col + anim[0], 24, false);
         
 		animation.onFrameChange.add((name:String, frameNumber:Int, frameIndex:Int) -> {
             centerOffsets();
@@ -77,7 +61,6 @@ class Note extends FlxSprite
 
         scale.set(0.7, 0.7);
 
-		animation.play('idle', true);
 
 		if (noteType == NORMAL)
 		{
@@ -93,6 +76,8 @@ class Note extends FlxSprite
 		}
 
         updateHitbox();
+		
+		setMeta(data, noteType);
 
         return texture;
     }
@@ -112,14 +97,15 @@ class Note extends FlxSprite
 		this.type = type;
         this.noteType = noteType;
 
-        this.texture = texture;
-
 		var rgbPalette = new RGBPalette();
 		shaderRef = new RGBShaderReference(this, rgbPalette);
+		
 		var shaderArray:Array<FlxColor> = ClientPrefs.data.arrowRGB[data];
 		shaderRef.r = shaderArray[0];
 		shaderRef.g = shaderArray[1];
 		shaderRef.b = shaderArray[2];
+
+        this.texture = texture;
 
 		flipY = noteType == SUSTAIN_END && ClientPrefs.data.downScroll;
 
@@ -127,20 +113,6 @@ class Note extends FlxSprite
 
 		animation.play('idle', true);
     }
-
-	public function resetNote()
-	{
-		visible = true;
-
-		state = NEUTRAL;
-		type = null;
-        noteType = null;
-		spawned = false;
-
-		noteLength = 0;
-		
-		clipRect = null;
-	}
 	
 	public static function setNotePosition(note:FlxSprite, target:FlxSprite, angle:Float, offsetX:Float, offsetY:Float)
 	{
@@ -165,5 +137,57 @@ class Note extends FlxSprite
 			scale.y = strum.scale.y;
 		}
 			*/
+	}
+
+	public function setMeta(data:Int, noteType:NoteType)
+	{
+		this.data = data;
+		this.noteType = noteType;
+
+		var anim = switch(noteType)
+		{
+			case NORMAL:
+				'note';
+			case SUSTAIN:
+				'piece';
+			case SUSTAIN_END:
+				'end';
+		}
+
+		var color = switch (data)
+		{
+			case 0:
+				'Purple';
+			case 1:
+				'Blue';
+			case 2:
+				'Green';
+			case 3:
+				'Red';
+			default:
+				'';
+		};
+
+		animation.play(anim + color, true);
+		
+		var shaderArray:Array<FlxColor> = ClientPrefs.data.arrowRGB[data];
+		shaderRef.r = shaderArray[0];
+		shaderRef.g = shaderArray[1];
+		shaderRef.b = shaderArray[2];
+	}
+
+	public function resetNote(strumTime:Float, data:Int, noteLength:Float, noteVariant:Null<String>, noteType:NoteType)
+	{
+		this.strumTime = strumTime;
+		this.noteLength = noteLength;
+		this.noteVariant = noteVariant;
+
+		state = NEUTRAL;
+
+		y = FlxG.height * 2;
+
+		setMeta(data, noteType);
+
+		active = true;
 	}
 }

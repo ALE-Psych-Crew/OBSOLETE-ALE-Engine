@@ -10,16 +10,13 @@ import core.enums.ALECharacterType;
 import core.enums.Rating;
 
 import core.structures.ALESection;
+import core.enums.NoteType;
 
 class StrumLine extends FlxGroup
 {
     public var strums:FlxTypedGroup<Strum>;
     public var sustains:FlxTypedGroup<Note>;
     public var notes:FlxTypedGroup<Note>;
-    public var allNotes:FlxTypedGroup<Note>;
-
-    public var unspawnIndex:Int = 0;
-    public var unspawnNotes:Array<Note> = [];
 
     public var splashes:FlxTypedGroup<Splash>;
 
@@ -44,9 +41,11 @@ class StrumLine extends FlxGroup
 
     public var voices:Array<FlxSound> = [];
 
-    public var chartNotes:Array<Array<Dynamic>> = [];
+	public var chartNotes:Array<Array<Dynamic>> = [];
 
-    public function new(character:Character, chartNotes:Array<Array<Dynamic>>, startPosition:Float)
+	public var notePool:Array<Note> = [];
+
+    public function new(character:Character, superNotes:Array<Array<Dynamic>>, startPosition:Float)
     {
         super();
 
@@ -54,11 +53,7 @@ class StrumLine extends FlxGroup
 
         this.downScroll = ClientPrefs.data.downScroll;
 
-        this.chartNotes = chartNotes;
-
         botplay = this.character.type != PLAYER;
-
-        allNotes = new FlxTypedGroup<Note>();
 
         add(strums = new FlxTypedGroup<Strum>());
         add(sustains = new FlxTypedGroup<Note>());
@@ -76,92 +71,66 @@ class StrumLine extends FlxGroup
             splash.strum = strum;
         }
 
-        for (chartNote in chartNotes)
-        {
-            if (chartNote[0] < startPosition)
+		var daNotes:Array<Array<Dynamic>> = superNotes;
+
+		daNotes.sort(
+			function(obj1:Array<Dynamic>, obj2:Array<Dynamic>)
+				return FlxSort.byValues(FlxSort.ASCENDING, obj1[0], obj2[0])
+		);
+
+		for (note in daNotes)
+		{
+            if (note[0] < startPosition)
                 continue;
 
-            var note:Note = new Note(chartNote[0], chartNote[1], chartNote[2], chartNote[3], character.type, NORMAL);
-            note.character = character;
+			chartNotes.push([note[0], note[1], note[2], note[3], NoteType.NORMAL]);
 
-            var length:Float = chartNote[2];
-
-            if (length > 0)
+            if (note[2] > 0)
             {
-                var parent:Note = note;
-
-                var rawLoop:Float = length / Conductor.stepCrochet;
+                var rawLoop:Float = note[2] / Conductor.stepCrochet;
 
                 var susLoop:Int = rawLoop - Math.floor(rawLoop) <= 0.5 ? Math.floor(rawLoop) : Math.round(rawLoop);
 
-                if (susLoop <= 0)
-                    susLoop = 1;
+				if (susLoop <= 0)
+					susLoop = 1;
 
                 for (i in 0...susLoop)
-                {
-                    var sustain:Note = new Note(chartNote[0] + Conductor.stepCrochet * i, chartNote[1], chartNote[2], chartNote[3], character.type, i == susLoop - 1 ? SUSTAIN_END : SUSTAIN);
-                    sustain.character = character;
-
-                    unspawnNotes.push(sustain);
-
-                    note.children.push(sustain);
-
-                    parent = sustain;
-                }
+					chartNotes.push([note[0] + Conductor.stepCrochet * i, note[1], note[2], 0, i == susLoop - 1 ? NoteType.SUSTAIN_END : NoteType.SUSTAIN]);
             }
-
-            unspawnNotes.push(note);
-        }
-
-        unspawnNotes.sort(sortByTime);
+		}
 
         visible = character.type != EXTRA;
     }
-
-    public var spawnTime:Int = 2000;
-
-    public var despawnTime:Int = 300;
 
     override public function update(elapsed:Float)
     {
         super.update(elapsed);
 
-        if (unspawnIndex < unspawnNotes.length)
-        {
-            var uNote:Note = unspawnNotes[unspawnIndex];
+		var spawnT:Float = 2000;
+		var despawnT:Float = 200;
 
-            var spawnT:Float = spawnTime;
+		if (scrollSpeed < 1)
+		{
+			spawnT /= scrollSpeed;
+			despawnT /= scrollSpeed;
+		}
 
-            if (scrollSpeed < 1)
-                spawnT /= scrollSpeed;
+		if (chartNotes[0] != null && Conductor.songPosition + spawnT > chartNotes[0][0])		
+		{
+			var note:Array<Dynamic> = chartNotes.shift();
 
-            if (uNote.strumTime - Conductor.songPosition <= spawnT)
+			addNote(requestNote(note[0], note[1], note[2], note[3], note[4]));
+		}
+
+        for (group in [notes, sustains])
+            for (note in group)
             {
-                uNote.y = FlxG.height * 4;
-                uNote.spawned = true;
-
-                addNote(uNote);
-
-                if (noteSpawnCallback != null)
-                    noteSpawnCallback(uNote);
-
-                unspawnIndex++;
-            }
-        }
-
-        for (note in allNotes)
-        {
-            if (Conductor.songPosition >= note.strumTime + Conductor.stepCrochet + despawnTime / scrollSpeed)
-            {
-                note.clipRect = null;
-
-                removeNote(note);
+                if (Conductor.songPosition >= note.strumTime + despawnT)
+                    removeNote(note);
                 
-                continue;
+                if (Conductor.songPosition - note.strumTime > 175 && note.state == NEUTRAL)
+                    onNoteMiss(note);
             }
-
-            note.updateHitbox();
-        }
 
         for (note in notes)
         {
@@ -176,15 +145,9 @@ class StrumLine extends FlxGroup
             }
         }
 
-        for (note in allNotes)
-        {
-            if (Conductor.songPosition - note.strumTime > 175 && note.state == NEUTRAL)
-                onNoteMiss(note);
-        }
-
         for (sustain in sustains)
         {
-            if (sustain.state == HELD)
+            if (sustain.state == HELD || true)
                 if (Conductor.songPosition >= sustain.strumTime)
                     onNoteHit(sustain);
 
@@ -224,9 +187,6 @@ class StrumLine extends FlxGroup
                 */
         }
     }
-
-    function sortByTime(obj1:Note, obj2:Note):Int
-        return FlxSort.byValues(FlxSort.ASCENDING, obj1.strumTime, obj2.strumTime);
 
     public function justPressKey(data:Int)
     {
@@ -364,8 +324,6 @@ class StrumLine extends FlxGroup
 
     public function addNote(note:Note)
     {
-        allNotes.add(note);
-
         if (note.noteType == NORMAL)
             notes.add(note);
         else
@@ -374,11 +332,28 @@ class StrumLine extends FlxGroup
 
     public function removeNote(note:Note)
     {
-        allNotes.remove(note, true);
+        notePool.unshift(note);
+        note.active = false;
 
         if (note.noteType == NORMAL)
             notes.remove(note, true);
         else
             sustains.remove(note, true);
     }
+
+	function requestNote(time:Float, data:Int, length:Float, variant:Null<String>, type:NoteType):Note
+	{
+		var result:Note;
+
+		if (notePool[0] != null)
+		{
+			result = notePool.shift();
+			result.resetNote(time, data, length, variant, type);
+			result.active = true;
+		} else {
+			result = new Note(time, data, length, variant, character.type, type);
+		}
+
+		return result;
+	}
 }

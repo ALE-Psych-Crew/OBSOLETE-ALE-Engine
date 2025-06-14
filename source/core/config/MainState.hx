@@ -51,11 +51,11 @@ class MainState extends flixel.FlxState
 
         DiscordRPC.initialize(CoolVars.data.discordID);
 
-        #if cpp
         debugCounter = new DebugCounter();
         
         FlxG.stage.addChild(debugCounter);
 
+        #if cpp
         if (ClientPrefs.data.openConsoleOnStart)
             cpp.WindowsTerminalCPP.allocConsole();
         #end
@@ -97,9 +97,9 @@ class MainState extends flixel.FlxState
 
             showedModMenu = true;
         }
-        #else
-        CoolUtil.switchState(() -> new CustomState(CoolVars.data.initialState), true, true);
         #end
+        
+        CoolUtil.switchState(() -> new CustomState(CoolVars.data.initialState), true, true);
     }
 
     function openalFix()
