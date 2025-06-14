@@ -1117,7 +1117,7 @@ class PlayState extends ScriptState
             }
         }
         
-        callOnScripts('postCameraMove', [SONG.sections[section].focus]);
+        callOnScripts('postCameraMove', [SONG.sections[section] == null ? -1 : SONG.sections[section].focus]);
     }
     
     override public function loadHScript(path:String)
