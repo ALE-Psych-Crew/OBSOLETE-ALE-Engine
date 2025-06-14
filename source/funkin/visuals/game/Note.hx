@@ -110,11 +110,9 @@ class Note extends FlxSprite
 		flipY = noteType == SUSTAIN_END && ClientPrefs.data.downScroll;
 
 		antialiasing = ClientPrefs.data.antialiasing;
-
-		animation.play('idle', true);
     }
 	
-	public static function setNotePosition(note:FlxSprite, target:FlxSprite, angle:Float, offsetX:Float, offsetY:Float)
+	public static inline function setNotePosition(note:FlxSprite, target:FlxSprite, angle:Float, offsetX:Float, offsetY:Float)
 	{
 		offsetX += target.width / 2 - note.width / 2;
 
@@ -189,5 +187,7 @@ class Note extends FlxSprite
 		setMeta(data, noteType);
 
 		active = true;
+		
+		flipY = noteType == SUSTAIN_END && ClientPrefs.data.downScroll;
 	}
 }

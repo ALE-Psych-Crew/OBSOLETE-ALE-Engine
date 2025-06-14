@@ -20,7 +20,7 @@ class StrumLine extends FlxGroup
 
     public var splashes:FlxTypedGroup<Splash>;
 
-    public var downScroll:Bool = false;
+    private var downScroll:Bool = ClientPrefs.data.downScroll;
 
     public var scrollSpeed:Float = 1;
 
@@ -50,8 +50,6 @@ class StrumLine extends FlxGroup
         super();
 
         this.character = character;
-
-        this.downScroll = ClientPrefs.data.downScroll;
 
         botplay = this.character.type != PLAYER;
 
@@ -144,7 +142,7 @@ class StrumLine extends FlxGroup
         {
             var strum:Strum = strums.members[note.data];
 
-            Note.setNotePosition(note, strum, strum.direction, 0, (note.strumTime - Conductor.songPosition) * scrollSpeed * 0.45 * (ClientPrefs.data.downScroll ? -1 : 1));
+            Note.setNotePosition(note, strum, strum.direction, 0, (note.strumTime - Conductor.songPosition) * scrollSpeed * 0.45 * (downScroll ? -1 : 1));
         
             if (botplay)
             {
@@ -161,7 +159,7 @@ class StrumLine extends FlxGroup
 
             var strum:Strum = strums.members[sustain.data];
 
-            Note.setNotePosition(sustain, strum, strum.direction, 0, strum.height / 2 + (sustain.strumTime - Conductor.songPosition) * scrollSpeed * 0.45 * (ClientPrefs.data.downScroll ? -1 : 1));
+            Note.setNotePosition(sustain, strum, strum.direction, 0, (downScroll ? -1 : 1) * strum.height / 2 + (sustain.strumTime - Conductor.songPosition) * scrollSpeed * 0.45 * (downScroll ? -1 : 1));
             
             /*
             var parent = sustain.parentNote;
@@ -357,10 +355,11 @@ class StrumLine extends FlxGroup
 		{
 			result = notePool.pop();
 			result.resetNote(time, data, length, variant, type);
-			result.active = true;
 		} else {
 			result = new Note(time, data, length, variant, character.type, type);
 		}
+
+        result.updateHitbox();
 
         result.character = this.character;
 
