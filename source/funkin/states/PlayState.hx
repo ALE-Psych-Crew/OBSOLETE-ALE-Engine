@@ -142,11 +142,11 @@ class PlayState extends ScriptState
     public var opponentIcon:HealthIcon;
     public var playerIcon:HealthIcon;
 
-    private var opponentIconName:String = '';
-    private var playerIconName:String = '';
-
-    private var opponentColor:FlxColor;
-    private var playerColor:FlxColor;
+    private var opponentIconName:Null<String> = null;
+    private var opponentColor:Null<FlxColor> = null;
+    
+    private var playerIconName:Null<String> = null;
+    private var playerColor:Null<FlxColor> = null;
 
 	public var healthBar:Bar;
 
@@ -520,15 +520,13 @@ class PlayState extends ScriptState
 
             charactersArray.push(object);
 
-            var objectColor:Array<Int> = object.data.barColor;
-                
             switch (type)
             {
                 case PLAYER:
                     if (characters.players.length <= 0)
                     {
                         playerIconName = object.data.icon;
-                        playerColor = FlxColor.fromRGB(objectColor[0], objectColor[1], objectColor[2]);
+                        playerColor = CoolUtil.colorFromArray(object.data.barColor);
                     }
 
                     characters.players.push(object);
@@ -536,7 +534,7 @@ class PlayState extends ScriptState
                     if (characters.opponents.length <= 0)
                     {
                         opponentIconName = object.data.icon;
-                        opponentColor = FlxColor.fromRGB(objectColor[0], objectColor[1], objectColor[2]);
+                        opponentColor = CoolUtil.colorFromArray(object.data.barColor);
                     }
 
                     characters.opponents.push(object);
@@ -546,6 +544,18 @@ class PlayState extends ScriptState
 
             add(object);
         }
+
+        if (opponentIconName == null)
+            opponentIconName = characters.extras[0] == null ? (characters.players[0] == null ? 'face' : characters.players[0].data.icon) : characters.extras[0].data.icon;
+
+        if (opponentColor == null)
+            opponentColor = CoolUtil.colorFromArray(characters.extras[0] == null ? (characters.players[0] == null ? [0, 0, 0] : characters.players[0].data.barColor) : characters.extras[0].data.barColor);
+
+        if (playerIconName == null)
+            playerIconName = characters.extras[0] == null ? (characters.opponents[0] == null ? 'face' : characters.opponents[0].data.icon) : characters.extras[0].data.icon;
+
+        if (playerColor == null)
+            playerColor = CoolUtil.colorFromArray(characters.extras[0] == null ? (characters.opponents[0] == null ? [0, 0, 0] : characters.opponents[0].data.barColor) : characters.extras[0].data.barColor);
 
         callOnScripts('postInitCharacters');
     }
