@@ -1082,7 +1082,7 @@ class PlayState extends ScriptState
 
     private function moveCamera(section:Int)
     {
-        callOnScripts('onCameraMove', [SONG.sections[section].focus ?? -1]);
+        callOnScripts('onCameraMove', [SONG.sections[section] == null ? -1 : SONG.sections[section].focus]);
 
         if (SONG.sections[section] != null)
         {
