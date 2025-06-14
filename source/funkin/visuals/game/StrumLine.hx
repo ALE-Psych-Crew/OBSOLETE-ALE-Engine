@@ -119,7 +119,15 @@ class StrumLine extends FlxGroup
 		{
 			var note:Array<Dynamic> = chartNotes.shift();
 
-			addNote(requestNote(note[0], note[1], note[2], note[3], note[4]));
+            var object:Note = requestNote(note[0], note[1], note[2], note[3], note[4]);
+
+            if (noteSpawnCallback != null)
+                noteSpawnCallback(object);
+
+			addNote(object);
+
+            if (postNoteSpawnCallback != null)
+                postNoteSpawnCallback(object);
 		}
 
         for (group in [notes, sustains])
@@ -353,6 +361,8 @@ class StrumLine extends FlxGroup
 		} else {
 			result = new Note(time, data, length, variant, character.type, type);
 		}
+
+        result.character = this.character;
 
 		return result;
 	}
