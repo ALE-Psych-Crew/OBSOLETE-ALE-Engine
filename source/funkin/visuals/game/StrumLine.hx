@@ -332,8 +332,8 @@ class StrumLine extends FlxGroup
 
     public function removeNote(note:Note)
     {
-        notePool.unshift(note);
         note.active = false;
+        notePool.push(note);
 
         if (note.noteType == NORMAL)
             notes.remove(note, true);
@@ -347,7 +347,7 @@ class StrumLine extends FlxGroup
 
 		if (notePool[0] != null)
 		{
-			result = notePool.shift();
+			result = notePool.pop();
 			result.resetNote(time, data, length, variant, type);
 			result.active = true;
 		} else {
