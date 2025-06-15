@@ -1,6 +1,6 @@
 package core.backend;
 
-#if cpp
+#if (DISCORD_ALLOWED && cpp && desktop)
 import hxdiscord_rpc.Discord;
 import hxdiscord_rpc.Types;
 

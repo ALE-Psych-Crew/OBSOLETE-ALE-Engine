@@ -19,6 +19,8 @@
 	<haxedef name="HSCRIPT_ALLOWED"/>
 	<haxedef name="LUA_ALLOWED" if="cpp"/>
 
+	<haxedef name="DISCORD_ALLOWED" if="cpp"/>
+
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false"/>
@@ -50,7 +52,7 @@
 
 	<haxelib name="linc_luajit" if="cpp"/>
 	
-	<haxelib name="hxdiscord_rpc" if="cpp"/>
+	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 
 	<haxelib name="tjson"/>
 
