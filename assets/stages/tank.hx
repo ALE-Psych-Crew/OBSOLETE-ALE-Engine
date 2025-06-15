@@ -46,10 +46,10 @@ function onCreate()
 		watchTower = createSprite('watchTower', 100, 50, 1, 0.5, true, [['idle', 'watchtower gradient color']]);
 	}
 
+	tank = createSprite('tank', 0, 0, 1, 0.5, true, [['idle', 'BG tank w lighting']], true);
+
 	runningTankmans = new FlxTypedGroup<FlxSprite>();
 	add(runningTankmans);
-
-	tank = createSprite('tank', 0, 0, 1, 0.5, true, [['idle', 'BG tank w lighting']], true);
 
 	ground = createSprite('ground', -420, -150, 1.15);
 }
@@ -144,6 +144,8 @@ function onNoteHit(note:Note)
 		getCharacter('extra', 0).animation.play('shoot' + (note.data % 2 == 0 ? FlxG.random.int(1, 2) : FlxG.random.int(3, 4)), true);
 }
 
+var tankPool:Array<FlxSprite> = [];
+
 var spawnTimes:Array<Array<Float>> = [];
 
 function createRunningTankmans()
@@ -161,39 +163,76 @@ function updateTankmans()
 
 function createTankman(noFlipX:Bool):FlxSprite
 {
-	var sprite:FlxSprite = new FlxSprite(noFlipX ? 1700 : -800, 200 + FlxG.random.int(50, 100));
-	sprite.frames = Paths.getSparrowAtlas('stages/tank/killedTankman');
-	sprite.animation.addByPrefix('run', 'tankman running', 24, true);
-	sprite.animation.addByPrefix('shot', 'John Shot ' + FlxG.random.int(1, 2), 24, false);
-	sprite.animation.play('run', true);
-	sprite.animation.curAnim.curFrame = FlxG.random.int(0, sprite.animation.curAnim.frames.length - 1);
-	sprite.scale.set(0.8, 0.8);
-	sprite.updateHitbox();
-	runningTankmans.add(sprite);
-	sprite.antialiasing = ClientPrefs.data.antialiasing;
-	sprite.flipX = !noFlipX;
-	sprite.velocity.x = (750 * FlxG.random.float(0.6, 1)) * (noFlipX ? -1 : 1);
+	var sprite:FlxSprite;
 
-	sprite.animation.onFinish.add(
-		(name:String) -> {
-			if (name == 'shot')
-				runningTankmans.remove(sprite, true);
+	if (tankPool.length > 0)
+	{
+		sprite = tankPool.pop();
+		resetTankman(sprite, noFlipX);
+	} else {
+		sprite = new FlxSprite();
+		sprite.frames = Paths.getSparrowAtlas('stages/tank/killedTankman');
+		sprite.animation.addByPrefix('run', 'tankman running', 24, true);
+		sprite.scale.set(0.8, 0.8);
+		sprite.updateHitbox();
+		sprite.antialiasing = ClientPrefs.data.antialiasing;
+
+		sprite.animation.onFinish.add(
+			(name:String) -> {
+				if (name == 'shot')
+				{
+					runningTankmans.remove(sprite);
+
+					tankPool.push(sprite);
+				}
+			}
+		);
+
+		sprite.animation.onFrameChange.add(
+			(name:String) -> {
+				if (name == 'shot')
+				{
+					if (sprite.flipX)
+					{
+						sprite.offset.x = 300;
+						sprite.offset.y = 200;
+					}
+		
+					sprite.velocity.x = 0;
+				}
+			}
+		);
+
+		resetTankman(sprite, noFlipX);
+	}
+
+	if (sprite != null)
+		runningTankmans.add(sprite);
+}
+
+function resetTankman(sprite:FlxSprite, noFlipX:Bool)
+{
+	FlxTween.cancelTweensOf(sprite);
+
+	sprite.animation.addByPrefix('shot', 'John Shot ' + FlxG.random.int(1, 2), 24, false);
+
+	sprite.x = noFlipX ? 1600 : -800;
+	sprite.y = 200 + FlxG.random.int(50, 100);
+
+	sprite.offset.x = 0;
+	sprite.offset.y = 0;
+	
+	sprite.flipX = !noFlipX;
+	
+	sprite.animation.play('run', true);
+
+	sprite.animation.curAnim.curFrame = FlxG.random.int(0, sprite.animation.curAnim.frames.length - 1);
+
+	FlxTween.tween(sprite, {x: sprite.x + (400 + FlxG.random.float(0.6, 1) * 300) * (noFlipX ? -1 : 1)}, 1,
+		{
+			onComplete: (_) -> {
+				sprite.animation.play('shot', true);
+			}
 		}
 	);
-
-	FlxTimer.wait(1, () ->
-		{
-			sprite.animation.play('shot', true);
-
-			if (sprite.flipX)
-			{
-				sprite.offset.x = 300;
-				sprite.offset.y = 200;
-			}
-
-			sprite.velocity.x = 0;
-		}	
-	);
-	
-	return sprite;
 }
