@@ -8,10 +8,12 @@ class CustomState extends ScriptState
 
     public var scriptName:String = '';
 
-    public var arguments:Array<Dynamic>;
+    private var arguments:Array<Dynamic>;
     
-    public var hsVariables:StringMap<Dynamic>;
-    public var luaVariables:StringMap<Dynamic>;
+    private var hsVariables:StringMap<Dynamic>;
+    private var luaVariables:StringMap<Dynamic>;
+
+    @:unreflective private var reloadThread:Bool = CoolVars.data.developerMode && CoolVars.data.scriptsHotReloading;
 
     override public function new(script:String, ?arguments:Array<Dynamic>, ?hsVariables:StringMap<Dynamic>, ?luaVariables:StringMap<Dynamic>)
     {
@@ -28,6 +30,33 @@ class CustomState extends ScriptState
     override public function create()
     {        
         super.create();
+
+        if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
+        {
+            CoolUtil.createSafeThread(() -> {
+                for (ext in ['.hx', '.lua'])
+                {
+                    if (!Paths.fileExists('scripts/states/' + scriptName + ext))
+                        return;
+
+                    var lastTime = FileSystem.stat(Paths.getPath('scripts/states/' + scriptName + ext)).mtime.getTime();
+
+                    while (reloadThread)
+                    {
+                        Sys.sleep(0.1);
+
+                        var newTime = FileSystem.stat(Paths.getPath('scripts/states/' + scriptName + ext)).mtime.getTime();
+
+                        if (newTime != lastTime)
+                        {
+                            lastTime = newTime;
+
+                            resetCustomState();
+                        }
+                    }
+                }
+            });
+        }
 
         instance = this;
 
@@ -67,6 +96,9 @@ class CustomState extends ScriptState
 
     override public function destroy()
     {
+        if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
+            reloadThread = false;
+
         super.destroy();
 
         callOnScripts('onDestroy');
@@ -147,6 +179,9 @@ class CustomState extends ScriptState
     {
         shouldClearMemory = false;
 
-        CoolUtil.switchState(() -> new CustomState(scriptName), true, true);
+        CoolUtil.switchState(() -> new CustomState(scriptName, arguments, hsVariables, luaVariables), true, true);
+
+        if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
+            reloadThread = false;
     }
 }

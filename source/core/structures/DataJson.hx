@@ -3,6 +3,7 @@ package core.structures;
 typedef DataJson =
 {
     var developerMode:Bool;
+    var scriptsHotReloading:Bool;
 
     var initialState:String;
     var freeplayState:String;

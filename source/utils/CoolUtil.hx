@@ -369,6 +369,7 @@ class CoolUtil
 	{
 		CoolVars.data = {
 			developerMode: false,
+			scriptsHotReloading: false,
 
 			initialState: 'IntroState',
 			freeplayState: 'FreeplayState',

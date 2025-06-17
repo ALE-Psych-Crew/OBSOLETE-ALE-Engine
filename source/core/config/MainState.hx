@@ -49,6 +49,9 @@ class MainState extends flixel.FlxState
 
         CoolUtil.reloadGameMetadata();
 
+        if (CoolVars.data.developerMode && CoolVars.data.scriptsHotReloading)
+            FlxG.autoPause = false;
+
         DiscordRPC.initialize(CoolVars.data.discordID);
 
         debugCounter = new DebugCounter();
