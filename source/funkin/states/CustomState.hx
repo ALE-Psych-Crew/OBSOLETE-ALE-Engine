@@ -46,7 +46,11 @@ class CustomState extends ScriptState
                             while (reloadThread)
                             {
                                 if (!Paths.fileExists('scripts/states/' + file + ext))
+                                {
+                                    resetCustomState();
+
                                     break;
+                                }
     
                                 var newTime = FileSystem.stat(Paths.getPath('scripts/states/' + file + ext)).mtime.getTime();
 
