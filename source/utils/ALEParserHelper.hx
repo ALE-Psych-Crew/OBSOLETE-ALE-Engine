@@ -225,6 +225,8 @@ class ALEParserHelper
             {
                 return cast data;
             } else {
+                var difficulties:Null<String> = cast data.difficulties;
+                
                 var formattedWeek:ALEWeek = cast {
                     songs: [],
                     
@@ -241,7 +243,7 @@ class ALEParserHelper
                     hideStoryMode: data.hideStoryMode,
                     hideFreeplay: data.hideFreeplay,
 
-                    difficulties: data.difficulties == null || data.difficulties.length <= 0 ? ['Easy', 'Normal', 'Hard'] : data.difficulties.trim().split(','),
+                    difficulties: difficulties == null || difficulties.length <= 0 ? ['Easy', 'Normal', 'Hard'] : difficulties.trim().split(','),
 
                     format: 'ale-format-v0.1'
                 }
