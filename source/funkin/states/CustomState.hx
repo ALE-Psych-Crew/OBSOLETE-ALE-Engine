@@ -33,29 +33,35 @@ class CustomState extends ScriptState
 
         if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
         {
-            CoolUtil.createSafeThread(() -> {
-                for (ext in ['.hx', '.lua'])
+            for (ext in ['.hx', '.lua'])
+            {
+                for (file in [scriptName, 'global'])
                 {
-                    if (!Paths.fileExists('scripts/states/' + scriptName + ext))
-                        return;
+                    CoolUtil.createSafeThread(() -> {
+                            if (!Paths.fileExists('scripts/states/' + file + ext))
+                                return;
 
-                    var lastTime = FileSystem.stat(Paths.getPath('scripts/states/' + scriptName + ext)).mtime.getTime();
+                            var lastTime = FileSystem.stat(Paths.getPath('scripts/states/' + file + ext)).mtime.getTime();
 
-                    while (reloadThread)
-                    {
-                        Sys.sleep(0.1);
+                            while (reloadThread)
+                            {
+                                if (!Paths.fileExists('scripts/states/' + file + ext))
+                                    break;
+    
+                                var newTime = FileSystem.stat(Paths.getPath('scripts/states/' + file + ext)).mtime.getTime();
 
-                        var newTime = FileSystem.stat(Paths.getPath('scripts/states/' + scriptName + ext)).mtime.getTime();
+                                if (newTime != lastTime)
+                                {
+                                    lastTime = newTime;
 
-                        if (newTime != lastTime)
-                        {
-                            lastTime = newTime;
-
-                            resetCustomState();
-                        }
-                    }
+                                    resetCustomState();
+                                }
+                                
+                                Sys.sleep(0.1);
+                            }
+                    });
                 }
-            });
+            }
         }
 
         instance = this;
