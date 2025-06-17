@@ -168,7 +168,7 @@ class CoolUtil
 		debugTrace(title + ' | ' + message, POP_UP);
 
 		#if (windows && cpp)
-		cpp.WindowsCPP.showMessageBox(title, message, INFORMATION);
+		cpp.WindowsAPI.showMessageBox(title, message, INFORMATION);
 		#else
 		FlxG.stage.window.alert(message, title);
 		#end
@@ -213,7 +213,7 @@ class CoolUtil
 		MainState.debugCounter = null;
 
         #if (windows && cpp)
-		cpp.WindowsCPP.setWindowBorderColor(255, 255, 255);
+		cpp.WindowsAPI.setWindowBorderColor(255, 255, 255);
 		#end
 
 		FlxTween.globalManager.clear();

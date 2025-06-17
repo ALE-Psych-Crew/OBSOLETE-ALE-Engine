@@ -57,7 +57,7 @@ class MainState extends flixel.FlxState
 
         #if cpp
         if (ClientPrefs.data.openConsoleOnStart)
-            cpp.WindowsTerminalCPP.allocConsole();
+            cpp.WindowsAPI.showConsole();
         #end
 
 		#if android

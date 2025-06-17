@@ -27,7 +27,7 @@ class LuaPreset
         new LuaReflect(lua);
         new LuaFileSystem(lua);
 
-        new LuaWindowsCPP(lua);
+        new LuaWindowsAPI(lua);
         
         new LuaCoolUtil(lua);
         new LuaPaths(lua);

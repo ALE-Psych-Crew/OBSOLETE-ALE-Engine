@@ -89,7 +89,10 @@ class HScript extends SScript
 			funkin.visuals.objects.TypedAlphabet,
 			funkin.visuals.objects.AttachedAlphabet,
 			funkin.states.OptionsState,
-			core.backend.Controls
+			core.backend.Controls,
+
+			// CPP
+			cpp.WindowsAPI
         ];
 
         for (theClass in presetClasses)
@@ -103,28 +106,18 @@ class HScript extends SScript
 				'this' => FlxG.state,
 				'add' => FlxG.state.add,
 				'insert' => FlxG.state.insert,
+				'remove' => FlxG.state.remove,
 				'openSubState' => FlxG.state.openSubState,
 				'CancelSuperFunction' => ScriptState.instance.CancelSuperFunction,
 				'debugPrint' => ScriptState.instance.debugPrint,
 				'getObjectOrder' => function(obj:FlxObject)
 				{
-					if (type == STATE)
-						ScriptState.instance.members.indexOf(obj);
-					else
-						ScriptSubState.instance.members.indexOf(obj);
-
-					return null;
+					return FlxG.state.members.indexOf(obj);
 				},
 				'setObjectOrder' => function(obj:FlxObject, index:Int)
 				{
-					if (type == STATE)
-					{
-						ScriptState.instance.remove(obj);
-						ScriptState.instance.insert(index, obj);
-					} else {
-						ScriptSubState.instance.remove(obj);
-						ScriptSubState.instance.insert(index, obj);
-					}
+					FlxG.state.remove(obj);
+					FlxG.state.insert(index, obj);
 				}
 			];
 		} else if (type == SUBSTATE) {
@@ -132,9 +125,19 @@ class HScript extends SScript
 				'this' => FlxG.state.subState,
 				'add' => FlxG.state.subState.add,
 				'insert' => FlxG.state.subState.insert,
+				'remove' => FlxG.state.subState.remove,
 				'close' => FlxG.state.subState.close,
 				'CancelSuperFunction' => ScriptSubState.instance.CancelSuperFunction,
-				'debugPrint' => ScriptSubState.instance.debugPrint
+				'debugPrint' => ScriptSubState.instance.debugPrint,
+				'getObjectOrder' => function(obj:FlxObject)
+				{
+					return FlxG.state.subState.members.indexOf(obj);
+				},
+				'setObjectOrder' => function(obj:FlxObject, index:Int)
+				{
+					FlxG.state.subState.remove(obj);
+					FlxG.state.subState.insert(index, obj);
+				}
 			];
 		}
 
@@ -151,24 +154,13 @@ class HScript extends SScript
 		for (preVar in presetVariables.keys())
 			set(preVar, presetVariables.get(preVar));
 
+		/*
 		var presetFunctions:StringMap<Dynamic> = [
-			'setWindowBorderColor' => function(r:Int, g:Int, b:Int)
-			{
-				#if (windows && cpp)
-				WindowsCPP.reDefineMainWindowTitle(lime.app.Application.current.window.title);
-				WindowsCPP.setWindowBorderColor(r, g, b);
-				#end
-			},
-			'showConsole' => function()
-			{
-				#if (windows && cpp)
-				WindowsTerminalCPP.allocConsole();
-				#end
-			}
 		];
 
 		for (preFunc in presetFunctions.keys())
 			set(preFunc, presetFunctions.get(preFunc));
+		*/
     }
 
 	override public function call(func:String, ?args:Array<Dynamic>):TeaCall

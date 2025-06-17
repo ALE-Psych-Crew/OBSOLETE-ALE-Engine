@@ -58,6 +58,8 @@
 
 	<haxelib name="extension-androidtools" if="android"/>
 
+	<haxelib name="sl-windows-api"/>
+
 	<section if="cpp">
 		<haxelib name="hxdiscord_rpc" if="desktop"/>
 	</section>

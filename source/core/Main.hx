@@ -202,7 +202,7 @@ class Main extends Sprite
 		errMsg += "\nUncaught Error: " + e.error;
 	
 		#if (windows && cpp)
-		cpp.WindowsCPP.showMessageBox('ALE Engine ' + CoolVars.engineVersion + ' | Crash Handler', errMsg, ERROR);
+		cpp.WindowsAPI.showMessageBox('ALE Engine ' + CoolVars.engineVersion + ' | Crash Handler', errMsg, ERROR);
 		#else
 		Application.current.window.alert(errMsg, 'ALE Engine ' + CoolVars.engineVersion + ' | Crash Handler');
 		#end
