@@ -17,4 +17,6 @@ typedef ALEWeek = {
     var hideFreeplay:Bool;
     
     var format:String;
+
+    var difficulties:Array<String>;
 }

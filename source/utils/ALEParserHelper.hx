@@ -167,7 +167,7 @@ class ALEParserHelper
             
                 format: 'ale-format-v0.1',
 
-                    deadVariant: 'bf-dead'
+                deadVariant: 'bf-dead'
             };
         }
     }
@@ -241,6 +241,8 @@ class ALEParserHelper
                     hideStoryMode: data.hideStoryMode,
                     hideFreeplay: data.hideFreeplay,
 
+                    difficulties: data.difficulties == null || data.difficulties.length <= 0 ? ['Easy', 'Normal', 'Hard'] : data.difficulties.trim().split(','),
+
                     format: 'ale-format-v0.1'
                 }
 
@@ -277,6 +279,8 @@ class ALEParserHelper
 
                 hideStoryMode: false,
                 hideFreeplay: false,
+
+                difficulties: ['Easy', 'Normal', 'Hard'],
 
                 format: 'ale-format-v0.1'
             }
