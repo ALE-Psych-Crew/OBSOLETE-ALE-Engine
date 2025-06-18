@@ -110,13 +110,6 @@ function postCreate()
             for (splash in strl.splashes)
                 splash.alpha = 0;
 
-            for (note in strl.unspawnNotes)
-            {
-                note.texture = 'pixelNote';
-                note.scale.set(6, 6);
-                note.antialiasing = false;
-            }
-
             for (strum in strl.strums)
             {
                 strum.texture = 'pixelNote';
@@ -129,6 +122,14 @@ function postCreate()
     
     this.camGame.pixelPerfectRender = true;
     this.camHUD.pixelPerfectRender = true;
+}
+
+function onNoteSpawn(note:Note)
+{
+    note.texture = 'pixelNote';
+    note.scale.set(6, 6);
+    note.updateHitbox();
+    note.antialiasing = false;
 }
 
 function onDestroy()
