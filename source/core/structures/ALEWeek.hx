@@ -11,6 +11,8 @@ typedef ALEWeek = {
 
     var image:String;
 
+    var phrase:String;
+
     var locked:Bool;
 
     var hideStoryMode:Bool;

@@ -238,6 +238,8 @@ class ALEParserHelper
 
                     image: name,
 
+                    phrase: data.storyName,
+
                     locked: !data.startUnlocked,
 
                     hideStoryMode: data.hideStoryMode,
@@ -276,6 +278,8 @@ class ALEParserHelper
                 background: 'stage',
 
                 image: 'week1',
+
+                phrase: '',
 
                 locked: false,
 
