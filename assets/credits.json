@@ -1,0 +1,30 @@
+{
+    "categories": [
+        {
+            "name": "ALE Engine Crew",
+            "developers": [
+                {
+                    "name": "AlejoGDOfficial",
+                    "icon": "alejo",
+                    "link": "https://www.youtube.com/@alejogdofficial",
+                    "description": "Director and Lead Programmer",
+                    "color": "5457B0"
+                },
+                {
+                    "name": "ManuArtz",
+                    "icon": "manu",
+                    "link": "https://www.youtube.com/@MArtz_06",
+                    "description": "Main Artist and Animator\nCollaborated with the Lua API",
+                    "color": "FFEE80"
+                },
+                {
+                    "name": "Speg",
+                    "icon": "speg",
+                    "link": "https://www.youtube.com/@spegFNF",
+                    "description": "Collaborated with the Lua API",
+                    "color": "911717"
+                }
+            ]
+        }
+    ]
+}
