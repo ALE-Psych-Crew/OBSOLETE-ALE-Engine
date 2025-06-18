@@ -113,7 +113,7 @@ class StrumLine extends FlxGroup
 			despawnT /= scrollSpeed;
 		}
 
-		if (chartNotes[0] != null && Conductor.songPosition + spawnT > chartNotes[0][0])		
+		while (chartNotes[0] != null && Conductor.songPosition + spawnT > chartNotes[0][0])		
 		{
 			var note:Array<Dynamic> = chartNotes.shift();
 
