@@ -97,9 +97,9 @@ class ModsMenuSubState extends MusicBeatSubState
             CoolUtil.resetEngine();
         }
 
-        if (Controls.UI_DOWN_P || Controls.UI_UP_P || FlxG.mouse.wheel != 0)
+        if (Controls.UI_DOWN_P || Controls.UI_UP_P || Controls.MOUSE_WHEEL)
         {
-            if (Controls.UI_DOWN_P || FlxG.mouse.wheel < 0)
+            if (Controls.UI_DOWN_P || Controls.MOUSE_WHEEL_DOWN)
             {
                 if (selInt >= sprites.members.length - 1)
                     selInt = 0;
@@ -107,7 +107,7 @@ class ModsMenuSubState extends MusicBeatSubState
                     selInt++;
             }
         
-            if (Controls.UI_UP_P || FlxG.mouse.wheel > 0)
+            if (Controls.UI_UP_P || Controls.MOUSE_WHEEL_UP)
             {
                 if (selInt == 0)
                     selInt = sprites.members.length - 1;
