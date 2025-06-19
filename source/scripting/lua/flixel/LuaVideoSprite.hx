@@ -16,10 +16,10 @@ class LuaVideoSprite extends LuaPresetBase
                         if (type == STATE)
                         {
                             if (ScriptState.instance != null)
-                                ScriptState.instance.callOnLuaScripts('onVideoEndReached', [tag]);
+                                ScriptState.instance.callOnLuaScripts('onVideoSpriteEndReached', [tag]);
                         } else {
                             if (ScriptSubState.instance != null)
-                                ScriptSubState.instance.callOnLuaScripts('onVideoEndReached', [tag]);
+                                ScriptSubState.instance.callOnLuaScripts('onVideoSpriteEndReached', [tag]);
                         }
                     }
                 ));
