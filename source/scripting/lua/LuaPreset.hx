@@ -34,6 +34,8 @@ class LuaPreset
 
         new LuaDiscord(lua);
 
+        new LuaVideoSprite(lua);
+
         lua.set('this', FlxG.state);
     }
 }

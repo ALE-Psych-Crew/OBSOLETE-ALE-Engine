@@ -8,17 +8,17 @@ class VideoSprite extends FlxVideoSprite
     public var finishCallback:Void -> Void;
     public var errorCallback:String -> Void;
 
-    override public function new(?x:Float = 0, ?y:Float = 0, video:String, ?loop:Bool = false, ?finishCallback:Void -> Void, ?errorCallback:String -> Void)
+    override public function new(?x:Float = 0, ?y:Float = 0, path:String, playOnLoad:Bool = true, loop:Bool = false, ?finishCallback:Void -> Void, ?errorCallback:String -> Void)
     {
         super(x, y);
 
         this.finishCallback = finishCallback ?? () -> {};
         this.errorCallback = errorCallback ?? (message:String) -> {};
 
-        setupVideo(video, loop);
+        setupVideo(path, loop, playOnLoad);
     }
     
-    private function setupVideo(video:String, loop:Bool)
+    private function setupVideo(path:String, loop:Bool, playOnLoad)
     {
         Handle.initAsync(
             function(success:Bool):Void
@@ -64,12 +64,13 @@ class VideoSprite extends FlxVideoSprite
 
                 try
                 {
-                    load(video, loop ? ['input-repeat=65545'] : null);
+                    load(path, loop ? ['input-repeat=65545'] : null);
                 } catch(e:Dynamic) {
                     debugTrace('VLC Error: ' + e, ERROR);
                 }
-                
-			    FlxTimer.wait(0.001, play);
+
+                if (playOnLoad)
+                    FlxTimer.wait(0.0001, play);
             }
         );
     }
