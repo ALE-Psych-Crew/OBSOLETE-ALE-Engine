@@ -10,9 +10,6 @@ import haxe.io.Path;
 
 import core.backend.Mods;
 
-/**
- * Used to configure and add the necessary elements before starting the game
- */
 class MainState extends flixel.FlxState
 {
     #if mobile

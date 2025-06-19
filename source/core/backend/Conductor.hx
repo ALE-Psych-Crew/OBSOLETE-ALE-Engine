@@ -1,8 +1,5 @@
 package core.backend;
 
-/**
- * The class containing variables related to the game music (FlxG.sound.music)
- */
 class Conductor
 {
     public static var bpm:Float = 100;

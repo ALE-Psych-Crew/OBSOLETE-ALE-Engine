@@ -2,9 +2,6 @@ package funkin.visuals.objects;
 
 import flixel.graphics.FlxGraphic;
 
-/**
- * It is an extension of FlxSprite that handles Icons
- */
 class HealthIcon extends FlxSprite
 {
     public var anims:Int = 2;

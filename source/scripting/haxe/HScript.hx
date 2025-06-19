@@ -23,6 +23,8 @@ import ale.ui.ALETaskBar;
 import ale.ui.ALEUIUtils;
 import ale.ui.ALEWindow;
 
+import funkin.visuals.objects.VideoSprite;
+
 import funkin.visuals.editors.chart.ChartNote;
 
 @:access(core.backend.ScriptState)

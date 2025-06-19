@@ -4,9 +4,6 @@ import core.structures.UIControls;
 import core.structures.NotesControls;
 import core.structures.EngineControls;
 
-/**
- * This is the Class that manages the Game Controls.
- */
 class Controls
 {
     // Notes

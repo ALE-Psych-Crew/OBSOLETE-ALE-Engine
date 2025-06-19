@@ -4,9 +4,6 @@ import funkin.visuals.objects.DebugText;
 
 import core.enums.PrintType;
 
-/**
- * It is a FlxSubState extension that calculates the Bits, Steps and Sections of the game music (FlxG.sound.music).
- */
 class MusicBeatSubState extends flixel.FlxSubState
 {
     public var curStep:Int = 0;

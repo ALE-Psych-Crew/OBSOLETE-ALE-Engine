@@ -28,9 +28,6 @@ import utils.ALEParserHelper;
 
 import sys.thread.Thread;
 
-/**
- * It contains functions that can be quite useful
- */
 class CoolUtil
 {
 	public static var instance:CoolUtil;
@@ -42,19 +39,9 @@ class CoolUtil
 
 	public static var save:ALESave;
 
-	/**
-	 * Used to capitalize a text
-	 * @param text Text to capitalize
-	 * @return String
-	 */
 	public static function capitalize(text:String):String
 		return text.charAt(0).toUpperCase() + text.substring(1).toLowerCase();
 
-	/**
-	 * Used to load a Color from a Text
-	 * @param color Text to convert
-	 * @return FlxColor
-	 */
 	public static function colorFromString(color:String):FlxColor
 	{
 		var hideChars = ~/[\t\n\r]/;
@@ -66,20 +53,9 @@ class CoolUtil
 		return colorNum != null ? colorNum : FlxColor.WHITE;
 	}
 
-	/**
-	 * It is used to cut the number of decimals in a number
-	 * @param value Number to cut
-	 * @param decimals Number of decimals
-	 * @return Float
-	 */
 	public static function floorDecimal(value:Float, decimals:Int):Float
 		return FlxMath.roundDecimal(value, decimals);
 
-	/**
-	 * Used to find the dominant color in a FlxSprite
-	 * @param sprite Self-explanatory
-	 * @return Int
-	 */
 	public static function dominantColor(sprite:FlxSprite):Int
 	{
 		var countByColor:Map<Int, Int> = new Map<Int, Int>();
@@ -109,10 +85,6 @@ class CoolUtil
 		return maxKey;
 	}
 
-	/**
-	 * Used to open a page with a URL
-	 * @param site URL
-	 */
 	public static function browserLoad(site:String)
 	{
 		#if linux
@@ -122,10 +94,6 @@ class CoolUtil
 		#end
 	}
 
-	/**
-	 * Help to get the path to the Save File Location
-	 * @return String
-	 */
 	@:access(flixel.util.FlxSave.validate)
 	public static function getSavePath(modSupport:Bool = true):String
 	{
@@ -134,35 +102,18 @@ class CoolUtil
 		return company + '/' + flixel.util.FlxSave.validate(FlxG.stage.application.meta.get('file')) + (modSupport ? ((Mods.folder.trim() == '' ? '' : '/' + Mods.folder)) : '');
 	}
 
-	/**
-	 * Used to obtain the name of the current state
-	 * @return String
-	 */
 	public static function getCurrentState():String
 		return FlxG.state == null ? 'null' : Type.getClassName(Type.getClass(FlxG.state));
 
-	/**
-	 * Used to obtain the name of the current sub-state
-	 * @return String
-	 */
 	public static function getCurrentSubState():String
 		return FlxG.state.subState == null ? 'null' : Type.getClassName(Type.getClass(FlxG.state.subState));
 
-	/**
-	 * It serves to have a linear interpolation not affected by the frame rate
-	 * @return Float
-	 */
 	public static function fpsLerp(v1:Float, v2:Float, ratio:Float):Float
 		return FlxMath.lerp(v1, v2, fpsRatio(ratio));
 
 	public static function fpsRatio(ratio:Float)
 		return FlxMath.bound(ratio * FlxG.elapsed * 60, 0, 1);
 
-	/**
-	 * Opens a window containing certain information
-	 * @param title Window title
-	 * @param message Information to be displayed
-	 */
 	public static function showPopUp(title:String, message:String):Void
 	{
 		debugTrace(title + ' | ' + message, POP_UP);
@@ -174,9 +125,6 @@ class CoolUtil
 		#end
 	}
 
-	/**
-	 * Used to reset and clean the game.
-	 */
 	public static function resetEngine():Void
 	{
 		CoolUtil.save.savePreferences();
@@ -230,12 +178,6 @@ class CoolUtil
 		FlxG.resetGame();
 	}
 
-	/**
-	 * Serves to make the location of a song more flexible
-	 * @param string Song Name
-	 * @param difficulty Song Difficulty
-	 * @return String
-	 */
 	public static function formatSongPath(string:String):String
 	{
 		string = string.replace(' ', '-').toLowerCase();
@@ -249,10 +191,6 @@ class CoolUtil
 		return string;
 	}
 
-	/**
-	 * Replaces the default camera with ALE Camera
-	 * @return ALECamera
-	 */
 	public static function initALECamera():ALECamera
 	{
 		var camera = new ALECamera();
@@ -263,11 +201,6 @@ class CoolUtil
 		return camera;
 	}
 	
-	/**
-	 * Used to Play a Song
-	 * @param name Song Name
-	 * @param difficulty Song Difficulty
-	 */
 	public static function loadSong(name:String, diff:String, mode:PlayStateMode = FREEPLAY, goToPlayState:Bool = true):Void
 	{
 		var jsonData:Dynamic = {};

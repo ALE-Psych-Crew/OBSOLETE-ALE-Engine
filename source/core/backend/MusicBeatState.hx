@@ -14,9 +14,6 @@ import core.enums.PrintType;
 
 import funkin.visuals.objects.DebugText;
 
-/**
- * It is a FlxState extension that calculates the Beats, Steps and Sections of the game music (FlxG.sound.music)
- */
 class MusicBeatState extends FlxState
 {
     public var curStep:Int = 0;

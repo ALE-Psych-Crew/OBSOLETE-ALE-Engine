@@ -62,11 +62,15 @@
 
 	<section if="cpp">
 		<haxelib name="hxdiscord_rpc" if="desktop"/>
+		<haxelib name="hxvlc" />
 	</section>
 
 	<!-- ______________________________ Haxe Defines _____________________________ -->
 
 	<section if="cpp">
+		<setenv name="HAXEPATH" value="./"/>
+
+		<haxedef name="HXCPP_DEBUG_LINK" if="release" />
 		<haxedef name="HXCPP_CHECK_POINTER"/>
 		<haxedef name="HXCPP_STACK_LINE"/>
 		<haxedef name="HXCPP_STACK_TRACE"/>
