@@ -3,7 +3,7 @@ package funkin.visuals.game;
 import core.enums.ALECharacterType;
 
 import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBPalette.RGBShaderReference;
+import funkin.visuals.shaders.RGBShaderReference;
 
 class Strum extends FlxSprite
 {

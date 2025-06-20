@@ -1,7 +1,7 @@
 package funkin.visuals.editors.chart;
 
 import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBPalette.RGBShaderReference;
+import funkin.visuals.shaders.RGBShaderReference;
 
 class ChartNote extends FlxSprite
 {

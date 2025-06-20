@@ -5,7 +5,7 @@ import core.enums.NoteState;
 import core.enums.NoteType;
 
 import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBPalette.RGBShaderReference;
+import funkin.visuals.shaders.RGBShaderReference;
 
 import flixel.math.FlxAngle;
 
