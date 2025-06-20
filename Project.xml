@@ -50,6 +50,8 @@
 
 	<haxelib name="ale-ui"/>
 
+	<haxelib name="SScript"/>
+
 	<haxelib name="linc_luajit" if="cpp"/>
 	
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>

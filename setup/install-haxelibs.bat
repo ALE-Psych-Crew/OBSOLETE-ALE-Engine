@@ -7,6 +7,7 @@ echo Installing dependencies
 
 haxelib git hxcpp https://github.com/AlejoGDOfficial/MobilePorting-hxcpp --skip-dependencies
 haxelib git linc_luajit https://github.com/superpowers04/linc_luajit 633fcc051399afed6781dd60cbf30ed8c3fe2c5a --skip-dependencies
+haxelib git SScript https://github.com/AlejoGDOfficial/SScript-7.7.0
 
 haxelib install away3d 5.0.9
 haxelib install openfl 9.4.1

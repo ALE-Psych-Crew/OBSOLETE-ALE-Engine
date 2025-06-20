@@ -5,8 +5,8 @@ import cpp.*;
 
 import haxe.ds.StringMap;
 
-import scripting.sscript.tea.SScript;
-import scripting.sscript.tea.SScript.TeaCall;
+import tea.SScript;
+import tea.SScript.TeaCall;
 
 import funkin.visuals.cutscenes.DialogueCharacter;
 
