@@ -13,6 +13,7 @@ import funkin.visuals.shaders.ALERuntimeShader;
 import openfl.system.Capabilities;
 import openfl.filters.ShaderFilter;
 import openfl.filters.BitmapFilter;
+import openfl.ui.Mouse;
 
 import core.config.MainState;
 import core.Main;
@@ -176,6 +177,8 @@ class CoolUtil
 		}
 
 		FlxG.resetGame();
+		
+		Mouse.cursor = ARROW;
 	}
 
 	public static function formatSongPath(string:String):String
