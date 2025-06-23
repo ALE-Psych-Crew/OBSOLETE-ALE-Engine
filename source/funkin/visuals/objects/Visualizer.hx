@@ -4,33 +4,29 @@ import funkin.vis.dsp.SpectralAnalyzer;
 
 import lime.media.AudioSource;
 
-import flixel.group.FlxGroup;
+import flixel.group.FlxSpriteGroup;
 
-class Visualizer extends FlxGroup
+class Visualizer extends FlxSpriteGroup
 {
-    public var bars:FlxTypedGroup<FlxSprite>;
     public var analyzer:SpectralAnalyzer;
 
-    public final width:Int;
-    public final height:Int;
+    public final intialWidth:Int;
+    public final initialHeight:Int;
 
-    public function new(audioSource:AudioSource, ?width:Float, ?height:Float, barCount:Int = 16, color:FlxColor = FlxColor.RED)
+    public function new(audioSource:AudioSource, ?intialWidth:Float, ?initialHeight:Float, barCount:Int = 16, color:FlxColor = FlxColor.RED)
     {
         super();
 
         analyzer = new SpectralAnalyzer(audioSource, barCount, 0.1, 10);
 
-        bars = new FlxTypedGroup<FlxSprite>();
-		add(bars);
-
-        this.width = Math.floor(width ?? FlxG.width);
-        this.height = Math.floor(height ?? FlxG.height);
+        this.intialWidth = Math.floor(intialWidth ?? FlxG.width);
+        this.initialHeight = Math.floor(initialHeight ?? FlxG.height);
 
 		for (i in 0...barCount)
 		{
-			var spr = new FlxSprite((i / barCount) * this.width, 0).makeGraphic(Std.int((1 / barCount) * this.width) - 4, this.height, color);
-            spr.origin.set(0, this.height);
-			bars.add(spr);
+			var spr = new FlxSprite((i / barCount) * this.intialWidth, 0).makeGraphic(Std.int((1 / barCount) * this.intialWidth) - 4, this.initialHeight, color);
+            spr.origin.set(0, this.initialHeight);
+			add(spr);
 		}
     }
 
@@ -39,10 +35,10 @@ class Visualizer extends FlxGroup
 
     override function draw()
     {
-        @:privateAccess var levels = analyzer.audioSource == null ? [for (i in 0...bars.members.length) {value: 0.0, peak: 0.0}] : analyzer.getLevels();
+        @:privateAccess var levels = analyzer.audioSource == null ? [for (i in 0...members.length) {value: 0.0, peak: 0.0}] : analyzer.getLevels();
 
-        for (i in 0...min(bars.members.length, levels.length))
-            bars.members[i].scale.y = levels[i].value;
+        for (i in 0...min(members.length, levels.length))
+            members[i].scale.y = levels[i].value;
 
         super.draw();
     }
