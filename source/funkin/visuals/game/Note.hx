@@ -61,7 +61,6 @@ class Note extends FlxSprite
 
         scale.set(0.7, 0.7);
 
-
 		if (noteType == NORMAL)
 		{
 			centerOffsets();

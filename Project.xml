@@ -62,6 +62,10 @@
 
 	<haxelib name="sl-windows-api"/>
 
+	<haxelib name="grig.audio"/>
+
+	<haxelib name="funkin.vis"/>
+
 	<section if="cpp">
 		<haxelib name="hxdiscord_rpc" if="desktop"/>
 		<haxelib name="hxvlc" />
