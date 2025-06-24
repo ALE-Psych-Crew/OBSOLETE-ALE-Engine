@@ -3,12 +3,12 @@ package core;
 import lime.app.Application;
 
 #if android
-import android.content.Context;
-import android.os.Environment as AndroidEnvironment;
-import android.Permissions as AndroidPermissions;
-import android.os.Build.VERSION as AndroidVersion;
-import android.Settings as AndroidSettings;
-import android.os.Build.VERSION_CODES as AndroidVersionCode;
+import extension.androidtools.content.Context;
+import extension.androidtools.os.Environment as AndroidEnvironment;
+import extension.androidtools.Permissions as AndroidPermissions;
+import extension.androidtools.os.Build.VERSION as AndroidVersion;
+import extension.androidtools.Settings as AndroidSettings;
+import extension.androidtools.os.Build.VERSION_CODES as AndroidVersionCode;
 
 import lime.system.System as LimeSystem;
 #end
@@ -225,8 +225,7 @@ class Main extends Sprite
 		{
 			debugTrace('Requesting EXTERNAL_STORAGE...', CUSTOM, 'ANDROID', FlxColor.LIME);
 
-			for (perm in ['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE'])
-				AndroidPermissions.requestPermission(perm);
+			AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
 		}
 
 		if (!AndroidEnvironment.isExternalStorageManager())
