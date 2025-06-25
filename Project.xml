@@ -19,7 +19,7 @@
 	<haxedef name="HSCRIPT_ALLOWED"/>
 	<haxedef name="LUA_ALLOWED" if="cpp"/>
 
-	<haxedef name="DISCORD_ALLOWED" if="desktop"/>
+	<haxedef name="DISCORD_ALLOWED" if="cpp"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -65,7 +65,7 @@
 	<haxelib name="funkin.vis"/>
 
 	<section if="cpp">
-		<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
+		<haxelib name="hxdiscord_rpc" if="desktop"/>
 		<haxelib name="hxvlc"/>
 	</section>
 
