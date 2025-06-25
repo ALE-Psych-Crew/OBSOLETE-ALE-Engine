@@ -19,7 +19,7 @@
 	<haxedef name="HSCRIPT_ALLOWED"/>
 	<haxedef name="LUA_ALLOWED" if="cpp"/>
 
-	<haxedef name="DISCORD_ALLOWED" if="cpp" unless="mobile"/>
+	<haxedef name="DISCORD_ALLOWED" if="desktop"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
