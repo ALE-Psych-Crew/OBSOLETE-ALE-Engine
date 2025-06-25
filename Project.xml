@@ -19,7 +19,7 @@
 	<haxedef name="HSCRIPT_ALLOWED"/>
 	<haxedef name="LUA_ALLOWED" if="cpp"/>
 
-	<haxedef name="DISCORD_ALLOWED" if="cpp"/>
+	<haxedef name="DISCORD_ALLOWED" if="cpp" unless="mobile"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -53,22 +53,20 @@
 	<haxelib name="SScript"/>
 
 	<haxelib name="linc_luajit" if="cpp"/>
-	
-	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 
 	<haxelib name="tjson"/>
 
 	<haxelib name="extension-androidtools" if="android"/>
 
-	<haxelib name="sl-windows-api"/>
+	<haxelib name="sl-windows-api" if="desktop"/>
 
 	<haxelib name="grig.audio"/>
 
 	<haxelib name="funkin.vis"/>
 
 	<section if="cpp">
-		<haxelib name="hxdiscord_rpc" if="desktop"/>
-		<haxelib name="hxvlc" />
+		<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
+		<haxelib name="hxvlc"/>
 	</section>
 
 	<!-- ______________________________ Haxe Defines _____________________________ -->
@@ -76,7 +74,6 @@
 	<section if="cpp">
 		<setenv name="HAXEPATH" value="./"/>
 
-		<haxedef name="HXCPP_DEBUG_LINK" if="release" />
 		<haxedef name="HXCPP_CHECK_POINTER"/>
 		<haxedef name="HXCPP_STACK_LINE"/>
 		<haxedef name="HXCPP_STACK_TRACE"/>

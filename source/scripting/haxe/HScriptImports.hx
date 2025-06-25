@@ -10,7 +10,6 @@ import funkin.visuals.objects.Visualizer;
 import flixel.ui.FlxButton;
 import flixel.ui.FlxSpriteButton;
 
-import funkin.visuals.objects.VideoSprite;
 import funkin.visuals.editors.chart.ChartNote;
 
 class HScriptImports {}

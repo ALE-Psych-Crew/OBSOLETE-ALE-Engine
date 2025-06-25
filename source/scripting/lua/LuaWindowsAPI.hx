@@ -2,7 +2,9 @@ package scripting.lua;
 
 import cpp.*;
 
+#if (windows && cpp)
 import winapi.WindowsAPI.MessageBoxIcon;
+#end
 
 class LuaWindowsAPI extends LuaPresetBase
 {
@@ -41,6 +43,7 @@ class LuaWindowsAPI extends LuaPresetBase
         set('showMessageBox', function(title:String, message:String, icon:String)
             {
                 WindowsAPI.showMessageBox(title, message,
+                    #if (windows && cpp)
                     switch (icon.toUpperCase().trim())
                     {
                         case 'ERROR':
@@ -52,6 +55,9 @@ class LuaWindowsAPI extends LuaPresetBase
                         default:
                             MessageBoxIcon.INFORMATION;
                     }
+                    #else
+                    0
+                    #end
                 );
             }
         );
