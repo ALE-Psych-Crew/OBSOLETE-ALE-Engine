@@ -21,7 +21,10 @@ class LuaPreset
         new LuaState(lua);
         new LuaObject(lua);
         new LuaShader(lua);
+
+        #if desktop
         new LuaVideoSprite(lua);
+        #end
 
         new LuaControls(lua);
 
@@ -34,7 +37,6 @@ class LuaPreset
         new LuaPaths(lua);
 
         new LuaDiscord(lua);
-
 
         lua.set('this', FlxG.state);
     }

@@ -58,15 +58,15 @@
 
 	<haxelib name="extension-androidtools" if="android"/>
 
-	<haxelib name="sl-windows-api" if="desktop"/>
+	<haxelib name="sl-windows-api" if="windows"/>
 
-	<haxelib name="grig.audio"/>
+	<haxelib name="grig.audio" if="desktop"/>
 
-	<haxelib name="funkin.vis"/>
+	<haxelib name="funkin.vis" if="desktop"/>
 
 	<section if="cpp">
 		<haxelib name="hxdiscord_rpc" if="desktop"/>
-		<haxelib name="hxvlc"/>
+		<haxelib name="hxvlc" if="desktop"/>
 	</section>
 
 	<!-- ______________________________ Haxe Defines _____________________________ -->
@@ -114,5 +114,5 @@
 		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
 	</section>
 	
-	<certificate path="androidsign.jks" password="aleengine" alias="aleengineandroid" alias-password="aleengine" if="android" unless="debug"/>
+	<certificate path="certificate.crt" password="aleenginepass" alias="ale-engine" alias-password="aleenginepass" if="android"/>
 </project>

@@ -178,7 +178,9 @@ class CoolUtil
 
 		FlxG.resetGame();
 		
+		#if desktop
 		Mouse.cursor = ARROW;
+		#end
 	}
 
 	public static function formatSongPath(string:String):String

@@ -5,7 +5,10 @@ import ale.ui.ALETaskBar;
 import ale.ui.ALEUIUtils;
 import ale.ui.ALEWindow;
 
+#if desktop
 import funkin.visuals.objects.Visualizer;
+import funkin.visuals.objects.VideoSprite;
+#end
 
 import flixel.ui.FlxButton;
 import flixel.ui.FlxSpriteButton;
