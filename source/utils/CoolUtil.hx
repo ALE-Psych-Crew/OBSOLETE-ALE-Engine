@@ -309,7 +309,7 @@ class CoolUtil
 			developerMode: false,
 			scriptsHotReloading: false,
 
-			initialState: 'IntroState',
+			initialState: 'TitleState',
 			freeplayState: 'FreeplayState',
 			storyMenuState: 'StoryMenuState',
 			masterEditorMenu: 'MasterEditorMenu',
