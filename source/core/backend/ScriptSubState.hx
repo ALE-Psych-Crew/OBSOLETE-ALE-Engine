@@ -80,7 +80,7 @@ class ScriptSubState extends MusicBeatSubState
         {
             var script:HScript = new HScript(Paths.getPath(path + '.hx'), SUBSTATE);
 
-            if (script.parsingException == null)
+            if (!script.failedParsing)
             {
                 hScripts.push(script);
 

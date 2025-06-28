@@ -1139,7 +1139,7 @@ class PlayState extends ScriptState
         {
             var script:HScript = new HScript(Paths.getPath(path + '.hx'), STATE);
 
-            if (script.parsingException == null)
+            if (!script.failedParsing)
             {
                 hScripts.push(script);
 
