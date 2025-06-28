@@ -1,6 +1,6 @@
 #if !macro
-import flixel.sound.FlxSound;
 import flixel.FlxG;
+import flixel.sound.FlxSound;
 import flixel.FlxState;
 import flixel.FlxSprite;
 import flixel.FlxCamera;

@@ -41,7 +41,7 @@ function lightning(curBeat:Int)
 
     lightningOffset = FlxG.random.int(8, 24);
 
-    for (group in this.characters.getGroups())
+    for (group in game.characters.getGroups())
         for (character in group)
             if (character.animation.exists('scared'))
             {

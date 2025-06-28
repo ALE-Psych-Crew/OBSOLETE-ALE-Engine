@@ -1,5 +1,7 @@
 package scripting.haxe;
 
+import scripting.haxe.HScriptImports;
+
 import rulescript.RuleScript;
 import rulescript.parsers.HxParser;
 
@@ -30,66 +32,58 @@ class ALERuleScript extends RuleScript
 
 	private function preset():Void
 	{
-		var presetClasses:Array<Dynamic> = [
-			// Flixel
-			flixel.FlxG,
-			flixel.FlxSprite,
-			flixel.FlxCamera,
-			flixel.math.FlxMath,
-			flixel.text.FlxText,
-			flixel.util.FlxTimer,
-			flixel.tweens.FlxTween,
-			flixel.tweens.FlxEase,
-			flixel.effects.FlxFlicker,
-			flixel.tile.FlxTilemap,
-			flixel.group.FlxGroup,
+		var presetClasses:Array<Class<Dynamic>> = [
+			FlxG,
+			FlxSound,
+			FlxState,
+			FlxSprite,
+			FlxCamera,
+			FlxMath,
+			FlxTimer,
+			FlxText,
+			FlxEase,
+			FlxTween,
+			FlxSpriteGroup,
 			flixel.group.FlxGroup.FlxTypedGroup,
-			flixel.addons.display.FlxRuntimeShader,
-			flixel.addons.display.FlxGridOverlay,
-			flixel.addons.display.FlxBackdrop,
-			flixel.addons.editors.ogmo.FlxOgmo3Loader,
-	
-			// Haxe
-			StringTools,
-			sys.io.Process,
-			haxe.ds.StringMap,
+
+			Array,
+			String,
+			Std,
+			Math,
+			Type,
+			Reflect,
 			Date,
 			DateTools,
-			Math,
-			Reflect,
-			Std,
-			StringTools,
-			Type,
+			Xml,
+			EReg,
+			Lambda,
+			IntIterator,
+
+			sys.io.Process,
+			haxe.ds.StringMap,
+			haxe.ds.IntMap,
+			haxe.ds.EnumValueMap,
 	
-			// OpenFL
-			openfl.Lib,
-			sys.io.File,
-			openfl.filters.ShaderFilter,
-	
-			// Sys
-			sys.io.File,
-			sys.FileSystem,
+			File,
+			FileSystem,
 			Sys,
+			Process,
 	
-			// ALE
-			Paths,
+			PlayState,
+			CustomState,
+			funkin.substates.CustomSubState,
+			MusicBeatState,
+			MusicBeatSubState,
+			ScriptState,
+			ScriptSubState,
+			Conductor,
+			DiscordRPC,
+			Controls,
+			ClientPrefs,
 			CoolUtil,
 			CoolVars,
-			ClientPrefs,
-			Conductor,
-			core.backend.MusicBeatState,
-			core.backend.DiscordRPC,
-			CustomState,
-			CustomSubState,
-			funkin.visuals.objects.AttachedSprite,
-			funkin.visuals.objects.AttachedText,
-			funkin.visuals.objects.Alphabet,
-			funkin.visuals.objects.TypedAlphabet,
-			funkin.visuals.objects.AttachedAlphabet,
-			funkin.states.OptionsState,
-			core.backend.Controls,
+			Paths,
 	
-			// CPP
 			cpp.WindowsAPI
 		];
 
@@ -100,7 +94,8 @@ class ALERuleScript extends RuleScript
 			'FlxColor' => HScriptFlxColor,
 			'FlxKey' => HScriptFlxKey,
 			'Json' => utils.ALEJson,
-			'debugTrace' => CoolUtil.debugTrace
+			'debugTrace' => CoolUtil.debugTrace,
+			'debugPrint' => CoolUtil.debugPrint
 		];
 
 		for (preVar in presetVariables.keys())
