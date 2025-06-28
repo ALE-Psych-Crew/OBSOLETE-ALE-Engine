@@ -1,8 +1,9 @@
 package core.backend;
 
 import scripting.haxe.HScript;
-
 import scripting.lua.LuaScript;
+
+import haxe.Exception;
 
 class ScriptState extends MusicBeatState
 {
@@ -83,22 +84,13 @@ class ScriptState extends MusicBeatState
         #if HSCRIPT_ALLOWED
         if (Paths.fileExists(path + '.hx'))
         {
-            try
+            var script:HScript = new HScript(Paths.getPath(path + '.hx'), STATE);
+
+            if (script.parsingException == null)
             {
-                var script:HScript = new HScript(Paths.getPath(path + '.hx'), STATE);
-    
-                if (script.parsingException != null)
-                {
-                    debugPrint('Error on Loading: ' + script.parsingException.message, ERROR);
+                hScripts.push(script);
 
-                    script.destroy();
-                } else {
-                    hScripts.push(script);
-
-                    debugTrace('"' + path + '.hx" has been Successfully Loaded', HSCRIPT);
-                }
-            } catch (error) {
-                debugPrint('Error: ' + error.message, ERROR);
+                debugTrace('"' + path + '.hx" has been Successfully Loaded', HSCRIPT);
             }
         }
         #end
@@ -116,8 +108,8 @@ class ScriptState extends MusicBeatState
                 luaScripts.push(script);
 
                 debugTrace('"' + path + '.lua" has been Successfully Loaded', LUA);
-            } catch(error) {
-                debugPrint('Error: ' + error, ERROR);
+            } catch (error:Exception) {
+                debugPrint('Error: ' + error.details(), ERROR);
             }
         }
         #end
@@ -225,11 +217,7 @@ class ScriptState extends MusicBeatState
         if (hScripts.length > 0)
         {
             for (script in hScripts)
-            {
-                script.destroy();
-
                 hScripts.remove(script);
-            }
         }
         #end
     }

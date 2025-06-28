@@ -40,7 +40,7 @@ function onCreate()
     }
 }
 
-function createSprite(image:String, ?x:Float, ?y:Float, ?scale:Float, ?scroll:Float, ?addInState:Bool, ?animations:Array<Array<String>>, ?loop:Bool):FlxSprite
+function createSprite(image:String, ?x:Float, ?y:Float, ?scale:Float, ?scroll:Float, ?addInState:Bool, ?animations:Array, ?loop:Bool):FlxSprite
 {
     var sprite:FlxSprite = new FlxSprite(x, y);
     
@@ -80,30 +80,30 @@ function onBeatHit(curBeat:Int)
 
 function onInitHUD()
 {
-    this.ratingsDirectory = 'pixel';
-    this.ratingsScale = 7;
+    game.ratingsDirectory = 'pixel';
+    game.ratingsScale = 7;
 }
 
 function postInitHUD()
 {
-    for (obj in this.comboGroup)
+    for (obj in game.comboGroup)
         obj.antialiasing = false;
 }
 
 function onInitCountdown()
 {
-    this.countdownDirectory = 'pixel';
-    this.countdownScale = 10;
+    game.countdownDirectory = 'pixel';
+    game.countdownScale = 10;
 }
 
 function postInitCountdown()
 {
-    this.countdownSprite.antialiasing = false;
+    game.countdownSprite.antialiasing = false;
 }
 
 function postCreate()
 {
-    for (group in this.strumLines.getGroups())
+    for (group in game.strumLines.getGroups())
     {
         for (strl in group)
         {
@@ -120,8 +120,8 @@ function postCreate()
         }
     }
     
-    this.camGame.pixelPerfectRender = true;
-    this.camHUD.pixelPerfectRender = true;
+    game.camGame.pixelPerfectRender = true;
+    game.camHUD.pixelPerfectRender = true;
 }
 
 function onNoteSpawn(note:Note)
@@ -134,6 +134,6 @@ function onNoteSpawn(note:Note)
 
 function onDestroy()
 {
-    this.camGame.pixelPerfectRender = false;
-    this.camHUD.pixelPerfectRender = false;
+    game.camGame.pixelPerfectRender = false;
+    game.camHUD.pixelPerfectRender = false;
 }

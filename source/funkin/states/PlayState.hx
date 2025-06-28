@@ -2,6 +2,8 @@ package funkin.states;
 
 import utils.ALEParserHelper;
 
+import haxe.Exception;
+
 import core.enums.ALECharacterType;
 import core.enums.Rating;
 import core.enums.Rank;
@@ -1135,24 +1137,15 @@ class PlayState extends ScriptState
         #if HSCRIPT_ALLOWED
         if (Paths.fileExists(path + '.hx'))
         {
-            try
+            var script:HScript = new HScript(Paths.getPath(path + '.hx'), STATE);
+
+            if (script.parsingException == null)
             {
-                var script:HScript = new HScript(Paths.getPath(path + '.hx'), STATE);
-    
-                if (script.parsingException != null)
-                {
-                    debugPrint('Error on Loading: ' + script.parsingException.message, ERROR);
+                hScripts.push(script);
 
-                    script.destroy();
-                } else {
-                    hScripts.push(script);
+                new scripting.haxe.HaxePlayState(script);
 
-                    new scripting.haxe.HaxePlayState(script);
-
-                    debugTrace('"' + path + '.hx" has been Successfully Loaded', HSCRIPT);
-                }
-            } catch (error) {
-                debugPrint('Error: ' + error.message, ERROR);
+                debugTrace('"' + path + '.hx" has been Successfully Loaded', HSCRIPT);
             }
         }
         #end
@@ -1172,8 +1165,8 @@ class PlayState extends ScriptState
                 new scripting.lua.LuaPlayState(script);
 
                 debugTrace('"' + path + '.lua" has been Successfully Loaded', LUA);
-            } catch(error) {
-                debugPrint('Error: ' + error, ERROR);
+            } catch (error:Exception) {
+                debugPrint('Error: ' + error.details(), ERROR);
             }
         }
         #end

@@ -439,7 +439,7 @@ class CoolUtil
 		if (!CoolVars.data.developerMode)
 			return;
 
-		text = Std.string(text);
+		text = haxe.Log.formatOutput(text, pos);
 
 		var theText:String = ansiColorString(type == CUSTOM ? customType : PrintType.typeToString(type), type == CUSTOM ? customColor : PrintType.typeToColor(type)) + ansiColorString(' | ' + Date.now().toString().split(' ')[1] + ' | ', 0xFF505050) + (pos == null ? '' : ansiColorString(pos.fileName + ': ', 0xFF888888)) + text;
 

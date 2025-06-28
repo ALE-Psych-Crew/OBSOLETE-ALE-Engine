@@ -1,6 +1,6 @@
 import flixel.group.FlxTypedGroup;
 
-var dancers:FlxTypedGroup<FlxSprite>;
+var dancers:FlxTypedGroup;
 
 var sunset:FlxSprite;
 var limo:FlxSprite;
@@ -11,7 +11,7 @@ function onCreate()
 {
     sunset = createSprite('sunset', -120, -50, 1, 0.1);
     
-    dancers = new FlxTypedGroup<FlxSprite>();
+    dancers = new FlxTypedGroup();
     add(dancers);
 
     if (!ClientPrefs.data.lowQuality)
@@ -32,7 +32,7 @@ function onCreate()
     mainLimo = createSprite('mainLimo', -120, 550, 1, 1, true, [['limo', 'Limo stage']], true);
 }
 
-function createSprite(image:String, ?x:Float, ?y:Float, ?scale:Float, ?scroll:Float, ?addInState:Bool, ?animations:Array<Array<String>>, ?loop:Bool):FlxSprite
+function createSprite(image:String, ?x:Float, ?y:Float, ?scale:Float, ?scroll:Float, ?addInState:Bool, ?animations:Array, ?loop:Bool):FlxSprite
 {
     var sprite:FlxSprite = new FlxSprite(x, y);
     

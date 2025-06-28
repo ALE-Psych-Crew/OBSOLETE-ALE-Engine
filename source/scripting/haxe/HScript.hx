@@ -1,37 +1,62 @@
 package scripting.haxe;
 
-#if HSCRIPT_ALLOWED
-import cpp.*;
-
-import haxe.ds.StringMap;
-
-import tea.SScript;
-import tea.SScript.TeaCall;
+import rulescript.RuleScript;
+import rulescript.parsers.HxParser;
 
 import core.enums.ScriptType;
 
-import scripting.haxe.HScriptImports;
+import haxe.ds.StringMap;
+import haxe.Exception;
+
 import flixel.FlxObject;
 
 @:access(core.backend.ScriptState)
 @:access(core.backend.ScriptSubState)
-class HScript extends SScript
+class HScript extends RuleScript
 {
-	public var type:ScriptType;
+	public final type:ScriptType;
 
-	override public function new(file:String, type:ScriptType)
+	public var parsingException:Null<String> = null;
+
+	override public function new(filePath:String, type:ScriptType)
 	{
-		super(file);
-
+		super();
+		
 		this.type = type;
 
+		var splitPath:Array<String> = filePath.split('/');
+		
+		scriptName = splitPath[splitPath.length - 1];
+
+		this.errorHandler = onError;
+
+		getParser(HxParser).allowAll();
+
 		preset();
+
+		var theException:Null<Exception> = null;
+
+		if (FileSystem.exists(filePath))
+			tryExecute(File.getContent(filePath), onError);
+
+		if (theException != null)
+			parsingException = theException.message;
 	}
 
-    override public function preset()
-    {
-		super.preset();
+	public dynamic function onError(error:Exception):Dynamic
+	{
+		if (type == STATE)
+			ScriptState.instance.debugPrint(error.message, ERROR);
+		else
+			ScriptSubState.instance.debugPrint(error.message, ERROR);
 
+		parsingException = error.message;
+
+		return error.details();
+	}
+
+	private function preset():Void
+	{
         var presetClasses:Array<Dynamic> = [
             // Flixel
             flixel.FlxG,
@@ -55,11 +80,23 @@ class HScript extends SScript
             StringTools,
             sys.io.Process,
 			haxe.ds.StringMap,
+			Date,
+			DateTools,
+			Math,
+			Reflect,
+			Std,
+			StringTools,
+			Type,
 
             // OpenFL
             openfl.Lib,
             sys.io.File,
             openfl.filters.ShaderFilter,
+
+			// Sys
+			sys.io.File,
+			sys.FileSystem,
+			Sys,
 
             // ALE
             Paths,
@@ -91,7 +128,7 @@ class HScript extends SScript
 		if (type == STATE)
 		{
 			instanceVariables = [
-				'this' => FlxG.state,
+				'game' => FlxG.state,
 				'add' => FlxG.state.add,
 				'insert' => FlxG.state.insert,
 				'remove' => FlxG.state.remove,
@@ -110,7 +147,7 @@ class HScript extends SScript
 			];
 		} else if (type == SUBSTATE) {
 			instanceVariables = [
-				'this' => FlxG.state.subState,
+				'game' => FlxG.state.subState,
 				'add' => FlxG.state.subState.add,
 				'insert' => FlxG.state.subState.insert,
 				'remove' => FlxG.state.subState.remove,
@@ -141,37 +178,30 @@ class HScript extends SScript
 
 		for (preVar in presetVariables.keys())
 			set(preVar, presetVariables.get(preVar));
+	}
 
-		/*
-		var presetFunctions:StringMap<Dynamic> = [
-		];
-
-		for (preFunc in presetFunctions.keys())
-			set(preFunc, presetFunctions.get(preFunc));
-		*/
-    }
-
-	override public function call(func:String, ?args:Array<Dynamic>):TeaCall
+	public function call(func:String, ?args:Array<Dynamic>)
 	{
-		if (!exists(func))
-			return null;
+		var func = variables.get(func);
 
-		var callValue:TeaCall = super.call(func, args);
-
-		if (!callValue.succeeded)
+		if (func != null && Reflect.isFunction(func))
 		{
-			var errorString:String = 'Error: ' + callValue.calledFunction + ' - ' + callValue.exceptions[0].message;
-			
-			if (type == STATE)
-				ScriptState.instance.debugPrint(errorString, ERROR);
-			else if (type == SUBSTATE)
-				ScriptSubState.instance.debugPrint(errorString, ERROR);
+			try
+			{
+				Reflect.callMethod(null, func, args ?? []);
+			} catch(error:Exception) {
+				debugPrint(error.message, ERROR);
+			}
 		}
+	}
 
-		if (callValue != null)
-			return callValue;
+	public function set(name:String, value:Dynamic)
+		interp.variables.set(name, value);
 
-		return null;
+	public function setClass(cls:Class<Dynamic>)
+	{
+		var className = Type.getClassName(cls).split('.');
+
+		set(className[className.length - 1], cls);
 	}
 }
-#end

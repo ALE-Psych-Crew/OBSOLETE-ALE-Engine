@@ -50,7 +50,7 @@
 
 	<haxelib name="ale-ui"/>
 
-	<haxelib name="SScript"/>
+	<haxelib name="rulescript"/>
 
 	<haxelib name="linc_luajit" if="cpp"/>
 
@@ -95,7 +95,7 @@
 
 	<haxedef name="DISABLED_MACRO_SUPERLATIVE" if="android"/>
 
-	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED"/>
+	<haxedef name="hscriptPos"/>
 
 	<haxedef name="DISCORD_DISABLE_IO_THREAD"/>
 

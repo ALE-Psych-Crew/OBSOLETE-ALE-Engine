@@ -26,7 +26,7 @@ class MusicBeatSubState extends flixel.FlxSubState
 
     public inline function debugPrint(text:Dynamic, ?type:Null<PrintType> = TRACE, ?customType:String = '', ?customColor:FlxColor = FlxColor.GRAY) 
     {
-        text = Std.string(text);
+        text = haxe.Log.formatOutput(text, null);
 
         if (debugTexts != null)
         {

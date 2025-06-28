@@ -13,7 +13,7 @@ import core.backend.Mods;
 class MainState extends flixel.FlxState
 {
     #if mobile
-    private var showedModMenu:Bool = false;
+    @:unreflective private var showedModMenu:Bool = false;
     #end
 
     public static var debugCounter:DebugCounter;
@@ -96,9 +96,9 @@ class MainState extends flixel.FlxState
 
             showedModMenu = true;
         }
-        #end
-        
+        #else
         CoolUtil.switchState(() -> new CustomState(CoolVars.data.initialState), true, true);
+        #end
     }
 
     function openalFix()

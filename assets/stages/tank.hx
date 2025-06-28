@@ -13,11 +13,11 @@ var smokeRight:FlxSprite;
 var watchTower:FlxSprite;
 
 var tank:FlxSprite;
-var runningTankmans:FlxTypedGroup<FlxSprite>;
+var runningTankmans:FlxTypedGroup;
 
 var ground:FlxSprite;
 
-var foreground:FlxTypedGroup<FlxSprite>;
+var foreground:FlxTypedGroup;
 
 var tankSpeed:Float = FlxG.random.float(5, 7);
 var tankAngle:Float = FlxG.random.int(-90, 45);
@@ -48,7 +48,7 @@ function onCreate()
 
 	tank = createSprite('tank', 0, 0, 1, 0.5, true, [['idle', 'BG tank w lighting']], true);
 
-	runningTankmans = new FlxTypedGroup<FlxSprite>();
+	runningTankmans = new FlxTypedGroup();
 	add(runningTankmans);
 
 	ground = createSprite('ground', -420, -150, 1.15);
@@ -56,7 +56,7 @@ function onCreate()
 
 function postCreate()
 {
-	foreground = new FlxTypedGroup<FlxSprite>();
+	foreground = new FlxTypedGroup();
 	add(foreground);
 
 	foreground.add(createSprite('tank0', -500, 650, 1, 1.5, true, [['idle', 'fg']]));
@@ -105,7 +105,7 @@ function onUpdate(elapsed:Float)
 		updateTankmans();
 }
 
-function createSprite(image:String, ?x:Float, ?y:Float, ?scale:Float, ?scroll:Float, ?addInState:Bool, ?animations:Array<Array<String>>, ?loop:Bool):FlxSprite
+function createSprite(image:String, ?x:Float, ?y:Float, ?scale:Float, ?scroll:Float, ?addInState:Bool, ?animations:Array, ?loop:Bool):FlxSprite
 {
 	var sprite:FlxSprite = new FlxSprite(x, y);
 
@@ -144,13 +144,13 @@ function onNoteHit(note:Note)
 		getCharacter('extra', 0).animation.play('shoot' + (note.data % 2 == 0 ? FlxG.random.int(1, 2) : FlxG.random.int(3, 4)), true);
 }
 
-var tankPool:Array<FlxSprite> = [];
+var tankPool:Array = [];
 
-var spawnTimes:Array<Array<Float>> = [];
+var spawnTimes:Array = [];
 
 function createRunningTankmans()
 {
-	for (note in this.strumLines.extras[0].chartNotes)
+	for (note in game.strumLines.extras[0].chartNotes)
 		if (FlxG.random.bool(16) && note[0] > 1000)
 			spawnTimes.push([note[0], note[1] % 2 == 0]);
 }
