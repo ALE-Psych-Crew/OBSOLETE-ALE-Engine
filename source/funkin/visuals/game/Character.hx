@@ -30,11 +30,10 @@ class Character extends FlxSprite
         data = ALEParserHelper.getALECharacter(name);
 
         texture = data.image;
-
         return name;
     }
 
-    public var offsetsMap:StringMap<Dynamic>;
+    public var offsetsMap:Map<String, Array<Int>> = new Map<String, Array<Int>>();
 
     public var cameraPosition:Array<Float>;
 
@@ -45,12 +44,6 @@ class Character extends FlxSprite
 
         frames = Paths.getAtlas(texture);
 
-        scale.x = scale.y = data.scale;
-
-        updateHitbox();
-
-        offsetsMap = new StringMap<Dynamic>();
-
         for (animation in data.animations)
         {
             if (animation.indices != null && animation.indices.length > 0)
@@ -60,16 +53,13 @@ class Character extends FlxSprite
 
             var offsets:Array<Int> = animation.offset;
 
-            offsets[0] -= data.position[0];
-            offsets[1] -= data.position[1];
-
-            offsetsMap.set(animation.animation, offsets);
+            offsetsMap[animation.animation] = offsets != null && offsets.length > 1 ? [offsets[0], offsets[1]] : [0, 0];
         }
 
         offsetsCallback = (name:String) -> {
             if (offsetsMap.exists(name))
             {
-                var offsets:Array<Float> = offsetsMap.get(name);
+                var offsets:Array<Int> = offsetsMap.get(name);
 
                 offset.set(offsets[0], offsets[1]);
             }
@@ -92,7 +82,14 @@ class Character extends FlxSprite
         else if (animation.exists('danceLeft'))
             animation.play('danceLeft', true);
 
-        cameraPosition = [data.cameraPosition[0] - offset.x, data.cameraPosition[1] - offset.y];
+        if (data.scale != 1)
+        {
+            scale.x = scale.y = data.scale;
+
+            updateHitbox();
+        }
+
+        cameraPosition = [data.cameraPosition[0], data.cameraPosition[1]];
 
         antialiasing = ClientPrefs.data.antialiasing && data.antialiasing;
 
