@@ -74,7 +74,6 @@
     - Conductor Field [x]
     - Flixel Field [x]
     - System Field [x]
-    - Hotkeys Field [ ]
     - Outdated Field [x]
 
 - Editors [ ]
