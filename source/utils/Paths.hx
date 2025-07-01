@@ -14,7 +14,7 @@ import openfl.display3D.textures.RectangleTexture;
 
 import core.backend.Mods;
 
-import flash.media.Sound;
+import openfl.media.Sound;
 
 class Paths
 {

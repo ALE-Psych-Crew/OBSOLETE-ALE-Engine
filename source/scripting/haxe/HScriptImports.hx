@@ -1,5 +1,6 @@
 package scripting.haxe;
 
+#if COMPILE_ALL_CLASSES
 import flixel.addons.display.FlxRuntimeShader;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.display.FlxBackdrop;
@@ -23,12 +24,11 @@ import funkin.visuals.objects.Alphabet;
 import funkin.visuals.objects.TypedAlphabet;
 import funkin.visuals.objects.AttachedAlphabet;
 
-#if desktop
 import funkin.visuals.objects.Visualizer;
 import funkin.visuals.objects.VideoSprite;
-#end
 
 import funkin.visuals.editors.chart.ChartNote;
+#end
 
 import funkin.states.OptionsState;
 

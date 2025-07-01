@@ -11,6 +11,7 @@ haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio.git cbf91e2180fd2
 haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 1966f8fbbbc509ed90d4b520f3c49c084fc92fd6
 haxelib git ale-ui https://github.com/ALE-Engine-Crew/ALE-UI --skip-dependencies
 
+haxelib install nape-haxe4 2.0.22
 haxelib install away3d 5.0.9
 haxelib install openfl 9.4.1
 haxelib install tink_core 1.26.0

@@ -1,12 +1,12 @@
 package scripting.haxe;
 
-import scripting.haxe.HScriptImports;
-
 import rulescript.RuleScript;
 import rulescript.parsers.HxParser;
 
 import haxe.ds.StringMap;
 import haxe.Exception;
+
+import scripting.haxe.HScriptImports;
 
 class ALERuleScript extends RuleScript
 {

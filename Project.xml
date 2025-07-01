@@ -14,12 +14,14 @@
 
 	<!-- _____________________________ ALE Defines _______________________________ -->
 
-	<haxedef name="MODS_ALLOWED" if="cpp"/>
+	<define name="MODS_ALLOWED" if="cpp"/>
 
-	<haxedef name="HSCRIPT_ALLOWED"/>
-	<haxedef name="LUA_ALLOWED" if="cpp"/>
+	<define name="HSCRIPT_ALLOWED"/>
+	<define name="LUA_ALLOWED" if="cpp"/>
 
-	<haxedef name="DISCORD_ALLOWED" if="cpp"/>
+	<define name="DISCORD_ALLOWED" if="cpp"/>
+
+	<define name="COMPILE_ALL_CLASSES"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -64,6 +66,8 @@
 
 	<haxelib name="funkin.vis" if="desktop"/>
 
+	<haxelib name="nape-haxe4"/>
+
 	<section if="cpp">
 		<haxelib name="hxdiscord_rpc" if="desktop"/>
 		<haxelib name="hxvlc" if="desktop"/>
@@ -89,9 +93,6 @@
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug"/>
 
 	<haxedef name="message.reporting" value="pretty"/>
-	
-	<haxeflag name="--macro" value="allowPackage('flash')"/>
-	<haxeflag name="--macro" value="include('my.pack')"/>
 
 	<haxedef name="DISABLED_MACRO_SUPERLATIVE" if="android"/>
 
@@ -99,8 +100,16 @@
 
 	<haxedef name="DISCORD_DISABLE_IO_THREAD"/>
 
+	<haxeflag name="-dce" value="no" if="COMPILE_ALL_CLASSES"/>
+
+	<!-- ______________________________ Android Configs _____________________________ -->
+
 	<config:android target-sdk-version="33"/>
 	<config:android minimum-sdk-version="21"/>
+	
+	<certificate path="certificate.crt" password="aleenginepass" alias="ale-engine" alias-password="aleenginepass" if="android"/>
+
+	<!-- ______________________________ Application Icon ______________________________ -->
 
 	<assets path='art/iconOG.png' rename='icon.png' if="linux"/>
 	
@@ -109,10 +118,10 @@
 	<icon path="art/icon64.png" size='64'/>
 	<icon path="art/iconOG.png"/>
 
+	<!-- ______________________________ ALSoft Config ______________________________ -->
+
 	<section if="desktop">
 		<assets path="alsoft.txt" rename="plugins/alsoft.ini" type="text" if="windows"/>
 		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
 	</section>
-	
-	<certificate path="certificate.crt" password="aleenginepass" alias="ale-engine" alias-password="aleenginepass" if="android"/>
 </project>

@@ -1,7 +1,5 @@
 package scripting.haxe;
 
-import rulescript.RuleScript;
-
 import core.enums.ScriptType;
 
 import haxe.ds.StringMap;

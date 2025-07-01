@@ -22,9 +22,7 @@ class LuaPreset
         new LuaObject(lua);
         new LuaShader(lua);
 
-        #if desktop
         new LuaVideoSprite(lua);
-        #end
 
         new LuaControls(lua);
 

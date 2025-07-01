@@ -1,4 +1,3 @@
-#if !macro
 import flixel.FlxG;
 import flixel.sound.FlxSound;
 import flixel.FlxState;
@@ -42,4 +41,3 @@ import utils.ALEJson as Json;
 import utils.CoolUtil;
 
 using StringTools;
-#end
