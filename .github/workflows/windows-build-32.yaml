@@ -17,7 +17,17 @@ jobs:
       - name: Setup Haxe
         uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: 4.3.6
+          haxe-version: 4.3.7
+
+      - name: Restore Build Cache
+        uses: actions/cache@v3
+        with:
+          key: cache-build-windows32
+          path: |
+            .haxelib/
+            export/32bit/windows/haxe/
+            export/32bit/windows/obj/
+          restore-keys: cache-build-windows32
 
       - name: Install Libraries
         run: setup/install-haxelibs.bat
@@ -30,3 +40,13 @@ jobs:
         with:
           name: ALE Engine - Windows Build (32 Bits)
           path: export/32bit/windows/bin
+
+      - name: Uploading New Cache
+        uses: actions/cache@v3
+        with:
+          key: cache-build-windows
+          path: |
+            .haxelib/
+            export/release/windows/haxe/
+            export/release/windows/obj/
+          restore-keys: cache-build-windows32
