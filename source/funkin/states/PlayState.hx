@@ -426,6 +426,10 @@ class PlayState extends ScriptState
         
         for (event in theEvents)
             loadScript('events/' + event);
+
+        callOnScripts('onInitScripts');
+
+        callOnScripts('postInitScripts');
     }
 
     public var countdownDirectory:String = 'default';
