@@ -14,30 +14,10 @@ jobs:
       - name: Pull the New Commit
         uses: actions/checkout@v2
 
-      - name: Cache haxelib
-        uses: actions/cache@v4
-        with:
-          path: |
-            C:\Users\runneradmin\.haxelib
-            C:\HaxeToolkit\haxe\lib
-          key: haxelib-${{ hashFiles('setup/install-haxelibs.bat') }}
-          restore-keys: |
-            haxelib-
-
       - name: Setup Haxe
         uses: krdlab/setup-haxe@v1
         with:
           haxe-version: 4.3.7
-
-      - name: Restore Build Cache
-        uses: actions/cache@v3
-        with:
-          key: cache-build-windows
-          path: |
-            .haxelib/
-            export/release/windows/haxe/
-            export/release/windows/obj/
-          restore-keys: cache-build-windows
 
       - name: Install/Updating Libraries
         run: setup/install-haxelibs.bat
@@ -50,13 +30,3 @@ jobs:
         with:
           name: ALE Engine - Windows Build
           path: export/release/windows/bin
-
-      - name: Uploading New Cache
-        uses: actions/cache@v3
-        with:
-          key: cache-build-windows
-          path: |
-            .haxelib/
-            export/release/windows/haxe/
-            export/release/windows/obj/
-          restore-keys: cache-build-windows
