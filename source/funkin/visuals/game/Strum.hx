@@ -13,7 +13,7 @@ class Strum extends FlxSprite
 
     public var type:ALECharacterType;
 
-    public var direction:Float = 90;
+    public var direction:Float = 0;
 
     public var scrollSpeed:Float = 1;
 
@@ -26,18 +26,11 @@ class Strum extends FlxSprite
 
 		frames = Paths.getSparrowAtlas('notes/' + texture);
 
-		var animToPlay:String = switch (data)
-		{
-			case 0: 'left';
-			case 1: 'down';
-			case 2: 'up';
-			case 3: 'right';
-			default: null;
-		};
+		var anim:String = ['left', 'down', 'up', 'right'][data];
 
-		animation.addByPrefix('idle', 'arrow' + animToPlay.toUpperCase(), 24, false);
-		animation.addByPrefix('pressed', animToPlay + ' press', 24, false);
-		animation.addByPrefix('hit', animToPlay + ' confirm', 24, false);
+		animation.addByPrefix('idle', 'arrow' + anim.toUpperCase(), 24, false);
+		animation.addByPrefix('pressed', anim + ' press', 24, false);
+		animation.addByPrefix('hit', anim + ' confirm', 24, false);
 
 		animation.onFrameChange.add((name:String, frameNumber:Int, frameIndex:Int) -> {
             centerOffsets();
@@ -54,9 +47,7 @@ class Strum extends FlxSprite
 
 		scale.set(0.7, 0.7);
 
-        updateHitbox();
-        centerOffsets();
-		centerOrigin();
+		updateHitbox();
 
 		animation.play('idle', true);
 
@@ -93,7 +84,5 @@ class Strum extends FlxSprite
 		shaderRef.b = shaderArray[2];
 
 		antialiasing = ClientPrefs.data.antialiasing;
-
-		animation.play('idle', true);
     }
 }

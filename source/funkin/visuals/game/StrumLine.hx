@@ -3,8 +3,10 @@ package funkin.visuals.game;
 import flixel.sound.FlxSound;
 
 import flixel.group.FlxGroup;
+
 import flixel.util.FlxSort;
 import flixel.math.FlxRect;
+import flixel.math.FlxAngle;
 
 import core.enums.ALECharacterType;
 import core.enums.Rating;
@@ -15,16 +17,17 @@ import core.enums.NoteType;
 class StrumLine extends FlxGroup
 {
     public var strums:FlxTypedGroup<Strum>;
-    public var sustains:FlxTypedGroup<Note>;
+    
     public var notes:FlxTypedGroup<Note>;
+    public var sustains:FlxTypedGroup<Note>;
+
+    public var allNotes:Array<Note> = [];
 
     public var splashes:FlxTypedGroup<Splash>;
 
     private var downScroll:Bool = ClientPrefs.data.downScroll;
 
     public var scrollSpeed:Float = 1;
-
-    public var scrollTween:FlxTween;
 
     public var botplay:Bool;
 
@@ -43,10 +46,12 @@ class StrumLine extends FlxGroup
 
 	public var chartNotes:Array<Array<Dynamic>> = [];
 
-	public var notePool:Array<Note> = [];
+    public var unspawnNotes:Array<Note> = [];
 
     public function new(character:Character, superNotes:Array<Array<Dynamic>>, startPosition:Float)
     {
+        chartNotes = superNotes;
+
         super();
 
         this.character = character;
@@ -54,6 +59,7 @@ class StrumLine extends FlxGroup
         botplay = this.character.type != PLAYER;
 
         add(strums = new FlxTypedGroup<Strum>());
+        
         add(sustains = new FlxTypedGroup<Note>());
         add(notes = new FlxTypedGroup<Note>());
 
@@ -69,33 +75,43 @@ class StrumLine extends FlxGroup
             splash.strum = strum;
         }
 
-		var daNotes:Array<Array<Dynamic>> = superNotes;
-
-		daNotes.sort(
-			function(obj1:Array<Dynamic>, obj2:Array<Dynamic>)
-				return FlxSort.byValues(FlxSort.ASCENDING, obj1[0], obj2[0])
-		);
-
-		for (note in daNotes)
+		for (noteData in chartNotes)
 		{
-            if (note[0] < startPosition)
+            var time = noteData[0];
+
+            if (time < startPosition)
                 continue;
 
-			chartNotes.push([note[0], note[1], note[2], note[3], NoteType.NORMAL]);
+            var data = noteData[1];
+            var length = noteData[2];
+            var variant = noteData[3];
 
-            if (note[2] > 0)
+            var note:Note = new Note(time, data, variant, NORMAL, character.type);
+            unspawnNotes.push(note);
+
+            if (length > 0)
             {
-                var rawLoop:Float = note[2] / Conductor.stepCrochet;
+                var steps:Float = length / Conductor.stepCrochet;
+                var totalSustains:Int = steps - Math.floor(steps) <= 0.8 ? Math.floor(steps) : Math.round(steps);
 
-                var susLoop:Int = rawLoop - Math.floor(rawLoop) <= 0.5 ? Math.floor(rawLoop) : Math.round(rawLoop);
+                if (totalSustains <= 0)
+                    totalSustains = 1;
 
-				if (susLoop <= 0)
-					susLoop = 1;
+                for (i in 0...totalSustains)
+                {
+                    var child:Note = new Note(time + i * Conductor.stepCrochet, data, variant, i == totalSustains - 1 ? SUSTAIN_END : SUSTAIN, character.type);
 
-                for (i in 0...susLoop)
-					chartNotes.push([note[0] + Conductor.stepCrochet * i, note[1], note[2], 0, i == susLoop - 1 ? NoteType.SUSTAIN_END : NoteType.SUSTAIN]);
+                    note.children.push(child);
+
+                    unspawnNotes.push(child);
+                }
             }
 		}
+
+		unspawnNotes.sort(
+			function(obj1:Note, obj2:Note)
+				return FlxSort.byValues(FlxSort.ASCENDING, obj1.time, obj2.time)
+		);
 
         visible = character.type != EXTRA;
     }
@@ -103,156 +119,180 @@ class StrumLine extends FlxGroup
     override public function update(elapsed:Float)
     {
         super.update(elapsed);
+        
+		var justPressed:Array<Bool> = [
+			FlxG.keys.justPressed.D,
+			FlxG.keys.justPressed.F,
+			FlxG.keys.justPressed.J,
+			FlxG.keys.justPressed.K
+		];
 
-		var spawnT:Float = 2000;
-		var despawnT:Float = 200;
+		var justReleased:Array<Bool> = [
+			FlxG.keys.justReleased.D,
+			FlxG.keys.justReleased.F,
+			FlxG.keys.justReleased.J,
+			FlxG.keys.justReleased.K
+		];
+        
+        spawnNotes();
 
-		if (scrollSpeed < 1)
-		{
-			spawnT /= scrollSpeed;
-			despawnT /= scrollSpeed;
-		}
+        updateStrums(justPressed, justReleased);
 
-		while (chartNotes[0] != null && Conductor.songPosition + spawnT > chartNotes[0][0])		
-		{
-			var note:Array<Dynamic> = chartNotes.shift();
+        updateNotes(justPressed, justReleased);
+    }
 
-            var object:Note = requestNote(note[0], note[1], note[2], note[3], note[4]);
+    private function spawnNotes()
+    {
+		var spawnTime:Float = 2000 / Math.min(scrollSpeed, 1);
+
+        while (unspawnNotes[0] != null && Conductor.songPosition + spawnTime > unspawnNotes[0].time)
+        {
+            var note:Note = unspawnNotes.shift();
 
             if (noteSpawnCallback != null)
-                noteSpawnCallback(object);
+                noteSpawnCallback(note);
 
-			addNote(object);
+            addNote(note);
 
             if (postNoteSpawnCallback != null)
-                postNoteSpawnCallback(object);
-		}
-
-        for (group in [notes, sustains])
-            for (note in group)
-            {
-                if (Conductor.songPosition >= note.strumTime + despawnT)
-                    removeNote(note);
-                
-                if (Conductor.songPosition - note.strumTime > 175 && note.state == NEUTRAL)
-                    onNoteMiss(note);
-            }
-
-        for (note in notes)
-        {
-            var strum:Strum = strums.members[note.data];
-
-            Note.setNotePosition(note, strum, strum.direction, 0, (note.strumTime - Conductor.songPosition) * scrollSpeed * 0.45 * (downScroll ? -1 : 1));
-        
-            if (botplay)
-            {
-                if (Conductor.songPosition >= note.strumTime && note.state == NEUTRAL)
-                    onNoteHit(note);
-            }
+                postNoteSpawnCallback(note);
         }
+    }
 
-        for (sustain in sustains)
+    private function updateStrums(justPressed:Array<Bool>, justReleased:Array<Bool>)
+    {
+        if (botplay)
+            return;
+
+        for (index => strum in strums)
         {
-            if (sustain.state == HELD || true)
-                if (Conductor.songPosition >= sustain.strumTime)
-                    onNoteHit(sustain);
+			if (justPressed[index])
+				strum.animation.play('pressed', true);
 
-            var strum:Strum = strums.members[sustain.data];
+			if (justReleased[index])
+				strum.animation.play('idle', true);
+        }
+    }
 
-            Note.setNotePosition(sustain, strum, strum.direction, 0, (downScroll ? -1 : 1) * strum.height / 2 + (sustain.strumTime - Conductor.songPosition) * scrollSpeed * 0.45 * (downScroll ? -1 : 1));
+    private function updateNotes(justPressed:Array<Bool>, justReleased:Array<Bool>)
+    {
+        var despawnTime:Float = 350 / Math.min(scrollSpeed, 1);
+
+        var clickedData:Array<Int> = [];
+
+        for (note in allNotes)
+        {
+            var diff:Float = note.time - Conductor.songPosition;
+            var absDiff:Float = Math.abs(diff);
             
-            /*
-            var parent = sustain.parentNote;
+            var strum:Strum = strums.members[note.data];
+            var splash:Splash = splashes.members[note.data];
 
-            if (parent != null)
+            if (diff < -despawnTime)
             {
-                var strum:Strum = strums.members[sustain.data];
+                removeNote(note);
 
-                if (parent.state == HELD)
+                continue;
+            }
+
+            note.direction = strum.direction;
+
+            setNotePosition(note, strum, note.direction, 0, diff * 0.45 * scrollSpeed + (note.noteType == NORMAL ? 0 : strum.height / 2));
+
+            if (note.state == MISSED)
+                continue;
+
+            if (diff < -175 && !botplay)
+            {
+                missNote(note);
+
+                continue;
+            }
+
+            if (note.noteType == NORMAL)
+            {
+                if ((note.state == NEUTRAL && justPressed[note.data] && absDiff <= 175 && !clickedData.contains(note.data) && !botplay) || (botplay && diff <= 0))
                 {
-                    sustain.state = HELD;
+                    clickedData.push(note.data);
+                    
+                    var rating:Null<Rating> = null;
 
-                    sustain.sustainHitLenght = Conductor.songPosition - sustain.strumTime;
+                    if (!botplay)
+                    {
+                        if (absDiff <= 50)
+                            rating = SICK;
+                        else if (absDiff <= 95)
+                            rating = GOOD;
+                        else if (absDiff <= 140)
+                            rating = BAD;
+                        else if (absDiff <= 175)
+                            rating = SHIT;
+                    }
 
-                    var rect = new FlxRect(0, 0, sustain.frameWidth, sustain.frameHeight);
+                    hitNote(note, rating, strum, splash);
+                }
+            } else {
+                if (justReleased[note.data] && note.state == HELD && !botplay)
+                    note.state = MISSED;
 
-                    var minSize:Float = sustain.sustainHitLenght - (Conductor.stepCrochet);
-                    var maxSize:Float = Conductor.stepCrochet;
+                if (note.state == HELD && diff <= 0)
+                {
+                    if (noteHitCallback != null)
+                        noteHitCallback(note, null);
+                    
+                    hitNote(note, null, strum, null);
 
-                    if (minSize > maxSize)
-                        minSize = maxSize;
+                    strum.animation.play('hit', true);
 
-                    if (minSize > 0)
-                        rect.y = (minSize / maxSize) * sustain.frameHeight;
-
-                    sustain.clipRect = rect;
-
-                    var holdPercent:Float = (sustain.sustainHitLenght / parent.noteLenght);
+                    if (postNoteHitCallback != null)
+                        noteHitCallback(note, null);
                 }
             }
-                */
         }
     }
 
-    public function justPressKey(data:Int)
+    function hitNote(note:Note, rating:Null<Rating>, strum:Strum, splash:Null<Splash>)
     {
-        if (botplay)
-            return;
+        if (noteHitCallback != null)
+            noteHitCallback(note, rating);
 
-        var pressedData:Int = -1;
+        note.state = HIT;
 
-        for (note in notes)
-            if (data == note.data && note.state == NEUTRAL && note.ableToHit)
-            {
-                pressedData = note.data;
+        for (child in note.children)
+            child.state = HELD;
 
-                var difference = Math.abs(note.strumTime - Conductor.songPosition + 22.5);
+        for (sound in voices)
+            if (sound.volume != 1)
+                sound.volume = 1;
 
-                var rating:Rating = null;
+        strum.animation.play('hit', true);
 
-                if (difference <= 50)
-                    rating = SICK;
-                else if (difference <= 95)
-                    rating = GOOD;
-                else if (difference <= 140)
-                    rating = BAD;
-                else if (difference <= 175)
-                    rating = SHIT;
-
-                onNoteHit(note, rating);
-
-                break;
-            }
+        if (splash != null && !botplay && rating == SICK)
+            splash.animation.play('splash', true);
         
-        for (strum in strums)
-            if (data == strum.data && strum.data != pressedData)
-                strum.animation.play('pressed', true);
+        character.idleTimer = 0;
+        
+        character.animation.play('sing' + ['LEFT', 'DOWN', 'UP', 'RIGHT'][note.data], true);
+
+        if (postNoteHitCallback != null)
+            postNoteHitCallback(note, rating);
+
+        removeNote(note);
     }
 
-    public function releaseKey(data:Int)
-    {
-        if (botplay)
-            return;
-
-        for (sustain in sustains)
-            if (data == sustain.data && sustain.state == HELD /*&& Math.abs(sustain.strumTime - Conductor.songPosition) > 50*/)
-                onNoteMiss(sustain);
-        
-        for (strum in strums)
-            if (data == strum.data)
-                strum.animation.play('idle', true);
-    }
-
-    public function onNoteMiss(note:Note)
+    public function missNote(note:Note)
     {
         if (noteMissCallback != null)
             noteMissCallback(note);
+
+        for (child in note.children)
+            child.state = MISSED;
 
         for (sound in voices)
             if (sound.volume != 0)
                 sound.volume = 0;
 
-        note.state = LOST;
+        note.state = MISSED;
 
         if (note.ignorable || note.noteType != NORMAL)
         {
@@ -264,105 +304,41 @@ class StrumLine extends FlxGroup
 
         character.idleTimer = 0;
 
-        character.animation.play('sing' + (switch (note.data)
-            {
-                case 0:
-                    'LEFT';
-                case 1:
-                    'DOWN';
-                case 2:
-                    'UP';
-                case 3:
-                    'RIGHT';
-                default:
-                    '';
-            }) + 'miss',
-            true
-        );
+        character.animation.play('sing' + ['LEFT', 'DOWN', 'UP', 'RIGHT'][note.data] + 'miss', true);
 
         if (postNoteMissCallback != null)
             postNoteMissCallback(note);
     }
 
-    public function onNoteHit(note:Note, ?rating:Rating)
+    inline function addNote(note:Note)
     {
-        if (noteHitCallback != null)
-            noteHitCallback(note, rating);
-        
-        note.state = HIT;
+        var group:FlxTypedGroup<Note> = note.noteType == NORMAL ? notes : sustains;
 
-        for (child in note.children)
-            child.state = HELD;
+        group.add(note);
 
-        removeNote(note);
-        
-        strums.members[note.data].animation.play('hit', true);
-        
-        if (!botplay && rating == SICK)
-            splashes.members[note.data].animation.play('splash', true);
-        
-        character.idleTimer = 0;
-        
-        if (true)    
-            character.animation.play('sing' + switch (note.data)
-                {
-                    case 0:
-                        'LEFT';
-                    case 1:
-                        'DOWN';
-                    case 2:
-                        'UP';
-                    case 3:
-                        'RIGHT';
-                    default:
-                        '';
-                },
-                true
-            );
-
-        for (sound in voices)
-            if (sound.volume != 1)
-                sound.volume = 1;
-
-        if (postNoteHitCallback != null)
-            postNoteHitCallback(note, rating);
+        allNotes.push(note);
     }
 
-    public function addNote(note:Note)
+    inline function removeNote(note:Note)
     {
-        if (note.noteType == NORMAL)
-            notes.add(note);
-        else
-            sustains.add(note);
+        var group:FlxTypedGroup<Note> = note.noteType == NORMAL ? notes : sustains;
+
+        note.kill();
+
+        group.remove(note, true);
+
+        allNotes.remove(note);
+
+        note.destroy();
     }
-
-    public function removeNote(note:Note)
-    {
-        note.active = false;
-        notePool.push(note);
-
-        if (note.noteType == NORMAL)
-            notes.remove(note, true);
-        else
-            sustains.remove(note, true);
-    }
-
-	function requestNote(time:Float, data:Int, length:Float, variant:Null<String>, type:NoteType):Note
+	
+	inline function setNotePosition(note:Note, strum:Strum, angle:Float, offsetX:Float, offsetY:Float)
 	{
-		var result:Note;
+		offsetX += strum.width / 2 - note.width / 2;
 
-		if (notePool[0] != null)
-		{
-			result = notePool.pop();
-			result.resetNote(time, data, length, variant, type);
-		} else {
-			result = new Note(time, data, length, variant, character.type, type);
-		}
+		angle = FlxAngle.asRadians(angle);
 
-        result.updateHitbox();
-
-        result.character = this.character;
-
-		return result;
+		note.x = strum.x + Math.cos(angle) * offsetX + Math.sin(angle) * offsetY;
+		note.y = strum.y + Math.cos(angle) * offsetY + Math.sin(angle) * offsetX;
 	}
 }

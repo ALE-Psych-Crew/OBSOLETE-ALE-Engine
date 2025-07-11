@@ -55,9 +55,6 @@ class Splash extends AttachedSprite
             visible = false;
         });
 
-        centerOffsets();
-        centerOrigin();
-
         scale.set(0.85, 0.85);
 
         updateHitbox();
@@ -75,8 +72,6 @@ class Splash extends AttachedSprite
     {
         super();
 
-        visible = false;
-
         this.noteData = noteData;
 
         var rgbPalette = new RGBPalette();
@@ -88,6 +83,8 @@ class Splash extends AttachedSprite
         shaderRef.b = shaderArray[2];
 
         texture = texture;
+
+        visible = false;
 
         antialiasing = ClientPrefs.data.antialiasing;
 
