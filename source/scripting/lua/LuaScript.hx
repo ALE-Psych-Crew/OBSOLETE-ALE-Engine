@@ -33,7 +33,9 @@ class LuaScript
     function config()
     {
         lua = LuaL.newstate();
+        
         LuaL.openlibs(lua);
+
         var result = LuaL.dofile(lua, name);
 
         var resultString:String = Lua.tostring(lua, result);
@@ -50,6 +52,7 @@ class LuaScript
             return;
 
         Convert.toLua(lua, value);
+
         Lua.setglobal(lua, name);
     }
     
@@ -136,13 +139,20 @@ class LuaScript
     {
         return switch (type)
         {
-            case Lua.LUA_TBOOLEAN: 'bool';
-            case Lua.LUA_TNUMBER: 'number';
-            case Lua.LUA_TSTRING: 'string';
-            case Lua.LUA_TTABLE: 'table';
-            case Lua.LUA_TFUNCTION: 'function';
-            case Lua.LUA_TNIL: 'null';
-            default: 'unknown';
+            case Lua.LUA_TBOOLEAN:
+                'bool';
+            case Lua.LUA_TNUMBER:
+                'number';
+            case Lua.LUA_TSTRING:
+                'string';
+            case Lua.LUA_TTABLE:
+                'table';
+            case Lua.LUA_TFUNCTION:
+                'function';
+            case Lua.LUA_TNIL:
+                'null';
+            default:
+                'unknown';
         }
     }
 
@@ -159,10 +169,14 @@ class LuaScript
         {
             return switch (status)
             {
-                case Lua.LUA_ERRRUN: 'Runtime Error';
-                case Lua.LUA_ERRMEM: 'Memory Allocation Error';
-                case Lua.LUA_ERRERR: 'Critical Error';
-                default: 'Unknown Error';
+                case Lua.LUA_ERRRUN:
+                    'Runtime Error';
+                case Lua.LUA_ERRMEM:
+                    'Memory Allocation Error';
+                case Lua.LUA_ERRERR:
+                    'Critical Error';
+                default:
+                    'Unknown Error';
             }
         }
 
