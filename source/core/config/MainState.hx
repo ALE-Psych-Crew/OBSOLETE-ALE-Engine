@@ -16,6 +16,7 @@ import hscript.Printer;
 import rulescript.RuleScript;
 import rulescript.Tools;
 import rulescript.parsers.HxParser;
+import rulescript.scriptedClass.RuleScriptedClassUtil;
 
 import scripting.haxe.ALERuleScript;
 
@@ -97,6 +98,8 @@ class MainState extends flixel.FlxState
 		}
 
 		RuleScript.resolveScript = importCustomClass;
+
+		RuleScriptedClassUtil.buildBridge = customBuildRuleScript;
 
         super.create();
 
@@ -190,5 +193,20 @@ class MainState extends flixel.FlxState
 		}
 
 		return obj;
+	}
+
+	static function customBuildRuleScript(typeName:String, superInstance:Dynamic):RuleScript
+	{
+		var script = new ALERuleScript();
+
+		script.getParser(HxParser).mode = MODULE;
+
+		script.superInstance = superInstance;
+
+		script.interp.skipNextRestore = true;
+
+		script.execute(File.getContent(Paths.getPath('scripts/classes/' + typeName.replace('.', '/') + '.hx')));
+
+		return script;
 	}
 }

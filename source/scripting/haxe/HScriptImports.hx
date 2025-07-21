@@ -18,4 +18,6 @@ import scripting.haxe.imports.ALEUIImports;
 
 import scripting.haxe.imports.FunkinImports;
 
+import scripting.haxe.Extensible;
+
 class HScriptImports {}
