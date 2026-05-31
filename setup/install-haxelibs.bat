@@ -9,7 +9,7 @@ haxelib git hxcpp https://github.com/AlejoGDOfficial/MobilePorting-hxcpp --skip-
 haxelib git linc_luajit https://github.com/superpowers04/linc_luajit 633fcc051399afed6781dd60cbf30ed8c3fe2c5a --skip-dependencies
 haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio.git cbf91e2180fd2e374924fe74844086aab7891666 --skip-dependencies
 haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 1966f8fbbbc509ed90d4b520f3c49c084fc92fd6
-haxelib git ale-ui https://github.com/ALE-Engine-Crew/ALE-UI --skip-dependencies
+haxelib git ale-ui https://github.com/ALE-Engine-Crew/ALE-UI f2f29b2d1ad6fcd06ad9f88dd0f4d50398641188 --skip-dependencies
 
 haxelib install nape-haxe4 2.0.22
 haxelib install away3d 5.0.9
